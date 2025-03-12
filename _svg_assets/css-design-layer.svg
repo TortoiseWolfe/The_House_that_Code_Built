@@ -1,34 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
-  <!-- Environment Layer - Sunset/Dusk Setting -->
-  <g id="environment-layer">
-    <!-- Sky with sunset gradient -->
-    <linearGradient id="sunset-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#1A237E"/>
-      <stop offset="20%" style="stop-color:#4A148C"/>
-      <stop offset="40%" style="stop-color:#880E4F"/>
-      <stop offset="60%" style="stop-color:#C62828"/>
-      <stop offset="80%" style="stop-color:#FF6F00"/>
-      <stop offset="100%" style="stop-color:#FFC107"/>
-    </linearGradient>
-    <rect width="800" height="400" fill="url(#sunset-gradient)"/>
-    
-    <!-- Setting sun -->
-    <circle cx="650" cy="100" r="60" fill="#FF3D00"/>
-    <circle cx="650" cy="100" r="70" fill="#FF3D00" opacity="0.5"/>
-    <circle cx="650" cy="100" r="80" fill="#FF3D00" opacity="0.3"/>
-    
-    <!-- Ground with warm evening lighting -->
-    <linearGradient id="ground-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#4CAF50"/>
-      <stop offset="100%" style="stop-color:#1B5E20"/>
-    </linearGradient>
-    <rect y="400" width="800" height="200" fill="url(#ground-gradient)"/>
-  </g>
-  
-  <!-- House Complete Structure with CSS Styling -->
-  <g id="styled-house">
-    <!-- Foundation with texture -->
-    <rect x="200" y="350" width="400" height="50" fill="#8D6E63"/>
+  <!-- CSS Design Layer - decorative and styling elements only -->
+  <g id="css-design-layer">
+    <!-- Foundation texture and trim -->
     <rect x="200" y="350" width="400" height="5" fill="#5D4037"/>
     <rect x="200" y="395" width="400" height="5" fill="#5D4037"/>
     <!-- Foundation texture lines -->
@@ -44,9 +17,6 @@
       <line x1="540" y1="350" x2="540" y2="400"/>
       <line x1="580" y1="350" x2="580" y2="400"/>
     </g>
-    
-    <!-- Main house exterior siding -->
-    <rect x="200" y="200" width="400" height="150" fill="#FFECB3"/>
     
     <!-- Siding texture lines -->
     <g stroke="#E6D19A" stroke-width="1">
@@ -64,9 +34,6 @@
     <!-- Decorative house trim -->
     <rect x="195" y="195" width="410" height="5" fill="#5D4037"/>
     <rect x="195" y="345" width="410" height="5" fill="#5D4037"/>
-    
-    <!-- Roof with shingles texture -->
-    <polygon points="200,200 400,100 600,200" fill="#795548"/>
     
     <!-- Roof trim -->
     <polygon points="195,205 400,100 605,205 600,205 400,105 200,205" fill="#5D4037"/>

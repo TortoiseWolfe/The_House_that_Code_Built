@@ -1,5 +1,5 @@
 House_Code
-
+.env
 # Python
 __pycache__/
 *.py[cod]

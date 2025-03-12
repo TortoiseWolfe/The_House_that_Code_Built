@@ -1,78 +1,67 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
-  <!-- Blueprint background -->
-  <rect width="800" height="600" fill="#F8FBFF"/>
-  
-  <!-- House Blueprint Outlines - Blue Lines Only -->
-  <g id="house-blueprint">
+  <!-- HTML Tags Layer - Showing element boundaries with dotted/dashed lines -->
+  <g id="html-tags" stroke="#0066cc" stroke-width="1" fill="none">
+    <!-- Main container -->
+    <rect x="150" y="80" width="500" height="440" stroke-dasharray="5,5" stroke-width="2"/>
+    <text x="155" y="100" font-family="monospace" font-size="12" fill="#0066cc">&lt;div class="container"&gt;</text>
+    
+    <!-- Header section -->
+    <rect x="170" y="110" width="460" height="60" stroke-dasharray="5,5"/>
+    <text x="175" y="125" font-family="monospace" font-size="12" fill="#0066cc">&lt;header&gt;</text>
+    
+    <!-- Navigation -->
+    <rect x="190" y="130" width="420" height="30" stroke-dasharray="3,3"/>
+    <text x="195" y="145" font-family="monospace" font-size="12" fill="#0066cc">&lt;nav&gt;</text>
+    
+    <!-- Main content area -->
+    <rect x="170" y="180" width="460" height="300" stroke-dasharray="5,5"/>
+    <text x="175" y="195" font-family="monospace" font-size="12" fill="#0066cc">&lt;main&gt;</text>
+    
+    <!-- House visualization (as an article) -->
+    <rect x="190" y="200" width="420" height="260" stroke-dasharray="4,2"/>
+    <text x="195" y="215" font-family="monospace" font-size="12" fill="#0066cc">&lt;article class="house-display"&gt;</text>
+    
+    <!-- Roof section -->
+    <polygon points="200,200 400,100 600,200" stroke-dasharray="3,2"/>
+    <text x="370" y="140" font-family="monospace" font-size="12" fill="#0066cc">&lt;div class="roof"&gt;</text>
+    
+    <!-- Main house section -->
+    <rect x="200" y="200" width="400" height="150" stroke-dasharray="3,2"/>
+    <text x="205" y="215" font-family="monospace" font-size="12" fill="#0066cc">&lt;section class="main-house"&gt;</text>
+    
+    <!-- Left window -->
+    <rect x="245" y="225" width="60" height="60" stroke-dasharray="2,2"/>
+    <text x="250" y="240" font-family="monospace" font-size="10" fill="#0066cc">&lt;div class="window"&gt;</text>
+    
+    <!-- Right window -->
+    <rect x="495" y="225" width="60" height="60" stroke-dasharray="2,2"/>
+    <text x="500" y="240" font-family="monospace" font-size="10" fill="#0066cc">&lt;div class="window"&gt;</text>
+    
+    <!-- Door area -->
+    <rect x="375" y="300" width="50" height="100" stroke-dasharray="2,2"/>
+    <text x="380" y="315" font-family="monospace" font-size="10" fill="#0066cc">&lt;div class="door"&gt;</text>
+    
     <!-- Foundation -->
-    <rect x="200" y="350" width="400" height="50" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <rect x="200" y="350" width="400" height="50" stroke-dasharray="3,2"/>
+    <text x="205" y="365" font-family="monospace" font-size="12" fill="#0066cc">&lt;div class="foundation"&gt;</text>
     
-    <!-- Main house body -->
-    <rect x="200" y="200" width="400" height="150" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <!-- Porch area -->
+    <rect x="350" y="400" width="100" height="10" stroke-dasharray="2,1"/>
+    <text x="355" y="395" font-family="monospace" font-size="10" fill="#0066cc">&lt;div class="porch"&gt;</text>
     
-    <!-- Roof -->
-    <polygon points="200,200 400,100 600,200" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <!-- Garden area -->
+    <rect x="200" y="400" width="400" height="40" stroke-dasharray="3,2"/>
+    <text x="205" y="415" font-family="monospace" font-size="12" fill="#0066cc">&lt;section class="garden"&gt;</text>
     
-    <!-- Chimney -->
-    <rect x="500" y="130" width="40" height="70" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <!-- Flower bed containers -->
+    <rect x="200" y="420" width="80" height="20" stroke-dasharray="2,1"/>
+    <text x="205" y="430" font-family="monospace" font-size="8" fill="#0066cc">&lt;div class="flower-bed"&gt;</text>
     
-    <!-- Windows -->
-    <rect x="245" y="225" width="60" height="60" stroke="#0047AB" stroke-width="1.5" fill="none"/>
-    <line x1="275" y1="225" x2="275" y2="285" stroke="#0047AB" stroke-width="1"/>
-    <line x1="245" y1="255" x2="305" y2="255" stroke="#0047AB" stroke-width="1"/>
+    <rect x="520" y="420" width="80" height="20" stroke-dasharray="2,1"/>
+    <text x="525" y="430" font-family="monospace" font-size="8" fill="#0066cc">&lt;div class="flower-bed"&gt;</text>
     
-    <rect x="495" y="225" width="60" height="60" stroke="#0047AB" stroke-width="1.5" fill="none"/>
-    <line x1="525" y1="225" x2="525" y2="285" stroke="#0047AB" stroke-width="1"/>
-    <line x1="495" y1="255" x2="555" y2="255" stroke="#0047AB" stroke-width="1"/>
-    
-    <!-- Attic windows -->
-    <rect x="250" y="130" width="40" height="40" stroke="#0047AB" stroke-width="1.5" fill="none"/>
-    <line x1="270" y1="130" x2="270" y2="170" stroke="#0047AB" stroke-width="1"/>
-    <line x1="250" y1="150" x2="290" y2="150" stroke="#0047AB" stroke-width="1"/>
-    
-    <rect x="510" y="130" width="40" height="40" stroke="#0047AB" stroke-width="1.5" fill="none"/>
-    <line x1="530" y1="130" x2="530" y2="170" stroke="#0047AB" stroke-width="1"/>
-    <line x1="510" y1="150" x2="550" y2="150" stroke="#0047AB" stroke-width="1"/>
-    
-    <!-- Front Door -->
-    <rect x="375" y="300" width="50" height="100" stroke="#0047AB" stroke-width="1.5" fill="none"/>
-    <rect x="385" y="310" width="30" height="40" stroke="#0047AB" stroke-width="1" fill="none"/>
-    <circle cx="415" cy="350" r="3" stroke="#0047AB" stroke-width="1" fill="none"/> <!-- Doorknob -->
-    
-    <!-- Porch -->
-    <rect x="350" y="400" width="100" height="10" stroke="#0047AB" stroke-width="1.5" fill="none"/>
-    <rect x="350" y="350" width="5" height="50" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Left support -->
-    <rect x="445" y="350" width="5" height="50" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Right support -->
-    
-    <!-- Small steps to the porch -->
-    <rect x="375" y="410" width="50" height="15" stroke="#0047AB" stroke-width="1.5" fill="none"/>
-    <line x1="375" y1="415" x2="425" y2="415" stroke="#0047AB" stroke-width="1"/>
-    <line x1="375" y1="420" x2="425" y2="420" stroke="#0047AB" stroke-width="1"/>
-    
-    <!-- Garden area and pathway -->
-    <rect x="300" y="425" width="200" height="15" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Pathway -->
-    
-    <!-- Flower beds -->
-    <rect x="200" y="420" width="80" height="20" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Left flower bed -->
-    <rect x="520" y="420" width="80" height="20" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Right flower bed -->
-    
-    <!-- Blueprint grid lines -->
-    <g id="grid-lines" opacity="0.2">
-      <!-- Vertical grid lines -->
-      <line x1="100" y1="0" x2="100" y2="600" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="200" y1="0" x2="200" y2="600" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="300" y1="0" x2="300" y2="600" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="400" y1="0" x2="400" y2="600" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="500" y1="0" x2="500" y2="600" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="600" y1="0" x2="600" y2="600" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="700" y1="0" x2="700" y2="600" stroke="#0047AB" stroke-width="0.5"/>
-      
-      <!-- Horizontal grid lines -->
-      <line x1="0" y1="100" x2="800" y2="100" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="0" y1="200" x2="800" y2="200" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="0" y1="300" x2="800" y2="300" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="0" y1="400" x2="800" y2="400" stroke="#0047AB" stroke-width="0.5"/>
-      <line x1="0" y1="500" x2="800" y2="500" stroke="#0047AB" stroke-width="0.5"/>
-    </g>
+    <!-- Footer section -->
+    <rect x="170" y="490" width="460" height="30" stroke-dasharray="5,5"/>
+    <text x="175" y="505" font-family="monospace" font-size="12" fill="#0066cc">&lt;footer&gt;</text>
   </g>
 </svg>

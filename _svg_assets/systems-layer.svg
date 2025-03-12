@@ -1,29 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
-  <!-- Environment Layer - Night Scene with X-Ray View -->
-  <g id="environment-layer">
-    <!-- Night sky with gradient -->
-    <linearGradient id="night-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#0D1326"/>
-      <stop offset="100%" style="stop-color:#1A237E"/>
-    </linearGradient>
-    <rect width="800" height="400" fill="url(#night-gradient)"/>
-    
-    <!-- Moon -->
-    <circle cx="680" cy="80" r="40" fill="#ECEFF1"/>
-    <circle cx="670" cy="70" r="10" fill="#CFD8DC"/>
-    <circle cx="690" cy="90" r="8" fill="#CFD8DC"/>
-    <circle cx="680" cy="60" r="5" fill="#CFD8DC"/>
-    
-    <!-- Dark ground -->
-    <linearGradient id="ground-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#1B5E20"/>
-      <stop offset="100%" style="stop-color:#0A280D"/>
-    </linearGradient>
-    <rect y="400" width="800" height="200" fill="url(#ground-gradient)"/>
-  </g>
-  
   <!-- House Structure - Semi-transparent to show internal systems -->
-  <g id="house-structure" opacity="0.6">
+  <g id="house-structure" opacity="0.3">
     <!-- Foundation -->
     <rect x="200" y="350" width="400" height="50" fill="#5D4037"/>
     
