@@ -18,6 +18,9 @@
 - **HTML/CSS**: Follow BEM naming convention for CSS classes
 - **JavaScript**: Use camelCase for variable/function names; organize code by feature
 - **Error Handling**: Use try/except blocks when accessing files; provide informative fallbacks
+- **Layout Structure**: Maintain three-column layout with proper proportions
+- **Font Sizes**: Use large, child-friendly sizes (18px minimum, headings 2rem+)
+- **SVG Containment**: Ensure SVG layers remain within defined container boundaries
 
 ## Accessibility Guidelines
 - **ARIA Attributes**: All interactive elements must have proper ARIA roles and states
@@ -28,8 +31,20 @@
 - **SVG Elements**: Add title elements and aria-label attributes to SVGs
 - **Testing**: Run accessibility tests before each commit to ensure compliance
 
+## Layout Guidelines
+- **Three-Column Structure**: Left column (presets), center column (visualization), right column (layer controls)
+- **Column Proportions**: Maintain approximately 1:3:0.7 ratio for desktop layouts
+- **Responsive Breakpoints**: 
+  - 1024px: Switch to two-column layout (controls on sides, visualization spanning full height)
+  - 768px: Switch to single-column layout (stacked vertically)
+- **Visualization Container**: Must include proper containment for SVG layers
+- **Button Sizing**: Ensure all buttons are large enough for easy interaction (minimum 44px touch target)
+- **Font Scaling**: All text should remain readable at 200% zoom level
+
 ## Notes
 - Docker environment is configured to mount SVG assets and environment variables
 - GitHub Actions automatically handles deployment to GitHub Pages on push
 - GitHub Actions includes automated accessibility testing with pa11y
 - All SVG files should include proper title and desc elements for accessibility
+- Template files are mounted as volume for easier development
+- Tom Waits audio section should always remain below the main columns

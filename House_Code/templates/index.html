@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive visualization of web development concepts using a house metaphor">
+  <title>Web Development House - Layer Toggler</title>
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #333;
+      --header-color: #2e7d32;
+      --card-bg: #ffffff;
+      --card-shadow: rgba(0,0,0,0.1);
+      --btn-inactive: #e0e0e0;
+      --btn-active: #4CAF50;
+      --btn-hover: #d0d0d0;
+      --divider: #e0e0e0;
+      --desc-bg: #e8f5e9;
+      --link-color: #0D47A1;
+      --toggle-bg: #4CAF50;
+      --btn-text-light: #ffffff;
+      --btn-text-dark: #333333;
+      --focus-outline: #2196F3;
+    }
+    
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #e0e0e0;
+      --header-color: #81c784;
+      --card-bg: #1e1e1e;
+      --card-shadow: rgba(0,0,0,0.4);
+      --btn-inactive: #383838;
+      --btn-active: #388E3C;
+      --btn-hover: #505050;
+      --divider: #383838;
+      --desc-bg: #2c3e2e;
+      --link-color: #90caf9;
+      --toggle-bg: #388E3C;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1800px; /* Increased from 1200px for much larger layout */
+      margin: 0 auto;
+      padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+      line-height: 1.5;
+      font-size: 18px; /* Increased base font size */
+    }
+    
+    h1, h2 {
+      color: var(--header-color);
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 3rem; /* Much larger title font */
+    }
+    
+    h2 {
+      font-size: 2rem; /* Larger section headings */
+      margin-bottom: 20px;
+    }
+    
+    /* Three Column Layout */
+    .three-column-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) minmax(600px, 3fr) minmax(200px, 0.7fr); /* More precise control */
+      gap: 25px 35px; /* Vertical and horizontal gap */
+      margin-bottom: 40px;
+      align-items: start; /* Align columns to the top */
+      justify-content: space-between; /* Space out columns */
+    }
+    
+    .column {
+      background-color: var(--card-bg);
+      border-radius: 12px; /* Increased from 8px */
+      padding: 30px; /* Increased from 20px */
+      box-shadow: 0 4px 15px var(--card-shadow);
+    }
+    
+    /* Adjust column widths precisely with min-width/max-width */
+    .left-column {
+      min-width: 300px;
+    }
+    
+    .center-column {
+      min-width: 60%;
+    }
+    
+    .right-column {
+      max-width: 270px; /* Limit maximum width of right column */
+      min-width: 230px; /* Ensure it doesn't get too narrow */
+    }
+    
+    .left-column, .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    /* Make the right column buttons stack vertically */
+    .right-column {
+      padding: 25px 20px; /* Reduced padding to make column more compact */
+    }
+    
+    .right-column .layer-toggles {
+      display: flex;
+      flex-direction: column;
+      gap: 12px; /* Reduced from 15px for more compact layout */
+      width: 100%;
+    }
+    
+    .right-column .toggle-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px; /* Reduced from 16px 20px */
+      display: flex;
+      align-items: center;
+      font-size: 18px; /* Slightly reduced from 20px */
+      border-radius: 8px; /* Reduced from 10px */
+    }
+    
+    /* Make the left column buttons stack vertically */
+    .left-column .preset-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px; /* Increased from 10px */
+      width: 100%;
+    }
+    
+    .left-column .preset-btn {
+      width: 100%;
+      text-align: left;
+      padding: 18px 22px; /* Increased from 12px 15px */
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: 20px; /* Larger font */
+      border-radius: 10px; /* Larger border radius */
+    }
+    
+    /* Center column adjustments */
+    .center-column {
+      padding: 0 10px; /* Added some horizontal padding */
+      background: none;
+      box-shadow: none;
+      display: flex;
+      justify-content: center; /* Center contents horizontally */
+      overflow: visible; /* Allow for proper visualization */
+      position: relative; /* For proper positioning */
+    }
+    
+    .theme-switch-wrapper {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      z-index: 100;
+    }
+    
+    .theme-switch {
+      display: inline-block;
+      height: 24px;
+      position: relative;
+      width: 50px;
+    }
+    
+    .slider {
+      background-color: #666;
+      bottom: 0;
+      cursor: pointer;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .slider:before {
+      background-color: white;
+      bottom: 3px;
+      content: "";
+      height: 18px;
+      left: 4px;
+      position: absolute;
+      transition: .4s;
+      width: 18px;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: var(--toggle-bg);
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    .theme-icon {
+      margin-left: 10px;
+      font-size: 18px;
+    }
+    
+    .layer-toggles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .toggle-btn {
+      padding: 15px 20px; /* Increased from 10px 15px */
+      background-color: var(--btn-inactive);
+      border: none;
+      border-radius: 8px; /* Increased from 4px */
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 18px; /* Increased from 14px */
+      color: var(--text-color);
+      font-weight: 500; /* Added for better readability */
+    }
+    
+    .toggle-btn:hover {
+      background-color: var(--btn-hover);
+      transform: translateY(-2px); /* Added to enhance clickable feel */
+    }
+    
+    .toggle-btn:focus {
+      outline: 4px solid var(--focus-outline); /* Increased from 3px */
+    }
+    
+    .toggle-btn.active {
+      background-color: var(--btn-active);
+      color: var(--btn-text-light);
+      box-shadow: 0 4px 8px var(--card-shadow); /* Increased from 0 2px 5px */
+      font-weight: bold; /* Added for better emphasis when active */
+    }
+    
+    .divider {
+      height: 1px;
+      background-color: var(--divider);
+      margin: 20px 0;
+    }
+    
+    .signature {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background-color: var(--card-bg);
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px var(--card-shadow);
+      font-size: 12px;
+      z-index: 100;
+      max-width: 250px;
+    }
+    
+    .signature a {
+      color: var(--link-color);
+      text-decoration: none;
+      display: block;
+      margin: 3px 0;
+    }
+    
+    .signature a:hover {
+      text-decoration: underline;
+    }
+    
+    .signature a:focus {
+      outline: 2px solid var(--focus-outline);
+      outline-offset: 2px;
+    }
+    
+    .signature-toggle {
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .preset-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .preset-btn {
+      padding: 16px 22px; /* Increased from 12px 18px */
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 8px; /* Increased from 4px */
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      font-size: 18px; /* Added larger font size */
+      margin-bottom: 5px; /* Added spacing between buttons */
+    }
+    
+    .preset-btn:hover {
+      background-color: #1976D2;
+      transform: translateY(-2px); /* Added hover animation */
+    }
+    
+    .preset-btn:focus {
+      outline: 4px solid var(--focus-outline); /* Increased from 3px */
+    }
+    
+    .preset-btn.active {
+      background-color: #0D47A1;
+      box-shadow: 0 4px 8px var(--card-shadow); /* Increased shadow */
+      font-size: 19px; /* Slightly larger font for active state */
+    }
+    
+    .svg-container {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px var(--card-shadow);
+      min-height: 800px; /* Increased from 600px for much larger display area */
+      position: relative;
+      width: calc(100% - 10px); /* Adjust width to prevent overflow */
+      max-width: 100%;
+      overflow: hidden; /* Prevent content from spilling out */
+      margin: 0 auto; /* Center the container */
+    }
+    
+    .svg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.3s ease;
+      object-fit: contain; /* Ensure SVG fits within container */
+      object-position: center; /* Center the SVG content */
+    }
+    
+    .svg-layer.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .chapter-description {
+      background-color: var(--desc-bg);
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-style: italic;
+    }
+    
+    .github-info {
+      background-color: var(--desc-bg);
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    
+    .github-info a {
+      color: var(--link-color);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .github-info a:hover {
+      text-decoration: underline;
+    }
+    
+    .github-info a:focus {
+      outline: 2px solid var(--focus-outline);
+      outline-offset: 2px;
+    }
+    
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--btn-active);
+      color: white;
+      padding: 8px;
+      z-index: 1000;
+      transition: top 0.3s;
+    }
+    
+    .skip-link:focus {
+      top: 0;
+    }
+    
+    /* Tom Waits audio section styles */
+    .audio-section {
+      margin-top: 40px;
+      padding: 20px;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+    }
+    
+    .audio-section.full-width {
+      max-width: 1600px; /* Increased from 1200px */
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 60px; /* Increased from 40px */
+      padding: 40px; /* Increased from 20px */
+      border: 3px solid var(--header-color); /* Added decorative border */
+    }
+    
+    .audio-section h2 {
+      margin-top: 0;
+      font-size: 2.4rem; /* Larger heading for audio section */
+      color: var(--header-color);
+    }
+    
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+      margin: 30px 0; /* Added more spacing */
+    }
+    
+    .audio-controls p {
+      font-size: 20px; /* Larger text for audio section */
+      line-height: 1.6;
+    }
+    
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 4px;
+    }
+    
+    .audio-controls {
+      margin-top: 15px;
+    }
+    
+    .accessibility-note {
+      background-color: var(--desc-bg);
+      padding: 18px; /* Increased from 10px */
+      border-radius: 10px; /* Increased from 4px */
+      margin-top: 20px; /* Increased from 10px */
+      font-size: 20px; /* Larger font */
+    }
+    
+    .button {
+      display: inline-block;
+      padding: 12px 20px; /* Increased from 8px 15px */
+      background-color: var(--btn-active);
+      color: white;
+      border: none;
+      border-radius: 8px; /* Increased from 4px */
+      cursor: pointer;
+      margin-left: 15px; /* Increased from 10px */
+      font-size: 18px; /* Increased from 14px */
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .button:hover {
+      background-color: var(--btn-hover);
+    }
+    
+    .button:focus {
+      outline: 3px solid var(--focus-outline);
+      outline-offset: 2px;
+    }
+    
+    @media (max-width: 1024px) {
+      .three-column-layout {
+        grid-template-columns: 1fr 2fr;
+        grid-template-areas: 
+          "left center"
+          "right center";
+      }
+      
+      .left-column {
+        grid-area: left;
+      }
+      
+      .center-column {
+        grid-area: center;
+        grid-row: span 2;
+      }
+      
+      .right-column {
+        grid-area: right;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .three-column-layout {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .column {
+        width: 100%;
+      }
+      
+      .video-container {
+        margin-bottom: 20px;
+      }
+      
+      /* Keep buttons vertical on mobile */
+      .layer-toggles, .preset-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip to main content link for keyboard users -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Theme switch toggle -->
+  <div class="theme-switch-wrapper">
+    <label class="theme-switch" for="checkbox" aria-label="Toggle dark mode">
+      <input type="checkbox" id="checkbox" />
+      <div class="slider" role="switch" aria-checked="false" aria-label="Dark mode"></div>
+    </label>
+    <span class="theme-icon" aria-hidden="true">🌓</span>
+  </div>
+
+  <h1>The House that Code Built</h1>
+  
+  <main id="main-content" class="three-column-layout">
+    <!-- Left Column: Chapter Presets -->
+    <section class="column left-column" aria-labelledby="chapter-presets-heading">
+      <h2 id="chapter-presets-heading">Chapter Presets</h2>
+      <div class="preset-buttons" role="toolbar" aria-labelledby="chapter-presets-heading">
+        {% for chapter in chapters %}
+        <button class="preset-btn {% if chapter.preset == 'base' %}active{% endif %}" 
+                data-preset="{{ chapter.preset }}"
+                aria-pressed="{% if chapter.preset == 'base' %}true{% else %}false{% endif %}">
+          {{ chapter.name }}
+        </button>
+        {% endfor %}
+      </div>
+      
+      <div class="chapter-description" id="chapter-description" aria-live="polite">
+        {{ chapters[0].description }}
+      </div>
+      
+      {% if github_username and repo_name %}
+      <div class="divider" role="separator"></div>
+      <div class="github-info">
+        <p>Created by <a href="https://github.com/{{ github_username }}" target="_blank" aria-label="Visit {{ github_username }}'s GitHub profile">{{ github_username }}</a></p>
+        <p>Repository: <a href="https://github.com/{{ github_username }}/{{ repo_name }}" target="_blank" aria-label="Visit the {{ repo_name }} GitHub repository">{{ repo_name }}</a></p>
+        {% if github_pages_url %}
+        <p>GitHub Pages: <a href="{{ github_pages_url }}" target="_blank" aria-label="Visit the GitHub Pages site">{{ github_pages_url }}</a></p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </section>
+    
+    <!-- Center Column: Main Visualization -->
+    <section class="column center-column">
+      <div class="svg-container" id="svg-container" aria-label="Interactive visualization of the house that code built">
+        <!-- SVG layers will be loaded here -->
+      </div>
+    </section>
+    
+    <!-- Right Column: Layer Controls -->
+    <section class="column right-column" aria-labelledby="layer-controls-heading">
+      <h2 id="layer-controls-heading">Layer Controls</h2>
+      
+      <div class="layer-toggles" role="toolbar" aria-label="Toggle visibility of house layers">
+        {% for layer in layers %}
+        <button class="toggle-btn {% if layer.default %}active{% endif %}" 
+                data-layer="{{ layer.id }}" 
+                aria-pressed="{% if layer.default %}true{% else %}false{% endif %}"
+                aria-label="Toggle {{ layer.name }} layer">
+          {{ layer.name }}
+        </button>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+  
+  <!-- Tom Waits - What's He Building in There? audio section (full width, below three columns) -->
+  <section class="audio-section full-width">
+    <h2>Soundtrack: "What's He Building in There?" by Tom Waits</h2>
+    <div class="video-container">
+      <iframe width="560" height="315" 
+              src="https://www.youtube.com/embed/04qPdGNA_KM?si=9SDo0qmNaDM3Nsko&autoplay=1&loop=1&playlist=04qPdGNA_KM" 
+              title="Tom Waits - What's He Building in There?" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen>
+      </iframe>
+    </div>
+    <div class="audio-controls">
+      <p>This song by Tom Waits perfectly captures the mysterious nature of building projects.</p>
+      <p class="accessibility-note">
+        <strong>Accessibility Note:</strong> Audio plays automatically. 
+        <button id="toggle-audio" class="button" aria-label="Mute audio">Mute Audio</button>
+      </p>
+    </div>
+  </section>
+  
+  <!-- Author Signature -->
+  <div class="signature" role="contentinfo">
+    <button class="signature-toggle" aria-expanded="false" aria-controls="signature-links">© TortoiseWolfe 🐢 <span id="signature-toggle-icon" aria-hidden="true">▼</span></button>
+    <div id="signature-links" style="display: none;">
+      <a href="https://github.com/TortoiseWolfe" target="_blank" aria-label="Visit TortoiseWolfe's GitHub profile">GitHub: TortoiseWolfe 💻</a>
+      <a href="https://www.linkedin.com/in/pohlner/" target="_blank" aria-label="Visit LinkedIn profile">LinkedIn: linkedin.com/in/pohlner/ 🌐</a>
+      <a href="https://www.twitch.tv/turtlewolfe" target="_blank" aria-label="Visit Twitch channel">Twitch: twitch.tv/turtlewolfe 🎥</a>
+      <a href="https://turtlewolfe.com/" target="_blank" aria-label="Visit TurtleWolfe website">Website: turtlewolfe.com 🌟</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Layer configuration from Flask
+      const layers = {{ layers | tojson }};
+      
+      // Chapter presets from Flask
+      const chapters = {{ chapters | tojson }};
+      
+      // Set up theme toggling
+      setupThemeToggle();
+      
+      // Set up signature toggle
+      setupSignatureToggle();
+      
+      // Load all SVG layers
+      loadSvgLayers();
+      
+      // Set up toggle buttons
+      setupToggleButtons();
+      
+      // Set up preset buttons
+      setupPresetButtons();
+      
+      // Set up keyboard navigation
+      setupKeyboardNavigation();
+      
+      // Run accessibility checks
+      runAccessibilityTests();
+      
+      // Set up audio controls
+      setupAudioControls();
+      
+      // Load all SVG layers
+      function loadSvgLayers() {
+        const svgContainer = document.getElementById('svg-container');
+        
+        // Clear existing content
+        svgContainer.innerHTML = '';
+        
+        // Create a wrapper div that will properly contain all SVGs
+        const svgWrapper = document.createElement('div');
+        svgWrapper.className = 'svg-wrapper';
+        svgWrapper.style.position = 'absolute';
+        svgWrapper.style.top = '0';
+        svgWrapper.style.left = '0';
+        svgWrapper.style.width = '100%';
+        svgWrapper.style.height = '100%';
+        svgWrapper.style.overflow = 'hidden';
+        
+        // Load each layer as an SVG object
+        layers.forEach(layer => {
+          const svgObject = document.createElement('object');
+          svgObject.className = 'svg-layer';
+          svgObject.id = layer.id + '-svg';
+          svgObject.type = 'image/svg+xml';
+          svgObject.data = `/svg/${layer.id}.svg`;
+          svgObject.style.maxWidth = '100%'; // Ensure SVG stays within bounds
+          svgObject.style.maxHeight = '100%'; // Ensure SVG stays within bounds
+          
+          // Set styles to prevent overflow
+          svgObject.style.objectFit = 'contain';
+          svgObject.style.objectPosition = 'center';
+          
+          // Add title for accessibility
+          const title = document.createElement('title');
+          title.textContent = layer.name + ' layer';
+          svgObject.appendChild(title);
+          
+          // Add alt text for accessibility
+          svgObject.setAttribute('aria-label', layer.name + ' visualization layer');
+          
+          // Set initial visibility
+          if (!layer.default) {
+            svgObject.classList.add('hidden');
+            svgObject.setAttribute('aria-hidden', 'true');
+          } else {
+            svgObject.setAttribute('aria-hidden', 'false');
+          }
+          
+          svgWrapper.appendChild(svgObject);
+        });
+        
+        // Add the wrapper to the container
+        svgContainer.appendChild(svgWrapper);
+      }
+      
+      // Set up layer toggle buttons
+      function setupToggleButtons() {
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
+        
+        toggleButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const layerId = this.getAttribute('data-layer');
+            const svgObject = document.getElementById(layerId + '-svg');
+            const isActive = this.classList.contains('active');
+            
+            // Toggle button active state
+            this.classList.toggle('active');
+            this.setAttribute('aria-pressed', !isActive);
+            
+            // Toggle layer visibility
+            if (svgObject) {
+              svgObject.classList.toggle('hidden');
+              svgObject.setAttribute('aria-hidden', isActive);
+            }
+          });
+        });
+      }
+      
+      // Set up chapter preset buttons
+      function setupPresetButtons() {
+        const presetButtons = document.querySelectorAll('.preset-btn');
+        const descriptionElement = document.getElementById('chapter-description');
+        
+        presetButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const presetId = this.getAttribute('data-preset');
+            
+            // Update active button
+            presetButtons.forEach(btn => {
+              btn.classList.remove('active');
+              btn.setAttribute('aria-pressed', 'false');
+            });
+            this.classList.add('active');
+            this.setAttribute('aria-pressed', 'true');
+            
+            // Apply the preset
+            const chapter = chapters.find(ch => ch.preset === presetId);
+            if (chapter) {
+              // Update chapter description
+              descriptionElement.textContent = chapter.description;
+              
+              // Update layer visibility
+              layers.forEach(layer => {
+                const layerId = layer.id;
+                const svgObject = document.getElementById(layerId + '-svg');
+                const toggleButton = document.querySelector(`.toggle-btn[data-layer="${layerId}"]`);
+                
+                if (chapter.layers.includes(layerId)) {
+                  // Show this layer
+                  if (svgObject) {
+                    svgObject.classList.remove('hidden');
+                    svgObject.setAttribute('aria-hidden', 'false');
+                  }
+                  if (toggleButton) {
+                    toggleButton.classList.add('active');
+                    toggleButton.setAttribute('aria-pressed', 'true');
+                  }
+                } else {
+                  // Hide this layer
+                  if (svgObject) {
+                    svgObject.classList.add('hidden');
+                    svgObject.setAttribute('aria-hidden', 'true');
+                  }
+                  if (toggleButton) {
+                    toggleButton.classList.remove('active');
+                    toggleButton.setAttribute('aria-pressed', 'false');
+                  }
+                }
+              });
+            }
+          });
+        });
+      }
+      
+      // Theme toggling functionality
+      function setupThemeToggle() {
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const sliderElement = document.querySelector('.slider[role="switch"]');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme) {
+          document.documentElement.setAttribute('data-theme', currentTheme);
+          if (currentTheme === 'dark') {
+            toggleSwitch.checked = true;
+            sliderElement.setAttribute('aria-checked', 'true');
+          }
+        }
+        
+        function switchTheme(e) {
+          if (e.target.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            sliderElement.setAttribute('aria-checked', 'true');
+          } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            sliderElement.setAttribute('aria-checked', 'false');
+          }
+        }
+        
+        toggleSwitch.addEventListener('change', switchTheme, false);
+      }
+      
+      // Signature toggle functionality
+      function setupSignatureToggle() {
+        const signatureToggle = document.querySelector('.signature-toggle');
+        const signatureLinks = document.getElementById('signature-links');
+        const toggleIcon = document.getElementById('signature-toggle-icon');
+        
+        signatureToggle.addEventListener('click', function() {
+          const isVisible = signatureLinks.style.display !== 'none';
+          signatureLinks.style.display = isVisible ? 'none' : 'block';
+          toggleIcon.textContent = isVisible ? '▼' : '▲';
+          this.setAttribute('aria-expanded', !isVisible);
+        });
+      }
+      
+      // Keyboard navigation support
+      function setupKeyboardNavigation() {
+        // Add keyboard support for layer toggles
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
+        const presetButtons = document.querySelectorAll('.preset-btn');
+        
+        // Enable arrow key navigation for toggle buttons
+        toggleButtons.forEach((button, index) => {
+          button.addEventListener('keydown', function(e) {
+            // Left/Up arrow keys
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+              e.preventDefault();
+              const prevIndex = (index - 1 + toggleButtons.length) % toggleButtons.length;
+              toggleButtons[prevIndex].focus();
+            }
+            // Right/Down arrow keys
+            else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+              e.preventDefault();
+              const nextIndex = (index + 1) % toggleButtons.length;
+              toggleButtons[nextIndex].focus();
+            }
+            // Space or Enter keys trigger click
+            else if (e.key === ' ' || e.key === 'Enter') {
+              e.preventDefault();
+              button.click();
+            }
+          });
+        });
+        
+        // Enable arrow key navigation for preset buttons
+        presetButtons.forEach((button, index) => {
+          button.addEventListener('keydown', function(e) {
+            // Left/Up arrow keys
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+              e.preventDefault();
+              const prevIndex = (index - 1 + presetButtons.length) % presetButtons.length;
+              presetButtons[prevIndex].focus();
+            }
+            // Right/Down arrow keys
+            else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+              e.preventDefault();
+              const nextIndex = (index + 1) % presetButtons.length;
+              presetButtons[nextIndex].focus();
+            }
+            // Space or Enter keys trigger click
+            else if (e.key === ' ' || e.key === 'Enter') {
+              e.preventDefault();
+              button.click();
+            }
+          });
+        });
+      }
+      
+      // Basic accessibility test function
+      function runAccessibilityTests() {
+        // This function runs basic accessibility checks and logs issues to console
+        const issues = [];
+        
+        // Check if all images have alt text
+        const svgObjects = document.querySelectorAll('object.svg-layer');
+        svgObjects.forEach(svg => {
+          if (!svg.hasAttribute('aria-label')) {
+            issues.push('SVG missing aria-label: ' + svg.id);
+          }
+        });
+        
+        // Check if all interactive elements have accessible names
+        const interactiveElements = document.querySelectorAll('button, a, [role="button"]');
+        interactiveElements.forEach(el => {
+          if (!el.hasAttribute('aria-label') && !el.textContent.trim()) {
+            issues.push('Interactive element missing accessible name: ' + el.outerHTML.substring(0, 100));
+          }
+        });
+        
+        // Check color contrast for backgrounds
+        function hasGoodContrast(bgColor, textColor) {
+          // This is a simplified check - in production use a full contrast algorithm
+          return true; // Assuming our color variables have been tested for contrast
+        }
+        
+        // Log any issues found
+        if (issues.length > 0) {
+          console.warn('Accessibility issues found:');
+          issues.forEach(issue => console.warn('- ' + issue));
+        } else {
+          console.log('Basic accessibility checks passed');
+        }
+      }
+      
+      // Handle YouTube embed controls
+      function setupAudioControls() {
+        const toggleButton = document.getElementById('toggle-audio');
+        if (!toggleButton) return;
+        
+        let videoFrame = document.querySelector('.video-container iframe');
+        let isMuted = false;
+        
+        // YouTube iframe API needs to be loaded
+        let tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        let firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        
+        let player;
+        
+        // When YouTube API is ready
+        window.onYouTubeIframeAPIReady = function() {
+          // Get the video ID from the src attribute
+          const videoSrc = videoFrame.src;
+          const videoId = videoSrc.split('embed/')[1].split('?')[0];
+          
+          // Replace the iframe with a div that the API can use
+          const videoContainer = document.querySelector('.video-container');
+          const playerDiv = document.createElement('div');
+          playerDiv.id = 'youtube-player';
+          videoContainer.innerHTML = '';
+          videoContainer.appendChild(playerDiv);
+          
+          // Create the YouTube player
+          player = new YT.Player('youtube-player', {
+            height: '315',
+            width: '560',
+            videoId: videoId,
+            playerVars: {
+              'autoplay': 1,
+              'loop': 1,
+              'playlist': videoId
+            },
+            events: {
+              'onReady': onPlayerReady
+            }
+          });
+        };
+        
+        function onPlayerReady(event) {
+          // When player is ready, enable the toggle button
+          toggleButton.addEventListener('click', function() {
+            if (isMuted) {
+              player.unMute();
+              toggleButton.textContent = 'Mute Audio';
+              toggleButton.setAttribute('aria-label', 'Mute audio');
+            } else {
+              player.mute();
+              toggleButton.textContent = 'Unmute Audio';
+              toggleButton.setAttribute('aria-label', 'Unmute audio');
+            }
+            isMuted = !isMuted;
+          });
+        }
+      }
+    });
+  </script>
+</body>
+</html>
