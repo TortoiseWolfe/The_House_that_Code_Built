@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Environment Layer -->
+  <g id="environment-layer">
+    <!-- Sky background with gradient -->
+    <linearGradient id="sky-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB"/>
+      <stop offset="100%" style="stop-color:#E0F7FA"/>
+    </linearGradient>
+    <rect width="800" height="400" fill="url(#sky-gradient)"/>
+    
+    <!-- Sun -->
+    <circle cx="680" cy="80" r="40" fill="#FFD700"/>
+    <circle cx="680" cy="80" r="50" fill="#FFD700" opacity="0.3"/>
+    
+    <!-- Clouds -->
+    <ellipse cx="150" cy="100" rx="60" ry="30" fill="white" opacity="0.8"/>
+    <ellipse cx="200" cy="90" rx="70" ry="40" fill="white" opacity="0.8"/>
+    <ellipse cx="250" cy="100" rx="50" ry="30" fill="white" opacity="0.8"/>
+    
+    <ellipse cx="550" cy="150" rx="50" ry="25" fill="white" opacity="0.6"/>
+    <ellipse cx="600" cy="140" rx="60" ry="35" fill="white" opacity="0.6"/>
+    
+    <!-- Ground with gradient -->
+    <linearGradient id="ground-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8BC34A"/>
+      <stop offset="100%" style="stop-color:#558B2F"/>
+    </linearGradient>
+    <rect y="400" width="800" height="200" fill="url(#ground-gradient)"/>
+  </g>
+  
+  <!-- House Structure Layer - Complete Pretty House -->
+  <g id="house-structure">
+    <!-- Foundation -->
+    <rect x="200" y="350" width="400" height="50" fill="#8D6E63"/>
+    <rect x="200" y="350" width="400" height="10" fill="#6D4C41"/>
+    
+    <!-- Main house body -->
+    <rect x="200" y="200" width="400" height="150" fill="#FFECB3"/>
+    
+    <!-- Roof -->
+    <polygon points="200,200 400,100 600,200" fill="#8D6E63"/>
+    <polygon points="200,200 400,100 600,200" stroke="#6D4C41" stroke-width="8" fill="none"/>
+    
+    <!-- Chimney -->
+    <rect x="500" y="130" width="40" height="70" fill="#E57373"/>
+    <rect x="500" y="130" width="40" height="5" fill="#B71C1C"/>
+    <rect x="500" y="195" width="40" height="5" fill="#B71C1C"/>
+    
+    <!-- Windows with frames -->
+    <rect x="245" y="225" width="60" height="60" fill="#B2EBF2"/>
+    <rect x="245" y="225" width="60" height="60" stroke="#5D4037" stroke-width="5" fill="none"/>
+    <line x1="275" y1="225" x2="275" y2="285" stroke="#5D4037" stroke-width="3"/>
+    <line x1="245" y1="255" x2="305" y2="255" stroke="#5D4037" stroke-width="3"/>
+    
+    <rect x="495" y="225" width="60" height="60" fill="#B2EBF2"/>
+    <rect x="495" y="225" width="60" height="60" stroke="#5D4037" stroke-width="5" fill="none"/>
+    <line x1="525" y1="225" x2="525" y2="285" stroke="#5D4037" stroke-width="3"/>
+    <line x1="495" y1="255" x2="555" y2="255" stroke="#5D4037" stroke-width="3"/>
+    
+    <!-- Attic windows -->
+    <rect x="250" y="130" width="40" height="40" fill="#B2EBF2"/>
+    <rect x="250" y="130" width="40" height="40" stroke="#5D4037" stroke-width="4" fill="none"/>
+    <line x1="270" y1="130" x2="270" y2="170" stroke="#5D4037" stroke-width="2"/>
+    <line x1="250" y1="150" x2="290" y2="150" stroke="#5D4037" stroke-width="2"/>
+    
+    <rect x="510" y="130" width="40" height="40" fill="#B2EBF2"/>
+    <rect x="510" y="130" width="40" height="40" stroke="#5D4037" stroke-width="4" fill="none"/>
+    <line x1="530" y1="130" x2="530" y2="170" stroke="#5D4037" stroke-width="2"/>
+    <line x1="510" y1="150" x2="550" y2="150" stroke="#5D4037" stroke-width="2"/>
+    
+    <!-- Front Door -->
+    <rect x="375" y="300" width="50" height="100" fill="#5D4037"/>
+    <rect x="375" y="300" width="50" height="100" stroke="#3E2723" stroke-width="3" fill="none"/>
+    <rect x="385" y="310" width="30" height="40" fill="#3E2723"/>
+    <circle cx="415" cy="350" r="5" fill="#FFC107"/> <!-- Doorknob -->
+    
+    <!-- Porch -->
+    <rect x="350" y="400" width="100" height="10" fill="#8D6E63"/>
+    <rect x="350" y="350" width="5" height="50" fill="#8D6E63"/> <!-- Left support -->
+    <rect x="445" y="350" width="5" height="50" fill="#8D6E63"/> <!-- Right support -->
+    
+    <!-- Small steps to the porch -->
+    <rect x="375" y="410" width="50" height="5" fill="#6D4C41"/>
+    <rect x="375" y="415" width="50" height="5" fill="#8D6E63"/>
+    <rect x="375" y="420" width="50" height="5" fill="#6D4C41"/>
+    
+    <!-- Garden area and pathway -->
+    <rect x="300" y="420" width="200" height="10" fill="#9E9E9E"/> <!-- Pathway -->
+    <rect x="300" y="430" width="200" height="5" fill="#757575"/> <!-- Pathway edge -->
+    
+    <!-- Flower beds -->
+    <rect x="200" y="420" width="80" height="20" fill="#5D4037"/> <!-- Left flower bed -->
+    <rect x="520" y="420" width="80" height="20" fill="#5D4037"/> <!-- Right flower bed -->
+    
+    <!-- Flowers and bushes -->
+    <circle cx="225" cy="415" r="10" fill="#4CAF50"/> <!-- Bush -->
+    <circle cx="225" cy="410" r="5" fill="#F06292"/> <!-- Flower -->
+    <circle cx="245" cy="415" r="10" fill="#4CAF50"/> <!-- Bush -->
+    <circle cx="245" cy="410" r="5" fill="#BA68C8"/> <!-- Flower -->
+    <circle cx="265" cy="415" r="10" fill="#4CAF50"/> <!-- Bush -->
+    <circle cx="265" cy="410" r="5" fill="#FFF176"/> <!-- Flower -->
+    
+    <circle cx="535" cy="415" r="10" fill="#4CAF50"/> <!-- Bush -->
+    <circle cx="535" cy="410" r="5" fill="#F06292"/> <!-- Flower -->
+    <circle cx="555" cy="415" r="10" fill="#4CAF50"/> <!-- Bush -->
+    <circle cx="555" cy="410" r="5" fill="#BA68C8"/> <!-- Flower -->
+    <circle cx="575" cy="415" r="10" fill="#4CAF50"/> <!-- Bush -->
+    <circle cx="575" cy="410" r="5" fill="#FFF176"/> <!-- Flower -->
+  </g>
+</svg>

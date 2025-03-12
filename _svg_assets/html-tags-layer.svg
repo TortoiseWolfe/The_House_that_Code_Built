@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Blueprint background -->
+  <rect width="800" height="600" fill="#F8FBFF"/>
+  
+  <!-- House Blueprint Outlines - Blue Lines Only -->
+  <g id="house-blueprint">
+    <!-- Foundation -->
+    <rect x="200" y="350" width="400" height="50" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    
+    <!-- Main house body -->
+    <rect x="200" y="200" width="400" height="150" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    
+    <!-- Roof -->
+    <polygon points="200,200 400,100 600,200" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    
+    <!-- Chimney -->
+    <rect x="500" y="130" width="40" height="70" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    
+    <!-- Windows -->
+    <rect x="245" y="225" width="60" height="60" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <line x1="275" y1="225" x2="275" y2="285" stroke="#0047AB" stroke-width="1"/>
+    <line x1="245" y1="255" x2="305" y2="255" stroke="#0047AB" stroke-width="1"/>
+    
+    <rect x="495" y="225" width="60" height="60" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <line x1="525" y1="225" x2="525" y2="285" stroke="#0047AB" stroke-width="1"/>
+    <line x1="495" y1="255" x2="555" y2="255" stroke="#0047AB" stroke-width="1"/>
+    
+    <!-- Attic windows -->
+    <rect x="250" y="130" width="40" height="40" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <line x1="270" y1="130" x2="270" y2="170" stroke="#0047AB" stroke-width="1"/>
+    <line x1="250" y1="150" x2="290" y2="150" stroke="#0047AB" stroke-width="1"/>
+    
+    <rect x="510" y="130" width="40" height="40" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <line x1="530" y1="130" x2="530" y2="170" stroke="#0047AB" stroke-width="1"/>
+    <line x1="510" y1="150" x2="550" y2="150" stroke="#0047AB" stroke-width="1"/>
+    
+    <!-- Front Door -->
+    <rect x="375" y="300" width="50" height="100" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <rect x="385" y="310" width="30" height="40" stroke="#0047AB" stroke-width="1" fill="none"/>
+    <circle cx="415" cy="350" r="3" stroke="#0047AB" stroke-width="1" fill="none"/> <!-- Doorknob -->
+    
+    <!-- Porch -->
+    <rect x="350" y="400" width="100" height="10" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <rect x="350" y="350" width="5" height="50" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Left support -->
+    <rect x="445" y="350" width="5" height="50" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Right support -->
+    
+    <!-- Small steps to the porch -->
+    <rect x="375" y="410" width="50" height="15" stroke="#0047AB" stroke-width="1.5" fill="none"/>
+    <line x1="375" y1="415" x2="425" y2="415" stroke="#0047AB" stroke-width="1"/>
+    <line x1="375" y1="420" x2="425" y2="420" stroke="#0047AB" stroke-width="1"/>
+    
+    <!-- Garden area and pathway -->
+    <rect x="300" y="425" width="200" height="15" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Pathway -->
+    
+    <!-- Flower beds -->
+    <rect x="200" y="420" width="80" height="20" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Left flower bed -->
+    <rect x="520" y="420" width="80" height="20" stroke="#0047AB" stroke-width="1.5" fill="none"/> <!-- Right flower bed -->
+    
+    <!-- Blueprint grid lines -->
+    <g id="grid-lines" opacity="0.2">
+      <!-- Vertical grid lines -->
+      <line x1="100" y1="0" x2="100" y2="600" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="200" y1="0" x2="200" y2="600" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="300" y1="0" x2="300" y2="600" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="400" y1="0" x2="400" y2="600" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="500" y1="0" x2="500" y2="600" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="600" y1="0" x2="600" y2="600" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="700" y1="0" x2="700" y2="600" stroke="#0047AB" stroke-width="0.5"/>
+      
+      <!-- Horizontal grid lines -->
+      <line x1="0" y1="100" x2="800" y2="100" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="0" y1="200" x2="800" y2="200" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="0" y1="300" x2="800" y2="300" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="0" y1="400" x2="800" y2="400" stroke="#0047AB" stroke-width="0.5"/>
+      <line x1="0" y1="500" x2="800" y2="500" stroke="#0047AB" stroke-width="0.5"/>
+    </g>
+  </g>
+</svg>

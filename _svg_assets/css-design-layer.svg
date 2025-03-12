@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Environment Layer - Sunset/Dusk Setting -->
+  <g id="environment-layer">
+    <!-- Sky with sunset gradient -->
+    <linearGradient id="sunset-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A237E"/>
+      <stop offset="20%" style="stop-color:#4A148C"/>
+      <stop offset="40%" style="stop-color:#880E4F"/>
+      <stop offset="60%" style="stop-color:#C62828"/>
+      <stop offset="80%" style="stop-color:#FF6F00"/>
+      <stop offset="100%" style="stop-color:#FFC107"/>
+    </linearGradient>
+    <rect width="800" height="400" fill="url(#sunset-gradient)"/>
+    
+    <!-- Setting sun -->
+    <circle cx="650" cy="100" r="60" fill="#FF3D00"/>
+    <circle cx="650" cy="100" r="70" fill="#FF3D00" opacity="0.5"/>
+    <circle cx="650" cy="100" r="80" fill="#FF3D00" opacity="0.3"/>
+    
+    <!-- Ground with warm evening lighting -->
+    <linearGradient id="ground-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50"/>
+      <stop offset="100%" style="stop-color:#1B5E20"/>
+    </linearGradient>
+    <rect y="400" width="800" height="200" fill="url(#ground-gradient)"/>
+  </g>
+  
+  <!-- House Complete Structure with CSS Styling -->
+  <g id="styled-house">
+    <!-- Foundation with texture -->
+    <rect x="200" y="350" width="400" height="50" fill="#8D6E63"/>
+    <rect x="200" y="350" width="400" height="5" fill="#5D4037"/>
+    <rect x="200" y="395" width="400" height="5" fill="#5D4037"/>
+    <!-- Foundation texture lines -->
+    <g stroke="#5D4037" stroke-width="1" opacity="0.5">
+      <line x1="220" y1="350" x2="220" y2="400"/>
+      <line x1="260" y1="350" x2="260" y2="400"/>
+      <line x1="300" y1="350" x2="300" y2="400"/>
+      <line x1="340" y1="350" x2="340" y2="400"/>
+      <line x1="380" y1="350" x2="380" y2="400"/>
+      <line x1="420" y1="350" x2="420" y2="400"/>
+      <line x1="460" y1="350" x2="460" y2="400"/>
+      <line x1="500" y1="350" x2="500" y2="400"/>
+      <line x1="540" y1="350" x2="540" y2="400"/>
+      <line x1="580" y1="350" x2="580" y2="400"/>
+    </g>
+    
+    <!-- Main house exterior siding -->
+    <rect x="200" y="200" width="400" height="150" fill="#FFECB3"/>
+    
+    <!-- Siding texture lines -->
+    <g stroke="#E6D19A" stroke-width="1">
+      <line x1="200" y1="215" x2="600" y2="215"/>
+      <line x1="200" y1="230" x2="600" y2="230"/>
+      <line x1="200" y1="245" x2="600" y2="245"/>
+      <line x1="200" y1="260" x2="600" y2="260"/>
+      <line x1="200" y1="275" x2="600" y2="275"/>
+      <line x1="200" y1="290" x2="600" y2="290"/>
+      <line x1="200" y1="305" x2="600" y2="305"/>
+      <line x1="200" y1="320" x2="600" y2="320"/>
+      <line x1="200" y1="335" x2="600" y2="335"/>
+    </g>
+    
+    <!-- Decorative house trim -->
+    <rect x="195" y="195" width="410" height="5" fill="#5D4037"/>
+    <rect x="195" y="345" width="410" height="5" fill="#5D4037"/>
+    
+    <!-- Roof with shingles texture -->
+    <polygon points="200,200 400,100 600,200" fill="#795548"/>
+    
+    <!-- Roof trim -->
+    <polygon points="195,205 400,100 605,205 600,205 400,105 200,205" fill="#5D4037"/>
+    
+    <!-- Roof shingle texture -->
+    <g stroke="#6D4C41" stroke-width="1" opacity="0.7">
+      <line x1="220" y1="190" x2="580" y2="190"/>
+      <line x1="240" y1="180" x2="560" y2="180"/>
+      <line x1="260" y1="170" x2="540" y2="170"/>
+      <line x1="280" y1="160" x2="520" y2="160"/>
+      <line x1="300" y1="150" x2="500" y2="150"/>
+    </g>
+  </g>
+</svg>
