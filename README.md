@@ -12,7 +12,7 @@ A Flask application that visualizes web development concepts through an interact
 
 1. Clone this repository:
    ```
-   git clone <repository-url>
+   git clone git@github.com:TortoiseWolfe/FirstFlask.git
    cd FlaskFirst
    ```
 
