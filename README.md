@@ -65,3 +65,5 @@ The application uses the following SVG layers:
 - css-design-layer.svg - CSS styling layer
 - interactive-layer.svg - JavaScript interactivity layer
 - systems-layer.svg - Backend systems layer
+
+![House Code Prints](https://github.com/TortoiseWolfe/FirstFlask/blob/main/_svg_assets/houseCodePrints.png?raw=true)
