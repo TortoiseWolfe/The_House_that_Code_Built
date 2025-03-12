@@ -47,7 +47,18 @@ jobs:
           
           # Copy SVG files from static/svg if they exist
           if [ -d "static/svg" ]; then
+            echo "Found static/svg directory with files:"
+            ls -la static/svg/
             cp static/svg/*.svg gh-pages/svg/ || true
+            echo "Contents of gh-pages/svg after copying:"
+            ls -la gh-pages/svg/ || echo "Directory empty or not found"
+          else
+            echo "static/svg directory not found. Looking in parent directory."
+            if [ -d "../_svg_assets" ]; then
+              echo "Found _svg_assets directory in parent. Contents:"
+              ls -la ../_svg_assets/
+              cp ../_svg_assets/*.svg gh-pages/svg/ || true
+            fi
           fi
           
           # Create index.html for GitHub Pages
@@ -187,6 +198,12 @@ jobs:
 </html>
 HTML
       
+      - name: Check artifact content
+        run: |
+          echo "Checking contents of gh-pages directory:"
+          cd House_Code
+          find gh-pages -type f | sort
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
