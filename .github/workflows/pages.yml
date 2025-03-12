@@ -1,0 +1,204 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          cd House_Code
+          python -m pip install --upgrade pip
+          pip install flask python-dotenv
+      
+      - name: Build static site
+        run: |
+          cd House_Code
+          mkdir -p gh-pages/svg
+          
+          # Copy SVG files from _svg_assets if they exist
+          if [ -d "../_svg_assets" ]; then
+            cp ../_svg_assets/*.svg gh-pages/svg/ || true
+          fi
+          
+          # Copy SVG files from static/svg if they exist
+          if [ -d "static/svg" ]; then
+            cp static/svg/*.svg gh-pages/svg/ || true
+          fi
+          
+          # Create index.html for GitHub Pages
+          cat > gh-pages/index.html << 'HTML'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="An interactive visualization of web development concepts using a house metaphor">
+  <title>The House that Code Built</title>
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #333;
+      --header-color: #2e7d32;
+      --card-bg: #ffffff;
+      --card-shadow: rgba(0,0,0,0.1);
+      --btn-color: #2196F3;
+      --btn-hover: #1976D2;
+      --btn-text: #ffffff;
+      --focus-outline: #2196F3;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+    
+    h1, h2 {
+      color: var(--header-color);
+      text-align: center;
+    }
+    
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--btn-color);
+      color: var(--btn-text);
+      padding: 8px;
+      z-index: 1000;
+      transition: top 0.3s;
+    }
+    
+    .skip-link:focus {
+      top: 0;
+    }
+    
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .svg-container {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+      min-height: 600px;
+      position: relative;
+      margin-top: 30px;
+    }
+    
+    .svg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .github-link {
+      margin-top: 30px;
+      text-align: center;
+    }
+    
+    .button {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: var(--btn-color);
+      color: var(--btn-text);
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .button:hover, .button:focus {
+      background-color: var(--btn-hover);
+    }
+    
+    .button:focus {
+      outline: 3px solid var(--focus-outline);
+      outline-offset: 2px;
+    }
+    
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: var(--text-color);
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <header>
+    <h1>The House that Code Built</h1>
+    <p style="text-align: center;">An interactive visualization of web development concepts</p>
+  </header>
+  
+  <main id="main-content">
+    <section class="svg-container" aria-label="House visualization">
+      <object data="svg/environment-layer.svg" type="image/svg+xml" class="svg-layer" aria-label="Environment layer visualization"></object>
+      <object data="svg/house-structure.svg" type="image/svg+xml" class="svg-layer" aria-label="House structure visualization"></object>
+    </section>
+    
+    <div class="github-link">
+      <p>To view the interactive version with all layers:</p>
+      <a href="https://github.com/TortoiseWolfe/The_House_that_Code_Built" class="button" aria-label="View full interactive project on GitHub">View on GitHub</a>
+    </div>
+  </main>
+  
+  <footer role="contentinfo">
+    <p>This project follows WCAG 2.1 AA accessibility guidelines</p>
+  </footer>
+</body>
+</html>
+HTML
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './House_Code/gh-pages'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
