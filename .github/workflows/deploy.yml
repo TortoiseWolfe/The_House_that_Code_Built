@@ -35,74 +35,694 @@ jobs:
             echo "SVG assets copied"
           else
             echo "Creating placeholder SVGs"
-            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="#000"/><text x="50" y="50" text-anchor="middle">Structure</text></svg>' > _site/svg/house-structure.svg
-            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="#000"/><text x="50" y="50" text-anchor="middle">Environment</text></svg>' > _site/svg/environment-layer.svg
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#ccc" stroke-width="1"/><text x="400" y="300" font-family="Arial" font-size="24" text-anchor="middle" fill="#999">House Structure</text></svg>' > _site/svg/house-structure.svg
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#ccc" stroke-width="1"/><text x="400" y="300" font-family="Arial" font-size="24" text-anchor="middle" fill="#999">Environment Layer</text></svg>' > _site/svg/environment-layer.svg
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#ccc" stroke-width="1"/><text x="400" y="300" font-family="Arial" font-size="24" text-anchor="middle" fill="#999">HTML Tags Layer</text></svg>' > _site/svg/html-tags-layer.svg
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#ccc" stroke-width="1"/><text x="400" y="300" font-family="Arial" font-size="24" text-anchor="middle" fill="#999">Structure Layer</text></svg>' > _site/svg/structure-layer.svg
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#ccc" stroke-width="1"/><text x="400" y="300" font-family="Arial" font-size="24" text-anchor="middle" fill="#999">CSS Design Layer</text></svg>' > _site/svg/css-design-layer.svg
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#ccc" stroke-width="1"/><text x="400" y="300" font-family="Arial" font-size="24" text-anchor="middle" fill="#999">Interactive Layer</text></svg>' > _site/svg/interactive-layer.svg
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#ccc" stroke-width="1"/><text x="400" y="300" font-family="Arial" font-size="24" text-anchor="middle" fill="#999">Systems Layer</text></svg>' > _site/svg/systems-layer.svg
           fi
-        
-      - name: Write HTML header
-        run: |
-          echo '<!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <meta name="description" content="The House that Code Built - Interactive Learning Tool">
-              <meta name="author" content="TortoiseWolfe">
-              <title>The House that Code Built</title>
-              <style>
-                  body {
-                      margin: 0;
-                      padding: 0;
-                      font-family: Arial, sans-serif;
-                  }
-                  .container {
-                      display: flex;
-                      width: 100%;
-                  }
-                  .left-column {
-                      width: 25%;
-                      flex: 0 0 25%;
-                      background: #f0f0f0;
-                      padding: 15px;
-                      box-sizing: border-box;
-                  }
-                  .center-column {
-                      width: 55%;
-                      flex: 0 0 55%;
-                      padding: 15px;
-                      box-sizing: border-box;
-                  }
-                  .right-column {
-                      width: 20%;
-                      flex: 0 0 20%;
-                      background: #f0f0f0;
-                      padding: 15px;
-                      box-sizing: border-box;
-                  }
-              </style>
-          </head>
-          <body>' > _site/index.html
       
-      - name: Write HTML body
+      - name: Create better index.html
         run: |
-          echo '
-              <div class="container">
-                  <div class="left-column">
-                      <h2>Presets</h2>
-                      <p>Left column (25%)</p>
-                  </div>
-                  <div class="center-column">
-                      <h2>Visualization</h2>
-                      <img src="svg/house-structure.svg" alt="House Structure" width="100%">
-                      <img src="svg/environment-layer.svg" alt="Environment Layer" width="100%">
-                  </div>
-                  <div class="right-column">
-                      <h2>Layer Controls</h2>
-                      <p>Right column (20%)</p>
-                  </div>
-              </div>
-          </body>
-          </html>' >> _site/index.html
+          cat > _site/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive visualization of web development concepts using a house metaphor. Learn web development through layers of a house, from environment to backend systems.">
+  <meta name="keywords" content="web development, HTML, CSS, JavaScript, visualization, learning tool, interactive">
+  <meta name="author" content="TortoiseWolfe">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The House that Code Built">
+  <meta property="og:description" content="Learn web development through an interactive house visualization with toggleable layers">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="The House that Code Built">
+  <meta property="twitter:description" content="Learn web development through an interactive house visualization with toggleable layers">
+  
+  <!-- Theme color for browser UI -->
+  <meta name="theme-color" content="#4CAF50">
+  
+  <title>The House that Code Built - Web Development Visualization</title>
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #333;
+      --header-color: #2e7d32;
+      --card-bg: #ffffff;
+      --card-shadow: rgba(0,0,0,0.1);
+      --btn-inactive: #e0e0e0;
+      --btn-active: #4CAF50;
+      --btn-hover: #d0d0d0;
+      --divider: #e0e0e0;
+      --desc-bg: #e8f5e9;
+      --link-color: #0D47A1;
+      --toggle-bg: #4CAF50;
+      --btn-text-light: #ffffff;
+      --btn-text-dark: #333333;
+      --focus-outline: #2196F3;
+    }
+    
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #e0e0e0;
+      --header-color: #81c784;
+      --card-bg: #1e1e1e;
+      --card-shadow: rgba(0,0,0,0.4);
+      --btn-inactive: #383838;
+      --btn-active: #388E3C;
+      --btn-hover: #505050;
+      --divider: #383838;
+      --desc-bg: #2c3e2e;
+      --link-color: #90caf9;
+      --toggle-bg: #388E3C;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+      line-height: 1.5;
+    }
+    
+    h1, h2 {
+      color: var(--header-color);
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    /* Three-column layout container using fixed width columns */
+    .three-column-layout {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      margin-bottom: 40px;
+      min-height: 600px;
+      box-sizing: border-box;
+    }
+    
+    /* Left column - Chapter presets */
+    .left-column {
+      width: 25%;
+      flex: 0 0 25%;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+      box-sizing: border-box;
+    }
+    
+    /* Center column - Visualization */
+    .center-column {
+      width: 55%;
+      flex: 0 0 55%;
+      min-height: 600px;
+      position: relative;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+      box-sizing: border-box;
+    }
+    
+    /* Right column - Layer toggles */
+    .right-column {
+      width: 20%;
+      flex: 0 0 20%;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+      box-sizing: border-box;
+    }
+    
+    .container {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    .controls-panel {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+    }
+    
+    .theme-switch-wrapper {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      z-index: 100;
+    }
+    
+    .theme-switch {
+      display: inline-block;
+      height: 24px;
+      position: relative;
+      width: 50px;
+    }
+    
+    .slider {
+      background-color: #666;
+      bottom: 0;
+      cursor: pointer;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .slider:before {
+      background-color: white;
+      bottom: 3px;
+      content: "";
+      height: 18px;
+      left: 4px;
+      position: absolute;
+      transition: .4s;
+      width: 18px;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: var(--toggle-bg);
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    .theme-icon {
+      margin-left: 10px;
+      font-size: 18px;
+    }
+    
+    .layer-toggles {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .toggle-btn {
+      padding: 10px 15px;
+      background-color: var(--btn-inactive);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      color: var(--text-color);
+      text-align: left;
+      width: 100%;
+    }
+    
+    .toggle-btn:hover {
+      background-color: var(--btn-hover);
+    }
+    
+    .toggle-btn:focus {
+      outline: 3px solid var(--focus-outline);
+    }
+    
+    .toggle-btn.active {
+      background-color: var(--btn-active);
+      color: var(--btn-text-light);
+      box-shadow: 0 2px 5px var(--card-shadow);
+    }
+    
+    .divider {
+      height: 1px;
+      background-color: var(--divider);
+      margin: 20px 0;
+    }
+    
+    .signature {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background-color: var(--card-bg);
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px var(--card-shadow);
+      font-size: 12px;
+      z-index: 100;
+      max-width: 250px;
+    }
+    
+    .signature a {
+      color: var(--link-color);
+      text-decoration: none;
+      display: block;
+      margin: 3px 0;
+    }
+    
+    .signature a:hover {
+      text-decoration: underline;
+    }
+    
+    .signature a:focus {
+      outline: 2px solid var(--focus-outline);
+      outline-offset: 2px;
+    }
+    
+    .signature-toggle {
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .preset-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .preset-btn {
+      padding: 12px 18px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: bold;
+      text-align: left;
+      width: 100%;
+    }
+    
+    .preset-btn:hover {
+      background-color: #1976D2;
+    }
+    
+    .preset-btn:focus {
+      outline: 3px solid var(--focus-outline);
+    }
+    
+    .preset-btn.active {
+      background-color: #0D47A1;
+      box-shadow: 0 2px 5px var(--card-shadow);
+    }
+    
+    .svg-container {
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+      position: relative;
+    }
+    
+    .svg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.3s ease;
+    }
+    
+    .svg-layer.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .chapter-description {
+      background-color: var(--desc-bg);
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-style: italic;
+    }
+    
+    .github-info {
+      background-color: var(--desc-bg);
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    
+    .github-info a {
+      color: var(--link-color);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .github-info a:hover {
+      text-decoration: underline;
+    }
+    
+    .github-info a:focus {
+      outline: 2px solid var(--focus-outline);
+      outline-offset: 2px;
+    }
+    
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--btn-active);
+      color: white;
+      padding: 8px;
+      z-index: 1000;
+      transition: top 0.3s;
+    }
+    
+    .skip-link:focus {
+      top: 0;
+    }
+    
+    /* Tom Waits audio section styles */
+    .audio-section {
+      margin-top: 40px;
+      padding: 20px;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+    }
+    
+    .audio-section h2 {
+      margin-top: 0;
+    }
+    
+    /* Responsive breakpoints for the three-column layout */
+    @media (max-width: 1024px) {
+      .three-column-layout {
+        flex-wrap: wrap;
+      }
+      
+      .left-column, .right-column {
+        width: 48%;
+        flex: 0 0 48%;
+      }
+      
+      .center-column {
+        width: 100%;
+        flex: 0 0 100%;
+        order: -1;
+        margin-bottom: 20px;
+        margin-right: 0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .three-column-layout {
+        flex-direction: column;
+      }
+      
+      .left-column, .center-column, .right-column {
+        width: 100%;
+        flex: 0 0 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip to main content link for keyboard users -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Theme switch toggle -->
+  <div class="theme-switch-wrapper">
+    <label class="theme-switch" for="checkbox" aria-label="Toggle dark mode">
+      <input type="checkbox" id="checkbox" />
+      <div class="slider" role="switch" aria-checked="false" aria-label="Dark mode"></div>
+    </label>
+    <span class="theme-icon" aria-hidden="true">🌓</span>
+  </div>
+
+  <h1>The House that Code Built</h1>
+  
+  <main id="main-content" class="container">
+    <!-- Three-column layout with exact width columns 25% 55% 20% -->
+    <div class="three-column-layout">
+      <!-- Left column - Chapter presets -->
+      <div class="left-column">
+        <h2 id="chapter-presets-heading">Chapter Presets</h2>
+        <div class="preset-buttons" role="toolbar" aria-labelledby="chapter-presets-heading">
+          <button class="preset-btn active" data-preset="base" aria-pressed="true">Base House</button>
+          <button class="preset-btn" data-preset="html-tags" aria-pressed="false">Chapter 1: HTML Tags</button>
+          <button class="preset-btn" data-preset="html-structure" aria-pressed="false">Chapter 2: HTML Structure</button>
+          <button class="preset-btn" data-preset="css-design" aria-pressed="false">Chapter 3: CSS Design</button>
+          <button class="preset-btn" data-preset="javascript" aria-pressed="false">Chapter 4: JavaScript</button>
+          <button class="preset-btn" data-preset="backend" aria-pressed="false">Chapter 5: Backend</button>
+        </div>
+        
+        <div class="divider" role="separator"></div>
+        
+        <div class="chapter-description" id="chapter-description" aria-live="polite">
+          The complete house with all visual elements
+        </div>
+        
+        <div class="divider" role="separator"></div>
+        <div class="github-info">
+          <p>Created by <a href="https://github.com/TortoiseWolfe" target="_blank" aria-label="Visit TortoiseWolfe's GitHub profile">TortoiseWolfe</a></p>
+          <p>Repository: <a href="https://github.com/TortoiseWolfe/The_House_that_Code_Built" target="_blank" aria-label="Visit the The_House_that_Code_Built GitHub repository">The_House_that_Code_Built</a></p>
+          <p>GitHub Pages: <a href="https://TortoiseWolfe.github.io/The_House_that_Code_Built" target="_blank" aria-label="Visit the GitHub Pages site">TortoiseWolfe.github.io/The_House_that_Code_Built</a></p>
+        </div>
+      </div>
+      
+      <!-- Center column - Visualization -->
+      <div class="center-column">
+        <section class="svg-container" id="svg-container" aria-label="Interactive visualization of the house that code built">
+          <!-- SVG layers positioned absolutely on top of each other -->
+          <object data="svg/environment-layer.svg" type="image/svg+xml" class="svg-layer" id="environment-layer-svg" aria-label="Environment layer visualization"></object>
+          <object data="svg/house-structure.svg" type="image/svg+xml" class="svg-layer" id="house-structure-svg" aria-label="House structure visualization"></object>
+          <object data="svg/html-tags-layer.svg" type="image/svg+xml" class="svg-layer hidden" id="html-tags-layer-svg" aria-label="HTML tags layer visualization" aria-hidden="true"></object>
+          <object data="svg/structure-layer.svg" type="image/svg+xml" class="svg-layer hidden" id="structure-layer-svg" aria-label="Structure layer visualization" aria-hidden="true"></object>
+          <object data="svg/css-design-layer.svg" type="image/svg+xml" class="svg-layer hidden" id="css-design-layer-svg" aria-label="CSS design layer visualization" aria-hidden="true"></object>
+          <object data="svg/interactive-layer.svg" type="image/svg+xml" class="svg-layer hidden" id="interactive-layer-svg" aria-label="Interactive layer visualization" aria-hidden="true"></object>
+          <object data="svg/systems-layer.svg" type="image/svg+xml" class="svg-layer hidden" id="systems-layer-svg" aria-label="Systems layer visualization" aria-hidden="true"></object>
+        </section>
+      </div>
+      
+      <!-- Right column - Layer toggles -->
+      <div class="right-column">
+        <h2 id="layer-controls-heading">Layer Controls</h2>
+        <div class="layer-toggles" role="toolbar" aria-label="Toggle visibility of house layers">
+          <button class="toggle-btn active" data-layer="environment-layer" aria-pressed="true" aria-label="Toggle Environment layer">Environment</button>
+          <button class="toggle-btn active" data-layer="house-structure" aria-pressed="true" aria-label="Toggle House Structure layer">House Structure</button>
+          <button class="toggle-btn" data-layer="html-tags-layer" aria-pressed="false" aria-label="Toggle HTML Tags layer">HTML Tags</button>
+          <button class="toggle-btn" data-layer="structure-layer" aria-pressed="false" aria-label="Toggle HTML Structure layer">HTML Structure</button>
+          <button class="toggle-btn" data-layer="css-design-layer" aria-pressed="false" aria-label="Toggle CSS Design layer">CSS Design</button>
+          <button class="toggle-btn" data-layer="interactive-layer" aria-pressed="false" aria-label="Toggle JavaScript Interactivity layer">JavaScript Interactivity</button>
+          <button class="toggle-btn" data-layer="systems-layer" aria-pressed="false" aria-label="Toggle Backend Systems layer">Backend Systems</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tom Waits - What's He Building in There? audio section -->
+    <section class="audio-section">
+      <h2>Soundtrack: "What's He Building in There?" by Tom Waits</h2>
+      <div class="video-container">
+        <iframe width="560" height="315" 
+                src="https://www.youtube.com/embed/04qPdGNA_KM?si=9SDo0qmNaDM3Nsko" 
+                title="Tom Waits - What's He Building in There?" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Author Signature -->
+  <div class="signature" role="contentinfo">
+    <div>© TortoiseWolfe 🐢</div>
+    <div>
+      <a href="https://github.com/TortoiseWolfe" target="_blank" aria-label="Visit TortoiseWolfe's GitHub profile">GitHub: TortoiseWolfe 💻</a>
+      <a href="https://www.linkedin.com/in/pohlner/" target="_blank" aria-label="Visit LinkedIn profile">LinkedIn: linkedin.com/in/pohlner/ 🌐</a>
+      <a href="https://www.twitch.tv/turtlewolfe" target="_blank" aria-label="Visit Twitch channel">Twitch: twitch.tv/turtlewolfe 🎥</a>
+      <a href="https://turtlewolfe.com/" target="_blank" aria-label="Visit TurtleWolfe website">Website: turtlewolfe.com 🌟</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set up theme toggling
+      setupThemeToggle();
+      
+      // Set up toggle buttons
+      setupToggleButtons();
+      
+      // Set up preset buttons
+      setupPresetButtons();
+      
+      // Theme toggling functionality
+      function setupThemeToggle() {
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const sliderElement = document.querySelector('.slider[role="switch"]');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme) {
+          document.documentElement.setAttribute('data-theme', currentTheme);
+          if (currentTheme === 'dark') {
+            toggleSwitch.checked = true;
+            sliderElement.setAttribute('aria-checked', 'true');
+          }
+        }
+        
+        function switchTheme(e) {
+          if (e.target.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            sliderElement.setAttribute('aria-checked', 'true');
+          } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            sliderElement.setAttribute('aria-checked', 'false');
+          }
+        }
+        
+        toggleSwitch.addEventListener('change', switchTheme, false);
+      }
+      
+      // Set up layer toggle buttons
+      function setupToggleButtons() {
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
+        
+        toggleButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const layerId = this.getAttribute('data-layer');
+            const svgObject = document.getElementById(layerId + '-svg');
+            const isActive = this.classList.contains('active');
+            
+            // Toggle button active state
+            this.classList.toggle('active');
+            this.setAttribute('aria-pressed', !isActive);
+            
+            // Toggle layer visibility
+            if (svgObject) {
+              svgObject.classList.toggle('hidden');
+              svgObject.setAttribute('aria-hidden', isActive);
+            }
+          });
+        });
+      }
+      
+      // Set up chapter preset buttons
+      function setupPresetButtons() {
+        const presetButtons = document.querySelectorAll('.preset-btn');
+        const descriptionElement = document.getElementById('chapter-description');
+        
+        // Chapter presets data
+        const chapters = [
+          {
+            "name": "Base House",
+            "preset": "base",
+            "description": "The complete house with all visual elements",
+            "layers": ["environment-layer", "house-structure"]
+          },
+          {
+            "name": "Chapter 1: HTML Tags",
+            "preset": "html-tags",
+            "description": "The blueprint layer showing HTML tags",
+            "layers": ["environment-layer", "house-structure", "html-tags-layer"]
+          },
+          {
+            "name": "Chapter 2: HTML Structure",
+            "preset": "html-structure",
+            "description": "The structural framing of the house",
+            "layers": ["environment-layer", "structure-layer"]
+          },
+          {
+            "name": "Chapter 3: CSS Design",
+            "preset": "css-design",
+            "description": "The design layer with visual styling",
+            "layers": ["environment-layer", "house-structure", "css-design-layer"]
+          },
+          {
+            "name": "Chapter 4: JavaScript",
+            "preset": "javascript",
+            "description": "The interactive elements that respond to events",
+            "layers": ["environment-layer", "house-structure", "interactive-layer"]
+          },
+          {
+            "name": "Chapter 5: Backend",
+            "preset": "backend",
+            "description": "The internal systems that power the house",
+            "layers": ["environment-layer", "house-structure", "systems-layer"]
+          }
+        ];
+        
+        presetButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const presetId = this.getAttribute('data-preset');
+            
+            // Update active button
+            presetButtons.forEach(btn => {
+              btn.classList.remove('active');
+              btn.setAttribute('aria-pressed', 'false');
+            });
+            this.classList.add('active');
+            this.setAttribute('aria-pressed', 'true');
+            
+            // Apply the preset
+            const chapter = chapters.find(ch => ch.preset === presetId);
+            if (chapter) {
+              // Update chapter description
+              descriptionElement.textContent = chapter.description;
+              
+              // Update layer visibility
+              const layerIds = ["environment-layer", "house-structure", "html-tags-layer", "structure-layer", "css-design-layer", "interactive-layer", "systems-layer"];
+              
+              layerIds.forEach(layerId => {
+                const svgObject = document.getElementById(layerId + '-svg');
+                const toggleButton = document.querySelector(`.toggle-btn[data-layer="${layerId}"]`);
+                
+                if (chapter.layers.includes(layerId)) {
+                  // Show this layer
+                  if (svgObject) {
+                    svgObject.classList.remove('hidden');
+                    svgObject.setAttribute('aria-hidden', 'false');
+                  }
+                  if (toggleButton) {
+                    toggleButton.classList.add('active');
+                    toggleButton.setAttribute('aria-pressed', 'true');
+                  }
+                } else {
+                  // Hide this layer
+                  if (svgObject) {
+                    svgObject.classList.add('hidden');
+                    svgObject.setAttribute('aria-hidden', 'true');
+                  }
+                  if (toggleButton) {
+                    toggleButton.classList.remove('active');
+                    toggleButton.setAttribute('aria-pressed', 'false');
+                  }
+                }
+              });
+            }
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+EOF
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
