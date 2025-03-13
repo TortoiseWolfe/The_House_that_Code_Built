@@ -9,62 +9,20 @@ permissions:
   contents: write
 
 jobs:
-  deploy-to-gh-pages:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          
-      - name: Create basic site with meta tags
-        run: |
-          mkdir -p _site/svg
-          cp -r _svg_assets/* _site/svg/ || true
-          
-          # Create index.html using echo with meta tags
-          echo '<!DOCTYPE html>' > _site/index.html
-          echo '<html lang="en">' >> _site/index.html
-          echo '<head>' >> _site/index.html
-          echo '  <meta charset="UTF-8">' >> _site/index.html
-          echo '  <meta name="viewport" content="width=device-width, initial-scale=1.0">' >> _site/index.html
-          echo '  <meta name="description" content="The House that Code Built - Interactive Learning Tool">' >> _site/index.html
-          echo '  <meta name="author" content="TortoiseWolfe">' >> _site/index.html
-          echo '  <meta name="keywords" content="web development, HTML, CSS, JavaScript, visualization">' >> _site/index.html
-          echo '  <title>The House that Code Built</title>' >> _site/index.html
-          echo '  <style>' >> _site/index.html
-          echo '    body{margin:0;padding:0;font-family:Arial,sans-serif}' >> _site/index.html
-          echo '    .container{display:flex;width:100%}' >> _site/index.html
-          echo '    .left-column{width:25%;flex:0 0 25%;background:#f0f0f0;padding:15px;box-sizing:border-box}' >> _site/index.html
-          echo '    .center-column{width:55%;flex:0 0 55%;padding:15px;box-sizing:border-box}' >> _site/index.html
-          echo '    .right-column{width:20%;flex:0 0 20%;background:#f0f0f0;padding:15px;box-sizing:border-box}' >> _site/index.html
-          echo '  </style>' >> _site/index.html
-          echo '</head>' >> _site/index.html
-          echo '<body>' >> _site/index.html
-          echo '  <div class="container">' >> _site/index.html
-          echo '    <div class="left-column">' >> _site/index.html
-          echo '      <h2>Presets</h2>' >> _site/index.html
-          echo '      <p>Left column (25%)</p>' >> _site/index.html
-          echo '    </div>' >> _site/index.html
-          echo '    <div class="center-column">' >> _site/index.html
-          echo '      <h2>Visualization</h2>' >> _site/index.html
-          echo '      <img src="svg/house-structure.svg" alt="House Structure" width="100%">' >> _site/index.html
-          echo '      <img src="svg/environment-layer.svg" alt="Environment Layer" width="100%">' >> _site/index.html
-          echo '    </div>' >> _site/index.html
-          echo '    <div class="right-column">' >> _site/index.html
-          echo '      <h2>Layer Controls</h2>' >> _site/index.html
-          echo '      <p>Right column (20%)</p>' >> _site/index.html
-          echo '    </div>' >> _site/index.html
-          echo '  </div>' >> _site/index.html
-          echo '</body>' >> _site/index.html
-          echo '</html>' >> _site/index.html
+      - name: Copy SVG assets to deploy directory
+        run: mkdir -p _site/svg && cp -r _svg_assets/* _site/svg/ || true
+
+      - name: Create simple index.html
+        run: echo '<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="The House that Code Built"><meta name="author" content="TortoiseWolfe"><title>SVG Assets</title></head><body><h1>SVG Assets</h1><p>This is a simple index page for the SVG assets.</p></body></html>' > _site/index.html
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ github.token }}
           publish_dir: ./_site
-          enable_jekyll: false
