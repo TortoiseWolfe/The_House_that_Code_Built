@@ -1,197 +1,353 @@
-name: Deploy Flask App to GitHub Pages
+name: Deploy Static Three-Column Layout to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: ["main"]
   workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v3
-      
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flask jinja2 python-dotenv
-
-      - name: Display repository structure
-        run: |
-          echo "Repository structure:"
-          ls -la
-          echo ""
-          echo "SVG assets:"
-          ls -la _svg_assets || echo "_svg_assets directory not found"
-          echo ""
-          echo "House_Code contents:"
-          if [ -d "House_Code" ]; then
-            ls -la House_Code
-            echo "House_Code/templates contents:"
-            ls -la House_Code/templates || echo "templates directory not found"
-          else
-            echo "House_Code directory not found"
-          fi
-      
-      - name: Build static site from Flask app
-        run: |
-          # Create site directory
-          mkdir -p _site/svg
-          
-          # Copy SVG files to site directory
-          if [ -d "_svg_assets" ]; then
-            cp _svg_assets/*.svg _site/svg/
-            echo "SVG files copied from _svg_assets"
-          else
-            echo "ERROR: Required _svg_assets directory not found"
-            exit 1
-          fi
-          
-          # Create a Python script to render the Flask template
-          cat > render_template.py << 'EOF'
-import os
-import json
-from jinja2 import Environment, FileSystemLoader
-
-# Define layer information (same as in Flask app)
-layers = [
-    {"id": "environment-layer", "name": "Environment", "default": True},
-    {"id": "house-structure", "name": "House Structure", "default": True},
-    {"id": "html-tags-layer", "name": "HTML Tags", "default": False},
-    {"id": "structure-layer", "name": "HTML Structure", "default": False},
-    {"id": "css-design-layer", "name": "CSS Design", "default": False},
-    {"id": "interactive-layer", "name": "JavaScript Interactivity", "default": False},
-    {"id": "systems-layer", "name": "Backend Systems", "default": False}
-]
-
-# Define chapter presets (same as in Flask app)
-chapters = [
-    {
-        "name": "Base House",
-        "preset": "base",
-        "description": "The complete house with all visual elements",
-        "layers": ["environment-layer", "house-structure"]
-    },
-    {
-        "name": "Chapter 1: HTML Tags",
-        "preset": "html-tags",
-        "description": "The blueprint layer showing HTML tags",
-        "layers": ["environment-layer", "house-structure", "html-tags-layer"]
-    },
-    {
-        "name": "Chapter 2: HTML Structure",
-        "preset": "html-structure",
-        "description": "The structural framing of the house",
-        "layers": ["environment-layer", "structure-layer"]
-    },
-    {
-        "name": "Chapter 3: CSS Design",
-        "preset": "css-design",
-        "description": "The design layer with visual styling",
-        "layers": ["environment-layer", "house-structure", "css-design-layer"]
-    },
-    {
-        "name": "Chapter 4: JavaScript",
-        "preset": "javascript",
-        "description": "The interactive elements that respond to events",
-        "layers": ["environment-layer", "house-structure", "interactive-layer"]
-    },
-    {
-        "name": "Chapter 5: Backend",
-        "preset": "backend",
-        "description": "The internal systems that power the house",
-        "layers": ["environment-layer", "house-structure", "systems-layer"]
-    }
-]
-
-# GitHub info as specified in README
-github_username = "TortoiseWolfe"
-repo_name = "The_House_that_Code_Built"
-github_pages_url = f"https://{github_username}.github.io/{repo_name}"
-
-# Try to load the template
-template_path = "House_Code/templates/index.html"
-if not os.path.exists(template_path):
-    print(f"ERROR: Template not found at {template_path}")
-    exit(1)
-
-try:
-    # Set up Jinja environment
-    loader = FileSystemLoader(os.path.dirname(template_path))
-    env = Environment(loader=loader)
-    template = env.get_template(os.path.basename(template_path))
-    
-    # Render the template with our data
-    html_content = template.render(
-        layers=layers,
-        chapters=chapters,
-        github_username=github_username,
-        repo_name=repo_name,
-        github_pages_url=github_pages_url
-    )
-    
-    # Fix paths for GitHub Pages (important!)
-    html_content = html_content.replace("/svg/", "svg/")
-    
-    # Write the rendered HTML to the output file
-    with open("_site/index.html", "w") as f:
-        f.write(html_content)
-    
-    print("Successfully rendered Flask template to _site/index.html")
-except Exception as e:
-    print(f"ERROR: Failed to render template: {str(e)}")
-    exit(1)
-EOF
-          
-          # Run the rendering script
-          python render_template.py
-          
-          # Verify the output was created
-          if [ ! -f "_site/index.html" ]; then
-            echo "ERROR: Failed to generate index.html"
-            exit 1
-          fi
-          
-          echo "Static site built successfully"
-      
-      - name: Check built files
-        run: |
-          echo "Built files:"
-          find _site -type f | sort
-          
-          echo "Checking index.html content (first 20 lines):"
-          head -n 20 _site/index.html
-      
-      - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: '_site'
-
+  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Create Static Site
+        run: |
+          # Create site directory
+          mkdir -p _site/svg
+          
+          # Copy SVG files
+          if [ -d "_svg_assets" ]; then
+            cp _svg_assets/*.svg _site/svg/ || true
+          fi
+          
+          if [ -d "House_Code/static/svg" ]; then
+            cp House_Code/static/svg/*.svg _site/svg/ || true
+          fi
+          
+          # List files for debugging
+          echo "Available SVG files:"
+          ls -la _svg_assets/ || echo "No _svg_assets directory"
+          
+          # Create an index.html with three-column layout
+          cat > _site/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="An interactive visualization of web development concepts using a house metaphor">
+  <title>The House that Code Built</title>
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #333;
+      --header-color: #2e7d32;
+      --card-bg: #ffffff;
+      --card-shadow: rgba(0,0,0,0.1);
+      --btn-color: #2196F3;
+      --btn-hover: #1976D2;
+      --btn-text: #ffffff;
+      --focus-outline: #2196F3;
+      --preset-btn-color: #2196F3;
+      --preset-btn-hover: #1976D2; 
+      --layer-btn-color: #4CAF50;
+      --layer-btn-hover: #388E3C;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+    
+    h1, h2 {
+      color: var(--header-color);
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    /* Three-column layout container */
+    .three-column-layout {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    
+    /* Left column - Chapter presets */
+    .left-column {
+      flex: 1;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+      max-width: 25%;
+    }
+    
+    /* Center column - Visualization */
+    .center-column {
+      flex: 3;
+      min-height: 600px;
+      position: relative;
+    }
+    
+    /* Right column - Layer toggles */
+    .right-column {
+      flex: 0.7;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+      max-width: 20%;
+    }
+    
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--btn-color);
+      color: var(--btn-text);
+      padding: 8px;
+      z-index: 1000;
+      transition: top 0.3s;
+    }
+    
+    .skip-link:focus {
+      top: 0;
+    }
+    
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .svg-container {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+      min-height: 600px;
+      position: relative;
+      height: 100%;
+    }
+    
+    .svg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .chapter-description {
+      background-color: #e8f5e9;
+      padding: 10px 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-style: italic;
+    }
+    
+    .github-link {
+      margin-top: 30px;
+      text-align: center;
+    }
+    
+    .button {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: var(--btn-color);
+      color: var(--btn-text);
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .button:hover, .button:focus {
+      background-color: var(--btn-hover);
+    }
+    
+    .button:focus {
+      outline: 3px solid var(--focus-outline);
+      outline-offset: 2px;
+    }
+    
+    /* Chapter preset buttons - vertically stacked */
+    .preset-btn {
+      padding: 12px 18px;
+      background-color: var(--preset-btn-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: bold;
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+    
+    .preset-btn:hover {
+      background-color: var(--preset-btn-hover);
+    }
+    
+    /* Layer toggle buttons - vertically stacked */
+    .toggle-btn {
+      padding: 10px 15px;
+      background-color: var(--layer-btn-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+    
+    .toggle-btn:hover {
+      background-color: var(--layer-btn-hover);
+    }
+    
+    .divider {
+      height: 1px;
+      background-color: #e0e0e0;
+      margin: 20px 0;
+    }
+    
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: var(--text-color);
+    }
+    
+    /* Responsive breakpoints for the three-column layout */
+    @media (max-width: 1024px) {
+      .three-column-layout {
+        flex-wrap: wrap;
+      }
+      
+      .left-column, .right-column {
+        flex: 1 1 45%;
+        max-width: 45%;
+      }
+      
+      .center-column {
+        flex: 1 1 100%;
+        order: -1; /* Put the visualization at the top */
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .three-column-layout {
+        flex-direction: column;
+      }
+      
+      .left-column, .right-column, .center-column {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <h1>The House that Code Built</h1>
+  
+  <main id="main-content">
+    <!-- Three-column layout -->
+    <div class="three-column-layout">
+      <!-- Left column - Chapter presets -->
+      <div class="left-column">
+        <h2>Chapter Presets</h2>
+        
+        <button class="preset-btn">Base House</button>
+        <button class="preset-btn">Chapter 1: HTML Tags</button>
+        <button class="preset-btn">Chapter 2: HTML Structure</button>
+        <button class="preset-btn">Chapter 3: CSS Design</button>
+        <button class="preset-btn">Chapter 4: JavaScript</button>
+        <button class="preset-btn">Chapter 5: Backend</button>
+        
+        <div class="divider"></div>
+        
+        <div class="chapter-description">
+          An interactive visualization of web development concepts using a house metaphor
+        </div>
+      </div>
+      
+      <!-- Center column - Visualization -->
+      <div class="center-column">
+        <section class="svg-container" aria-label="House visualization">
+          <object data="svg/environment-layer.svg" type="image/svg+xml" class="svg-layer" aria-label="Environment layer visualization"></object>
+          <object data="svg/house-structure.svg" type="image/svg+xml" class="svg-layer" aria-label="House structure visualization"></object>
+        </section>
+      </div>
+      
+      <!-- Right column - Layer toggles -->
+      <div class="right-column">
+        <h2>Layer Controls</h2>
+        <button class="toggle-btn">Environment</button>
+        <button class="toggle-btn">House Structure</button>
+        <button class="toggle-btn">HTML Tags</button>
+        <button class="toggle-btn">HTML Structure</button>
+        <button class="toggle-btn">CSS Design</button>
+        <button class="toggle-btn">JavaScript Interactivity</button>
+        <button class="toggle-btn">Backend Systems</button>
+      </div>
+    </div>
+    
+    <div class="github-link">
+      <p>This is a static version with three-column layout. For the full interactive application with all features:</p>
+      <a href="https://github.com/TortoiseWolfe/The_House_that_Code_Built" class="button" aria-label="View full interactive project on GitHub">View on GitHub</a>
+    </div>
+  </main>
+  
+  <footer role="contentinfo">
+    <p>This project follows WCAG 2.1 AA accessibility guidelines</p>
+    <p>© TortoiseWolfe - The House that Code Built</p>
+  </footer>
+</body>
+</html>
+EOF
+          
+          echo "Created _site/index.html with three-column layout"
+          ls -la _site/
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
