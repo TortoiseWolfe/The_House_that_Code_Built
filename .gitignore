@@ -1,4 +1,5 @@
-# House_Code directory is now included in the repository
+# Generated application code - ignore the House_Code directory
+House_Code/
 .env
 # Python
 __pycache__/
