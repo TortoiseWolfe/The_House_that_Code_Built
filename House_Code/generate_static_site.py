@@ -3,7 +3,9 @@ import os
 import shutil
 import sys
 from jinja2 import Environment, FileSystemLoader
-from app import app
+
+# Don't import from app.py as it might not work in GitHub Actions
+# from app import app
 
 def generate_static_site():
     """
@@ -22,10 +24,14 @@ def generate_static_site():
     os.makedirs(svg_dir)
     
     # Copy SVG files from both possible locations
+    # Make paths more robust for GitHub Actions
+    current_dir = os.path.dirname(os.path.abspath(__file__))
     svg_sources = [
-        os.path.join("static", "svg"),  # House_Code/static/svg
-        os.path.join("..", "_svg_assets")  # Parent repo's _svg_assets
+        os.path.join(current_dir, "static", "svg"),  # House_Code/static/svg
+        os.path.join(current_dir, "..", "_svg_assets")  # Parent repo's _svg_assets
     ]
+    
+    print(f"Checking SVG sources: {svg_sources}")
     
     svg_files_copied = []
     
@@ -116,8 +122,17 @@ def generate_static_site():
         'github_pages_url': github_pages_url
     }
     
-    # Set up Jinja2 environment
-    env = Environment(loader=FileSystemLoader('templates'))
+    # Set up Jinja2 environment with absolute path
+    templates_dir = os.path.join(current_dir, 'templates')
+    print(f"Looking for templates in: {templates_dir}")
+    
+    if not os.path.exists(templates_dir):
+        print("ERROR: Templates directory not found!")
+        print(f"Current directory: {current_dir}")
+        print(f"Files in current directory: {os.listdir(current_dir)}")
+        raise FileNotFoundError(f"Templates directory not found at {templates_dir}")
+        
+    env = Environment(loader=FileSystemLoader(templates_dir))
     template = env.get_template('index.html')
     
     # Render template with data
@@ -143,4 +158,12 @@ def create_placeholder_svg(directory, filename, layer_name):
         f.write(svg_content)
 
 if __name__ == '__main__':
-    generate_static_site()
+    try:
+        print("Starting static site generation...")
+        generate_static_site()
+        print("Static site generation completed successfully!")
+    except Exception as e:
+        print(f"ERROR: Static site generation failed: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)

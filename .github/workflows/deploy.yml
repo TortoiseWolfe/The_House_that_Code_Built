@@ -54,12 +54,37 @@ jobs:
       
       - name: Generate static site
         run: |
+          echo "Current working directory: $(pwd)"
+          # Create debugging info
           cd House_Code
-          python generate_static_site.py
           
-          echo "Static site generated in House_Code/gh-pages directory"
-          ls -la gh-pages
-          ls -la gh-pages/svg
+          echo "Looking for templates directory:"
+          ls -la templates || echo "Templates directory not found!"
+          
+          echo "Looking for static directory:"
+          ls -la static || echo "Static directory not found!"
+          
+          echo "Python and Jinja2 versions:"
+          python -c "import sys; print(f'Python version: {sys.version}')"
+          python -c "import jinja2; print(f'Jinja2 version: {jinja2.__version__}')" || echo "Jinja2 not installed properly!"
+          
+          echo "Running static site generator with verbose output:"
+          python -v generate_static_site.py
+          
+          echo "Static site generation complete, checking results:"
+          if [ -d "gh-pages" ]; then
+            echo "gh-pages directory exists:"
+            ls -la gh-pages
+            if [ -d "gh-pages/svg" ]; then
+              echo "SVG directory exists:"
+              ls -la gh-pages/svg
+            else
+              echo "ERROR: SVG directory not found!"
+            fi
+          else
+            echo "ERROR: gh-pages directory not found!"
+            exit 1
+          fi
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
