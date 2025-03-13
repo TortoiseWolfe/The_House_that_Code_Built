@@ -157,10 +157,20 @@ def generate_static_site():
         
     print("Fixed SVG paths in rendered HTML to be relative for GitHub Pages compatibility")
     
-    # Create a preview image for social media
-    print("Creating preview image for social media metadata...")
+    # Use existing image for social media preview
+    print("Copying existing image for social media metadata...")
     preview_image_path = os.path.join(static_dir, "house-preview.png")
-    create_preview_image(preview_image_path)
+    
+    # Look for houseCodePrints_02.png in _svg_assets
+    source_image_path = os.path.join(current_dir, "..", "_svg_assets", "houseCodePrints_02.png")
+    if os.path.exists(source_image_path):
+        # If the image exists, copy it to our output directory
+        shutil.copy2(source_image_path, preview_image_path)
+        print(f"Copied existing image from {source_image_path} to {preview_image_path}")
+    else:
+        # Fallback to creating a placeholder
+        create_preview_image(preview_image_path)
+        print(f"Source image not found at {source_image_path}, created placeholder instead")
     
     # Fix og:image path in HTML
     output_html_path = os.path.join(output_dir, 'index.html')
