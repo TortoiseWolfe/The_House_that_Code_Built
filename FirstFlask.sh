@@ -159,8 +159,29 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Interactive visualization of web development concepts using a house metaphor">
-  <title>Web Development House - Layer Toggler</title>
+  <meta name="description" content="Interactive visualization of web development concepts using a house metaphor. Learn web development through layers of a house, from environment to backend systems.">
+  <meta name="keywords" content="web development, HTML, CSS, JavaScript, visualization, learning tool, interactive">
+  <meta name="author" content="TortoiseWolfe">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ github_pages_url }}">
+  <meta property="og:title" content="The House that Code Built">
+  <meta property="og:description" content="Learn web development through an interactive house visualization with toggleable layers">
+  <meta property="og:image" content="{{ github_pages_url }}/static/house-preview.png">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{ github_pages_url }}">
+  <meta property="twitter:title" content="The House that Code Built">
+  <meta property="twitter:description" content="Learn web development through an interactive house visualization with toggleable layers">
+  <meta property="twitter:image" content="{{ github_pages_url }}/static/house-preview.png">
+  
+  <!-- Theme color for browser UI -->
+  <meta name="theme-color" content="#4CAF50">
+  
+  <title>The House that Code Built - Web Development Visualization</title>
   <style>
     :root {
       --bg-color: #f5f5f5;
