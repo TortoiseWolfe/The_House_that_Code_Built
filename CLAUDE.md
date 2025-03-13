@@ -11,10 +11,16 @@
 - **Check GitHub Actions**: Visit repository's Actions tab to monitor deployment status
 
 ## GitHub Pages Deployment
-- **Workflow Path**: `.github/workflows/github-pages.yml` - Main GitHub Actions workflow
-- **Branch**: Use `main` branch for deployments
-- **CI Detection**: FirstFlask.sh will detect CI environments and skip Docker operations
-- **Deployment Process**:
+- **Competing Workflows Issue**: This repository currently has multiple GitHub Actions workflows that conflict with each other:
+  - `Deploy Flask App to GitHub Pages` - Working workflow
+  - `.github/workflows/pages.yml` - Failing workflow
+  - `.github/workflows/github-pages.yml` - Newly added workflow that needs fixing
+- **Recommended Actions**:
+  1. Delete problematic workflows directly in GitHub web interface
+  2. Navigate to repository → .github/workflows directory
+  3. Delete any workflows named `pages.yml` or other competing workflows
+  4. Keep only one working workflow
+- **Post-Cleanup Process**:
   1. Push changes to GitHub repository's main branch
   2. GitHub Actions will automatically run the workflow
   3. The workflow builds a static version of the site
@@ -22,10 +28,10 @@
   5. Site is accessible at the GitHub Pages URL configured in .env
 - **Three-Column Layout**: The deployed site maintains the exact 23%-52%-19% column proportions
 - **Troubleshooting**:
+  - Multiple conflicting workflows cause deployment failures
+  - Check GitHub Actions tab to identify which workflow is succeeding
+  - Manually remove all other workflow files through GitHub web interface
   - Exit code 127 indicates "command not found" errors in GitHub Actions
-  - Check workflow permissions in repository settings (Settings → Actions → General → Workflow permissions)
-  - Ensure workflow files are in the correct location
-  - The script automatically falls back to static site generation when Docker is unavailable
   - If columns are misaligned, check HTML structure for proper nesting of div elements
 
 ## Code Style Guidelines
