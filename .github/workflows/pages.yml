@@ -18,10 +18,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
       
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v3
       
       - name: Setup Python
@@ -32,45 +32,46 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flask python-dotenv jinja2 flask-cors
-      
-      - name: Verify Flask app structure
+          pip install flask jinja2 python-dotenv
+
+      - name: Display repository structure
         run: |
-          # Check for required files
-          if [ ! -d "House_Code" ]; then
-            echo "ERROR: House_Code directory not found!"
-            exit 1
+          echo "Repository structure:"
+          ls -la
+          echo ""
+          echo "SVG assets:"
+          ls -la _svg_assets || echo "_svg_assets directory not found"
+          echo ""
+          echo "House_Code contents:"
+          if [ -d "House_Code" ]; then
+            ls -la House_Code
+            echo "House_Code/templates contents:"
+            ls -la House_Code/templates || echo "templates directory not found"
+          else
+            echo "House_Code directory not found"
           fi
-          
-          if [ ! -f "House_Code/templates/index.html" ]; then
-            echo "ERROR: Flask template missing at House_Code/templates/index.html"
-            exit 1
-          fi
-          
-          echo "✅ Required Flask app structure verified"
       
       - name: Build static site from Flask app
         run: |
-          mkdir -p gh-pages/svg
+          # Create site directory
+          mkdir -p _site/svg
           
-          # Copy SVG files from _svg_assets - REQUIRED
+          # Copy SVG files to site directory
           if [ -d "_svg_assets" ]; then
-            echo "Found _svg_assets directory with files:"
-            ls -la _svg_assets/
-            cp _svg_assets/*.svg gh-pages/svg/
-            echo "Copied SVG files from _svg_assets directory"
+            cp _svg_assets/*.svg _site/svg/
+            echo "SVG files copied from _svg_assets"
           else
-            echo "ERROR: Required _svg_assets directory missing"
+            echo "ERROR: Required _svg_assets directory not found"
             exit 1
           fi
           
-          # Process Flask application template using Python
+          # Create a Python script to render the Flask template
           cat > render_template.py << 'EOF'
 import os
 import json
 from jinja2 import Environment, FileSystemLoader
 
-# Layer information
+# Define layer information (same as in Flask app)
 layers = [
     {"id": "environment-layer", "name": "Environment", "default": True},
     {"id": "house-structure", "name": "House Structure", "default": True},
@@ -81,7 +82,7 @@ layers = [
     {"id": "systems-layer", "name": "Backend Systems", "default": False}
 ]
 
-# Chapter presets
+# Define chapter presets (same as in Flask app)
 chapters = [
     {
         "name": "Base House",
@@ -121,62 +122,68 @@ chapters = [
     }
 ]
 
-# GitHub info from environment variables
-github_username = os.environ.get("GITHUB_USERNAME", "TortoiseWolfe")
-repo_name = os.environ.get("REPO_NAME", "The_House_that_Code_Built")
-github_pages_url = os.environ.get("GITHUB_PAGES_URL", f"https://{github_username}.github.io/{repo_name}")
+# GitHub info as specified in README
+github_username = "TortoiseWolfe"
+repo_name = "The_House_that_Code_Built"
+github_pages_url = f"https://{github_username}.github.io/{repo_name}"
 
-# Load the template
-loader = FileSystemLoader("House_Code/templates")
-env = Environment(loader=loader)
-template = env.get_template("index.html")
+# Try to load the template
+template_path = "House_Code/templates/index.html"
+if not os.path.exists(template_path):
+    print(f"ERROR: Template not found at {template_path}")
+    exit(1)
 
-# Render the template with our data
-html = template.render(
-    layers=layers,
-    chapters=chapters,
-    github_username=github_username,
-    repo_name=repo_name,
-    github_pages_url=github_pages_url
-)
-
-# Fix SVG paths for GitHub Pages (important!)
-html = html.replace("/svg/", "svg/")
-
-# Write the rendered template to the output file
-with open("gh-pages/index.html", "w") as f:
-    f.write(html)
-
-print("Successfully rendered Flask template to gh-pages/index.html")
+try:
+    # Set up Jinja environment
+    loader = FileSystemLoader(os.path.dirname(template_path))
+    env = Environment(loader=loader)
+    template = env.get_template(os.path.basename(template_path))
+    
+    # Render the template with our data
+    html_content = template.render(
+        layers=layers,
+        chapters=chapters,
+        github_username=github_username,
+        repo_name=repo_name,
+        github_pages_url=github_pages_url
+    )
+    
+    # Fix paths for GitHub Pages (important!)
+    html_content = html_content.replace("/svg/", "svg/")
+    
+    # Write the rendered HTML to the output file
+    with open("_site/index.html", "w") as f:
+        f.write(html_content)
+    
+    print("Successfully rendered Flask template to _site/index.html")
+except Exception as e:
+    print(f"ERROR: Failed to render template: {str(e)}")
+    exit(1)
 EOF
           
-          # Execute the template rendering
+          # Run the rendering script
           python render_template.py
           
-          # Verify the result was created
-          if [ ! -f "gh-pages/index.html" ]; then
+          # Verify the output was created
+          if [ ! -f "_site/index.html" ]; then
             echo "ERROR: Failed to generate index.html"
             exit 1
           fi
           
-          # Verify SVG files were copied
-          if [ ! "$(ls -A gh-pages/svg/)" ]; then
-            echo "ERROR: No SVG files were copied to gh-pages/svg/"
-            exit 1
-          fi
-          
-          echo "Contents after building:"
-          find gh-pages -type f | sort
+          echo "Static site built successfully"
       
-      - name: Check artifact content
+      - name: Check built files
         run: |
-          echo "Checking contents of gh-pages directory:"
-          find gh-pages -type f | sort
+          echo "Built files:"
+          find _site -type f | sort
           
-      - name: Upload artifact
+          echo "Checking index.html content (first 20 lines):"
+          head -n 20 _site/index.html
+      
+      - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './gh-pages'
+          path: '_site'
 
   deploy:
     environment:
