@@ -20,44 +20,19 @@ jobs:
           mkdir -p _site
           cp -r _svg_assets _site/svg
           
-          # Create a simple index.html with three-column layout
-          cat > _site/index.html << 'EOF'
-<!DOCTYPE html>
+          # Create index.html with inline HTML
+          echo '<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The House that Code Built</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            display: flex;
-            width: 100%;
-        }
-        .left-column {
-            width: 25%;
-            flex: 0 0 25%;
-            background: #f0f0f0;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-        .center-column {
-            width: 55%;
-            flex: 0 0 55%;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-        .right-column {
-            width: 20%;
-            flex: 0 0 20%;
-            background: #f0f0f0;
-            padding: 15px;
-            box-sizing: border-box;
-        }
+        body {margin:0; padding:0; font-family:Arial, sans-serif;}
+        .container {display:flex; width:100%;}
+        .left-column {width:25%; flex:0 0 25%; background:#f0f0f0; padding:15px; box-sizing:border-box;}
+        .center-column {width:55%; flex:0 0 55%; padding:15px; box-sizing:border-box;}
+        .right-column {width:20%; flex:0 0 20%; background:#f0f0f0; padding:15px; box-sizing:border-box;}
     </style>
 </head>
 <body>
@@ -77,8 +52,7 @@ jobs:
         </div>
     </div>
 </body>
-</html>
-EOF
+</html>' > _site/index.html
           
           # Debug output
           find _site -type f | sort
