@@ -1,5 +1,5 @@
 # Generated application code - ignore the House_Code directory
-House_Code/
+# House_Code/
 .env
 # Python
 __pycache__/

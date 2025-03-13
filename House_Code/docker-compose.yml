@@ -1,0 +1,13 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./templates:/app/templates
+      - ./static:/app/static
+      - ../_svg_assets:/app/_svg_assets
+      - ../.env:/app/.env
+    env_file:
+      - ../.env
+    restart: unless-stopped
