@@ -15,96 +15,97 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
       - name: Create site directory
         run: mkdir -p _site
         
-      - name: Debug directory structure
+      - name: Prepare SVG assets
         run: |
-          echo "Repository contents:"
-          ls -la
-          
-      - name: Copy SVG assets
-        run: |
+          mkdir -p _site/svg
           if [ -d "_svg_assets" ]; then
-            mkdir -p _site/svg
             cp -r _svg_assets/* _site/svg/
-            echo "SVG assets copied successfully:"
-            ls -la _site/svg/
+            echo "SVG assets copied"
           else
-            echo "WARNING: _svg_assets directory not found"
-            mkdir -p _site/svg
-            # Create placeholder SVGs
+            echo "Creating placeholder SVGs"
             echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="#000"/><text x="50" y="50" text-anchor="middle">Structure</text></svg>' > _site/svg/house-structure.svg
             echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="#000"/><text x="50" y="50" text-anchor="middle">Environment</text></svg>' > _site/svg/environment-layer.svg
           fi
         
-      - name: Create HTML file
+      - name: Write HTML header
         run: |
-          # Create simple index.html
-          cat > _site/index.html << 'EOL'
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The House that Code Built - Interactive Learning Tool">
-    <meta name="author" content="TortoiseWolfe">
-    <title>The House that Code Built</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            display: flex;
-            width: 100%;
-        }
-        .left-column {
-            width: 25%;
-            flex: 0 0 25%;
-            background: #f0f0f0;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-        .center-column {
-            width: 55%;
-            flex: 0 0 55%;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-        .right-column {
-            width: 20%;
-            flex: 0 0 20%;
-            background: #f0f0f0;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="left-column">
-            <h2>Presets</h2>
-            <p>Left column (25%)</p>
-        </div>
-        <div class="center-column">
-            <h2>Visualization</h2>
-            <img src="svg/house-structure.svg" alt="House Structure" width="100%">
-            <img src="svg/environment-layer.svg" alt="Environment Layer" width="100%">
-        </div>
-        <div class="right-column">
-            <h2>Layer Controls</h2>
-            <p>Right column (20%)</p>
-        </div>
-    </div>
-</body>
-</html>
-EOL
-          
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+          echo '<!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <meta name="description" content="The House that Code Built - Interactive Learning Tool">
+              <meta name="author" content="TortoiseWolfe">
+              <title>The House that Code Built</title>
+              <style>
+                  body {
+                      margin: 0;
+                      padding: 0;
+                      font-family: Arial, sans-serif;
+                  }
+                  .container {
+                      display: flex;
+                      width: 100%;
+                  }
+                  .left-column {
+                      width: 25%;
+                      flex: 0 0 25%;
+                      background: #f0f0f0;
+                      padding: 15px;
+                      box-sizing: border-box;
+                  }
+                  .center-column {
+                      width: 55%;
+                      flex: 0 0 55%;
+                      padding: 15px;
+                      box-sizing: border-box;
+                  }
+                  .right-column {
+                      width: 20%;
+                      flex: 0 0 20%;
+                      background: #f0f0f0;
+                      padding: 15px;
+                      box-sizing: border-box;
+                  }
+              </style>
+          </head>
+          <body>' > _site/index.html
+      
+      - name: Write HTML body
+        run: |
+          echo '
+              <div class="container">
+                  <div class="left-column">
+                      <h2>Presets</h2>
+                      <p>Left column (25%)</p>
+                  </div>
+                  <div class="center-column">
+                      <h2>Visualization</h2>
+                      <img src="svg/house-structure.svg" alt="House Structure" width="100%">
+                      <img src="svg/environment-layer.svg" alt="Environment Layer" width="100%">
+                  </div>
+                  <div class="right-column">
+                      <h2>Layer Controls</h2>
+                      <p>Right column (20%)</p>
+                  </div>
+              </div>
+          </body>
+          </html>' >> _site/index.html
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
-          force_orphan: true
+          path: _site
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ github.token }}
