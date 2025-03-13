@@ -34,21 +34,39 @@ jobs:
           python -m pip install --upgrade pip
           pip install flask python-dotenv
       
-      - name: Build static site
+      - name: Create artifact directory
         run: |
           mkdir -p _site/svg
           
+          # Create necessary directories
+          echo "Creating directories..."
+          ls -la
+          
           # Copy SVG files from _svg_assets if they exist
           if [ -d "_svg_assets" ]; then
+            echo "Found _svg_assets directory, copying files..."
             cp _svg_assets/*.svg _site/svg/ || true
+          else
+            echo "_svg_assets directory not found"
+            # Create simple SVG placeholders
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#ccc" stroke-width="1"/><text x="400" y="300" font-family="Arial" font-size="24" text-anchor="middle" fill="#999">Environment Layer</text></svg>' > _site/svg/environment-layer.svg
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#ccc" stroke-width="1"/><text x="400" y="300" font-family="Arial" font-size="24" text-anchor="middle" fill="#999">House Structure</text></svg>' > _site/svg/house-structure.svg
           fi
           
+          # Create index.html file
+          echo "Creating index.html file..."
           echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="An interactive visualization of web development concepts using a house metaphor"><title>The House that Code Built</title><style>:root{--bg-color:#f5f5f5;--text-color:#333;--header-color:#2e7d32;--card-bg:#ffffff;--card-shadow:rgba(0,0,0,0.1);--btn-color:#2196F3;--btn-hover:#1976D2;--btn-text:#ffffff;--focus-outline:#2196F3;}body{font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;max-width:1200px;margin:0 auto;padding:20px;background-color:var(--bg-color);color:var(--text-color);line-height:1.5;}h1,h2{color:var(--header-color);text-align:center;}.three-column-layout{display:flex;width:100%;margin-bottom:40px;min-height:600px;}.left-column{width:25%;flex:0 0 25%;background-color:var(--card-bg);border-radius:8px;padding:20px;box-shadow:0 2px 10px var(--card-shadow);}.center-column{width:55%;flex:0 0 55%;background-color:var(--card-bg);border-radius:8px;padding:20px;box-shadow:0 2px 10px var(--card-shadow);}.right-column{width:20%;flex:0 0 20%;background-color:var(--card-bg);border-radius:8px;padding:20px;box-shadow:0 2px 10px var(--card-shadow);}.svg-container{width:100%;height:500px;position:relative;}.github-link{margin-top:30px;text-align:center;}.button{display:inline-block;padding:10px 15px;background-color:var(--btn-color);color:var(--btn-text);text-decoration:none;border-radius:4px;font-weight:bold;}.button:hover{background-color:var(--btn-hover);}footer{margin-top:40px;text-align:center;font-size:0.9em;}</style></head><body><h1>The House that Code Built</h1><p style="text-align:center;">An interactive visualization of web development concepts</p><div class="three-column-layout"><div class="left-column"><h2>About This Project</h2><p>This visualization demonstrates web development concepts through the metaphor of a house:</p><ul><li>Environment - The foundation</li><li>HTML - The structure</li><li>CSS - The design</li><li>JavaScript - The interactivity</li><li>Backend - The systems</li></ul></div><div class="center-column"><div class="svg-container"><img src="svg/environment-layer.svg" alt="Environment layer visualization" style="width:100%;height:auto;"><img src="svg/house-structure.svg" alt="House structure visualization" style="width:100%;height:auto;position:absolute;top:0;left:0;"></div></div><div class="right-column"><h2>Interactive Version</h2><p>The full interactive version has:</p><ul><li>Layer toggling</li><li>Chapter navigation</li><li>Tom Waits soundtrack</li><li>Dark/light mode</li></ul><div class="github-link"><a href="https://github.com/TortoiseWolfe/The_House_that_Code_Built" class="button">View on GitHub</a></div></div></div><footer><p>Created by <a href="https://github.com/TortoiseWolfe">TortoiseWolfe</a></p><p>This project follows WCAG 2.1 AA accessibility guidelines</p></footer></body></html>' > _site/index.html
       
+      - name: Debug directory
+        run: |
+          pwd
+          ls -la
+          ls -la _site || echo "_site directory not found"
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './_site'
+          path: '_site'
 
   deploy:
     environment:
