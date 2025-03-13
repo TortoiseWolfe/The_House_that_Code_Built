@@ -90,6 +90,18 @@ The project includes automatic GitHub Pages deployment using GitHub Actions:
      https://TortoiseWolfe.github.io/The_House_that_Code_Built
      ```
 
+### Troubleshooting GitHub Pages Deployment
+
+If you encounter issues with GitHub Pages deployment:
+
+1. Check the Actions tab in your GitHub repository to see detailed logs
+2. Ensure your repository has proper permissions configured:
+   - Go to Settings → Actions → General → Workflow permissions
+   - Select "Read and write permissions"
+   - Check "Allow GitHub Actions to create and approve pull requests"
+3. The FirstFlask.sh script automatically detects CI environments and skips Docker operations
+4. If you see exit code 127 errors, this usually indicates "command not found" and may be related to Docker commands trying to run in GitHub Actions
+
 ### Understanding the Project Structure
 
 The project creates these key files and directories:
@@ -106,7 +118,11 @@ The project creates these key files and directories:
 
 - Interactive SVG layer toggling
 - Preset chapter views for different web development concepts
-- Responsive design
+- Three-column responsive layout:
+  - Left column: Chapter preset buttons
+  - Center column: SVG visualization
+  - Right column: Layer toggle controls
+- Adaptive design for desktop, tablet, and mobile
 - Docker containerization for easy development
 - Automatic GitHub Pages deployment
 - Environment variable configuration
@@ -135,4 +151,13 @@ Each layer can be toggled on/off in the interactive interface to understand how 
 - **SVG** - Vector graphics for interactive visualization layers
 - **JavaScript** - Client-side interactivity for toggling layers 
 - **CSS** - Styling and responsive design
-# Trigger rebuild Wed Mar 12 08:45:06 PM EDT 2025
+
+## CI Environment Support
+
+The FirstFlask.sh script now includes automatic detection of CI environments:
+- Skips Docker operations when running in GitHub Actions
+- Adds error handling for Docker commands
+- Creates static files for GitHub Pages deployment
+- Provides fallback behaviors for template rendering
+
+# Last Updated: Wed Mar 12 08:45:06 PM EDT 2025
