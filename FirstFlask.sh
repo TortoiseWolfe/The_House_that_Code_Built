@@ -218,6 +218,7 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       display: flex;
       gap: 20px;
       margin-bottom: 40px;
+      width: 100%;
     }
     
     /* Left column - Chapter presets */
@@ -227,6 +228,8 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 10px var(--card-shadow);
+      width: 25%;
+      min-width: 25%;
       max-width: 25%;
     }
     
@@ -235,6 +238,13 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       flex: 3;
       min-height: 600px;
       position: relative;
+      width: 55%;
+      min-width: 55%;
+      max-width: 55%;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
     }
     
     /* Right column - Layer toggles */
@@ -244,6 +254,8 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 10px var(--card-shadow);
+      width: 20%;
+      min-width: 20%;
       max-width: 20%;
     }
     
@@ -420,10 +432,8 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
     }
     
     .svg-container {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 10px var(--card-shadow);
+      width: 100%;
+      height: 100%;
       min-height: 600px;
       position: relative;
     }
@@ -557,11 +567,16 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       
       .left-column, .right-column {
         flex: 1 1 45%;
+        width: 45%;
+        min-width: 45%;
         max-width: 45%;
       }
       
       .center-column {
         flex: 1 1 100%;
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
         order: -1; /* Put the visualization at the top */
       }
     }
@@ -573,6 +588,8 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       
       .left-column, .right-column, .center-column {
         flex: 1 1 100%;
+        width: 100%;
+        min-width: 100%;
         max-width: 100%;
       }
     }
