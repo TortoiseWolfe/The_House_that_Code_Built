@@ -48,18 +48,7 @@ def test_template_rendering(client):
     # Check that key elements are in the template
     assert '<div class="layer-toggles"' in html_content
     assert '<div class="preset-buttons"' in html_content
-    assert '<section class="column center-column">' in html_content
-    
-def test_three_column_layout(client):
-    """Test that the three-column layout is correctly implemented."""
-    response = client.get('/')
-    html_content = response.data.decode('utf-8')
-    
-    # Check for three-column layout structure
-    assert 'three-column-layout' in html_content
-    assert 'class="column left-column"' in html_content
-    assert 'class="column center-column"' in html_content
-    assert 'class="column right-column"' in html_content
+    assert '<div class="svg-container"' in html_content
     
 def test_tom_waits_section(client):
     """Test that the Tom Waits section is correctly implemented."""
@@ -68,7 +57,7 @@ def test_tom_waits_section(client):
     
     # Check for Tom Waits section
     assert 'Tom Waits - What\'s He Building in There?' in html_content
-    assert '<section class="audio-section full-width">' in html_content
+    assert '<section class="audio-section">' in html_content
     assert 'youtube.com/embed/04qPdGNA_KM' in html_content
     
     # Check for accessibility controls

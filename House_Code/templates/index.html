@@ -41,14 +41,13 @@
     
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 1800px; /* Increased from 1200px for much larger layout */
+      max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
       background-color: var(--bg-color);
       color: var(--text-color);
       transition: all 0.3s ease;
       line-height: 1.5;
-      font-size: 18px; /* Increased base font size */
     }
     
     h1, h2 {
@@ -58,101 +57,19 @@
     h1 {
       text-align: center;
       margin-bottom: 30px;
-      font-size: 3rem; /* Much larger title font */
     }
     
-    h2 {
-      font-size: 2rem; /* Larger section headings */
-      margin-bottom: 20px;
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
     
-    /* Three Column Layout */
-    .three-column-layout {
-      display: grid;
-      grid-template-columns: minmax(280px, 1fr) minmax(600px, 3fr) minmax(200px, 0.7fr); /* More precise control */
-      gap: 25px 35px; /* Vertical and horizontal gap */
-      margin-bottom: 40px;
-      align-items: start; /* Align columns to the top */
-      justify-content: space-between; /* Space out columns */
-    }
-    
-    .column {
+    .controls-panel {
       background-color: var(--card-bg);
-      border-radius: 12px; /* Increased from 8px */
-      padding: 30px; /* Increased from 20px */
-      box-shadow: 0 4px 15px var(--card-shadow);
-    }
-    
-    /* Adjust column widths precisely with min-width/max-width */
-    .left-column {
-      min-width: 300px;
-    }
-    
-    .center-column {
-      min-width: 60%;
-    }
-    
-    .right-column {
-      max-width: 270px; /* Limit maximum width of right column */
-      min-width: 230px; /* Ensure it doesn't get too narrow */
-    }
-    
-    .left-column, .right-column {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    
-    /* Make the right column buttons stack vertically */
-    .right-column {
-      padding: 25px 20px; /* Reduced padding to make column more compact */
-    }
-    
-    .right-column .layer-toggles {
-      display: flex;
-      flex-direction: column;
-      gap: 12px; /* Reduced from 15px for more compact layout */
-      width: 100%;
-    }
-    
-    .right-column .toggle-btn {
-      width: 100%;
-      text-align: left;
-      padding: 14px 16px; /* Reduced from 16px 20px */
-      display: flex;
-      align-items: center;
-      font-size: 18px; /* Slightly reduced from 20px */
-      border-radius: 8px; /* Reduced from 10px */
-    }
-    
-    /* Make the left column buttons stack vertically */
-    .left-column .preset-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 15px; /* Increased from 10px */
-      width: 100%;
-    }
-    
-    .left-column .preset-btn {
-      width: 100%;
-      text-align: left;
-      padding: 18px 22px; /* Increased from 12px 15px */
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      font-size: 20px; /* Larger font */
-      border-radius: 10px; /* Larger border radius */
-    }
-    
-    /* Center column adjustments */
-    .center-column {
-      padding: 0 10px; /* Added some horizontal padding */
-      background: none;
-      box-shadow: none;
-      display: flex;
-      justify-content: center; /* Center contents horizontally */
-      overflow: visible; /* Allow for proper visualization */
-      position: relative; /* For proper positioning */
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
     }
     
     .theme-switch-wrapper {
@@ -216,31 +133,28 @@
     }
     
     .toggle-btn {
-      padding: 15px 20px; /* Increased from 10px 15px */
+      padding: 10px 15px;
       background-color: var(--btn-inactive);
       border: none;
-      border-radius: 8px; /* Increased from 4px */
+      border-radius: 4px;
       cursor: pointer;
       transition: all 0.3s ease;
-      font-size: 18px; /* Increased from 14px */
+      font-size: 14px;
       color: var(--text-color);
-      font-weight: 500; /* Added for better readability */
     }
     
     .toggle-btn:hover {
       background-color: var(--btn-hover);
-      transform: translateY(-2px); /* Added to enhance clickable feel */
     }
     
     .toggle-btn:focus {
-      outline: 4px solid var(--focus-outline); /* Increased from 3px */
+      outline: 3px solid var(--focus-outline);
     }
     
     .toggle-btn.active {
       background-color: var(--btn-active);
       color: var(--btn-text-light);
-      box-shadow: 0 4px 8px var(--card-shadow); /* Increased from 0 2px 5px */
-      font-weight: bold; /* Added for better emphasis when active */
+      box-shadow: 0 2px 5px var(--card-shadow);
     }
     
     .divider {
@@ -290,44 +204,36 @@
     }
     
     .preset-btn {
-      padding: 16px 22px; /* Increased from 12px 18px */
+      padding: 12px 18px;
       background-color: #2196F3;
       color: white;
       border: none;
-      border-radius: 8px; /* Increased from 4px */
+      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: background-color 0.3s;
       font-weight: bold;
-      font-size: 18px; /* Added larger font size */
-      margin-bottom: 5px; /* Added spacing between buttons */
     }
     
     .preset-btn:hover {
       background-color: #1976D2;
-      transform: translateY(-2px); /* Added hover animation */
     }
     
     .preset-btn:focus {
-      outline: 4px solid var(--focus-outline); /* Increased from 3px */
+      outline: 3px solid var(--focus-outline);
     }
     
     .preset-btn.active {
       background-color: #0D47A1;
-      box-shadow: 0 4px 8px var(--card-shadow); /* Increased shadow */
-      font-size: 19px; /* Slightly larger font for active state */
+      box-shadow: 0 2px 5px var(--card-shadow);
     }
     
     .svg-container {
       background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 4px 15px var(--card-shadow);
-      min-height: 800px; /* Increased from 600px for much larger display area */
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+      min-height: 600px;
       position: relative;
-      width: calc(100% - 10px); /* Adjust width to prevent overflow */
-      max-width: 100%;
-      overflow: hidden; /* Prevent content from spilling out */
-      margin: 0 auto; /* Center the container */
     }
     
     .svg-layer {
@@ -337,8 +243,6 @@
       width: 100%;
       height: 100%;
       transition: opacity 0.3s ease;
-      object-fit: contain; /* Ensure SVG fits within container */
-      object-position: center; /* Center the SVG content */
     }
     
     .svg-layer.hidden {
@@ -400,19 +304,8 @@
       box-shadow: 0 2px 10px var(--card-shadow);
     }
     
-    .audio-section.full-width {
-      max-width: 1600px; /* Increased from 1200px */
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 60px; /* Increased from 40px */
-      padding: 40px; /* Increased from 20px */
-      border: 3px solid var(--header-color); /* Added decorative border */
-    }
-    
     .audio-section h2 {
       margin-top: 0;
-      font-size: 2.4rem; /* Larger heading for audio section */
-      color: var(--header-color);
     }
     
     .video-container {
@@ -421,12 +314,6 @@
       height: 0;
       overflow: hidden;
       max-width: 100%;
-      margin: 30px 0; /* Added more spacing */
-    }
-    
-    .audio-controls p {
-      font-size: 20px; /* Larger text for audio section */
-      line-height: 1.6;
     }
     
     .video-container iframe {
@@ -444,24 +331,21 @@
     
     .accessibility-note {
       background-color: var(--desc-bg);
-      padding: 18px; /* Increased from 10px */
-      border-radius: 10px; /* Increased from 4px */
-      margin-top: 20px; /* Increased from 10px */
-      font-size: 20px; /* Larger font */
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
     }
     
     .button {
       display: inline-block;
-      padding: 12px 20px; /* Increased from 8px 15px */
+      padding: 8px 15px;
       background-color: var(--btn-active);
       color: white;
       border: none;
-      border-radius: 8px; /* Increased from 4px */
+      border-radius: 4px;
       cursor: pointer;
-      margin-left: 15px; /* Increased from 10px */
-      font-size: 18px; /* Increased from 14px */
-      font-weight: bold;
-      transition: all 0.3s ease;
+      margin-left: 10px;
+      font-size: 14px;
     }
     
     .button:hover {
@@ -473,45 +357,13 @@
       outline-offset: 2px;
     }
     
-    @media (max-width: 1024px) {
-      .three-column-layout {
-        grid-template-columns: 1fr 2fr;
-        grid-template-areas: 
-          "left center"
-          "right center";
-      }
-      
-      .left-column {
-        grid-area: left;
-      }
-      
-      .center-column {
-        grid-area: center;
-        grid-row: span 2;
-      }
-      
-      .right-column {
-        grid-area: right;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .three-column-layout {
-        display: flex;
+    @media (max-width: 600px) {
+      .layer-toggles, .preset-buttons {
         flex-direction: column;
-      }
-      
-      .column {
-        width: 100%;
       }
       
       .video-container {
         margin-bottom: 20px;
-      }
-      
-      /* Keep buttons vertical on mobile */
-      .layer-toggles, .preset-buttons {
-        flex-direction: column;
       }
     }
   </style>
@@ -531,9 +383,23 @@
 
   <h1>The House that Code Built</h1>
   
-  <main id="main-content" class="three-column-layout">
-    <!-- Left Column: Chapter Presets -->
-    <section class="column left-column" aria-labelledby="chapter-presets-heading">
+  <main id="main-content" class="container">
+    <section class="controls-panel" aria-labelledby="layer-controls-heading">
+      <h2 id="layer-controls-heading">Layer Controls</h2>
+      
+      <div class="layer-toggles" role="toolbar" aria-label="Toggle visibility of house layers">
+        {% for layer in layers %}
+        <button class="toggle-btn {% if layer.default %}active{% endif %}" 
+                data-layer="{{ layer.id }}" 
+                aria-pressed="{% if layer.default %}true{% else %}false{% endif %}"
+                aria-label="Toggle {{ layer.name }} layer">
+          {{ layer.name }}
+        </button>
+        {% endfor %}
+      </div>
+      
+      <div class="divider" role="separator"></div>
+      
       <h2 id="chapter-presets-heading">Chapter Presets</h2>
       <div class="preset-buttons" role="toolbar" aria-labelledby="chapter-presets-heading">
         {% for chapter in chapters %}
@@ -561,51 +427,32 @@
       {% endif %}
     </section>
     
-    <!-- Center Column: Main Visualization -->
-    <section class="column center-column">
-      <div class="svg-container" id="svg-container" aria-label="Interactive visualization of the house that code built">
-        <!-- SVG layers will be loaded here -->
-      </div>
+    <section class="svg-container" id="svg-container" aria-label="Interactive visualization of the house that code built">
+      <!-- SVG layers will be loaded here -->
     </section>
     
-    <!-- Right Column: Layer Controls -->
-    <section class="column right-column" aria-labelledby="layer-controls-heading">
-      <h2 id="layer-controls-heading">Layer Controls</h2>
-      
-      <div class="layer-toggles" role="toolbar" aria-label="Toggle visibility of house layers">
-        {% for layer in layers %}
-        <button class="toggle-btn {% if layer.default %}active{% endif %}" 
-                data-layer="{{ layer.id }}" 
-                aria-pressed="{% if layer.default %}true{% else %}false{% endif %}"
-                aria-label="Toggle {{ layer.name }} layer">
-          {{ layer.name }}
-        </button>
-        {% endfor %}
+    <!-- Tom Waits - What's He Building in There? audio section -->
+    <section class="audio-section">
+      <h2>Soundtrack: "What's He Building in There?" by Tom Waits</h2>
+      <div class="video-container">
+        <iframe width="560" height="315" 
+                src="https://www.youtube.com/embed/04qPdGNA_KM?si=9SDo0qmNaDM3Nsko&autoplay=1&loop=1&playlist=04qPdGNA_KM" 
+                title="Tom Waits - What's He Building in There?" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+        </iframe>
+      </div>
+      <div class="audio-controls">
+        <p>This song by Tom Waits perfectly captures the mysterious nature of building projects.</p>
+        <p class="accessibility-note">
+          <strong>Accessibility Note:</strong> Audio plays automatically. 
+          <button id="toggle-audio" class="button" aria-label="Mute audio">Mute Audio</button>
+        </p>
       </div>
     </section>
   </main>
-  
-  <!-- Tom Waits - What's He Building in There? audio section (full width, below three columns) -->
-  <section class="audio-section full-width">
-    <h2>Soundtrack: "What's He Building in There?" by Tom Waits</h2>
-    <div class="video-container">
-      <iframe width="560" height="315" 
-              src="https://www.youtube.com/embed/04qPdGNA_KM?si=9SDo0qmNaDM3Nsko&autoplay=1&loop=1&playlist=04qPdGNA_KM" 
-              title="Tom Waits - What's He Building in There?" 
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              referrerpolicy="strict-origin-when-cross-origin" 
-              allowfullscreen>
-      </iframe>
-    </div>
-    <div class="audio-controls">
-      <p>This song by Tom Waits perfectly captures the mysterious nature of building projects.</p>
-      <p class="accessibility-note">
-        <strong>Accessibility Note:</strong> Audio plays automatically. 
-        <button id="toggle-audio" class="button" aria-label="Mute audio">Mute Audio</button>
-      </p>
-    </div>
-  </section>
   
   <!-- Author Signature -->
   <div class="signature" role="contentinfo">
@@ -657,16 +504,6 @@
         // Clear existing content
         svgContainer.innerHTML = '';
         
-        // Create a wrapper div that will properly contain all SVGs
-        const svgWrapper = document.createElement('div');
-        svgWrapper.className = 'svg-wrapper';
-        svgWrapper.style.position = 'absolute';
-        svgWrapper.style.top = '0';
-        svgWrapper.style.left = '0';
-        svgWrapper.style.width = '100%';
-        svgWrapper.style.height = '100%';
-        svgWrapper.style.overflow = 'hidden';
-        
         // Load each layer as an SVG object
         layers.forEach(layer => {
           const svgObject = document.createElement('object');
@@ -674,12 +511,6 @@
           svgObject.id = layer.id + '-svg';
           svgObject.type = 'image/svg+xml';
           svgObject.data = `/svg/${layer.id}.svg`;
-          svgObject.style.maxWidth = '100%'; // Ensure SVG stays within bounds
-          svgObject.style.maxHeight = '100%'; // Ensure SVG stays within bounds
-          
-          // Set styles to prevent overflow
-          svgObject.style.objectFit = 'contain';
-          svgObject.style.objectPosition = 'center';
           
           // Add title for accessibility
           const title = document.createElement('title');
@@ -697,11 +528,8 @@
             svgObject.setAttribute('aria-hidden', 'false');
           }
           
-          svgWrapper.appendChild(svgObject);
+          svgContainer.appendChild(svgObject);
         });
-        
-        // Add the wrapper to the container
-        svgContainer.appendChild(svgWrapper);
       }
       
       // Set up layer toggle buttons

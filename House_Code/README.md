@@ -4,15 +4,13 @@ This is a Flask application that allows you to visualize web development concept
 
 ## Features
 
-- Three-column layout with chapter presets, visualization, and layer controls
-- Interactive SVG layer toggling with enhanced containment
+- Interactive SVG layer toggling
 - Chapter-based navigation for learning progression
 - Dark/light mode with persistent user preference
 - Fully accessible interface with keyboard navigation
 - Tom Waits soundtrack with accessible controls
 - Comprehensive accessibility testing suite
 - Responsive design for all device sizes
-- Large, child-friendly interface elements
 
 ## Using SVG Assets
 
@@ -64,19 +62,6 @@ Several testing tools are included to verify accessibility compliance:
 3. **In-browser testing**:
    The application includes built-in accessibility checking that logs issues to the browser console.
 
-## Layout and Responsive Design
-
-The application features a three-column layout designed for clarity and ease of use:
-
-- **Left Column**: Contains all chapter preset buttons, stacked vertically
-- **Center Column**: Displays the house visualization with SVG layers
-- **Middle Column**: Houses layer toggle controls, allowing you to show/hide specific elements
-
-The layout is fully responsive and adapts to different screen sizes:
-- **Desktop**: Full three-column layout with optimal spacing
-- **Tablet**: Two-column layout with visualization taking priority
-- **Mobile**: Single column layout with controls stacked above visualization
-
 ## Accessibility Checklist
 
 - ✓ Semantic HTML structure with proper landmarks
@@ -86,5 +71,3 @@ The layout is fully responsive and adapts to different screen sizes:
 - ✓ Text alternatives for non-text content
 - ✓ Proper heading structure
 - ✓ Skip links for keyboard users
-- ✓ Three-column layout with appropriate ARIA labels
-- ✓ Audio controls with mute/unmute functionality

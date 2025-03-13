@@ -33,7 +33,6 @@ jobs:
       
       - name: Install dependencies
         run: |
-          cd House_Code
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-flask
@@ -41,23 +40,19 @@ jobs:
       
       - name: Run accessibility unit tests
         run: |
-          cd House_Code
           python -m pytest tests/test_accessibility.py -v
         
       - name: Start Flask app for accessibility testing
         run: |
-          cd House_Code
           python app.py &
           sleep 3  # Give Flask time to start
           
       - name: Run automated accessibility tests
         run: |
-          cd House_Code
           pa11y http://localhost:5000 --standard WCAG2AA --reporter json > accessibility-report.json
           
       - name: Check for critical issues
         run: |
-          cd House_Code
           errors=$(cat accessibility-report.json | grep -c '"type":"error"' || echo "0")
           if [ "$errors" -gt "0" ]; then
             echo "Found $errors accessibility errors. See accessibility-report.json for details."
@@ -70,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: accessibility-report
-          path: House_Code/accessibility-report.json
+          path: accessibility-report.json
 
   build:
     runs-on: ubuntu-latest
@@ -89,18 +84,16 @@ jobs:
       
       - name: Install dependencies
         run: |
-          cd House_Code
           python -m pip install --upgrade pip
           pip install flask python-dotenv
       
       - name: Build static site
         run: |
-          cd House_Code
           mkdir -p gh-pages/svg
           
           # Copy SVG files from _svg_assets if they exist
-          if [ -d "../_svg_assets" ]; then
-            cp ../_svg_assets/*.svg gh-pages/svg/ || true
+          if [ -d "_svg_assets" ]; then
+            cp _svg_assets/*.svg gh-pages/svg/ || true
           fi
           
           # Copy SVG files from static/svg if they exist
@@ -248,7 +241,7 @@ HTML
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './House_Code/gh-pages'
+          path: './gh-pages'
 
   deploy:
     environment:

@@ -6,7 +6,6 @@ services:
     volumes:
       - ../_svg_assets:/app/_svg_assets
       - ../.env:/app/.env
-      - ./templates:/app/templates
     env_file:
       - ../.env
     restart: unless-stopped

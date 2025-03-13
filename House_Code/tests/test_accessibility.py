@@ -39,11 +39,6 @@ def test_page_has_proper_structure(client):
     assert 'aria-label' in html_content
     assert 'aria-live="polite"' in html_content
     assert 'aria-pressed' in html_content
-    
-    # Check for three-column layout
-    assert 'three-column-layout' in html_content
-    assert 'class="column left-column"' in html_content
-    assert 'class="column right-column"' in html_content
 
 def test_interactive_elements_accessible(client):
     """Test that interactive elements are accessible."""
@@ -109,25 +104,3 @@ def test_keyboard_navigation(client):
     assert 'ArrowLeft' in html_content
     assert 'ArrowRight' in html_content
     assert 'focus()' in html_content
-
-def test_layout_accessibility(client):
-    """Test that the three-column layout is accessible."""
-    response = client.get('/')
-    assert response.status_code == 200
-    
-    html_content = response.data.decode('utf-8')
-    
-    # Check for appropriate heading structure in each column
-    assert 'id="chapter-presets-heading"' in html_content
-    assert 'id="layer-controls-heading"' in html_content
-    
-    # Check for aria-labelledby to connect headings with sections
-    assert 'aria-labelledby="chapter-presets-heading"' in html_content
-    assert 'aria-labelledby="layer-controls-heading"' in html_content
-    
-    # Check for responsive design elements
-    assert 'media' in html_content and 'max-width' in html_content
-    
-    # Check audio section accessibility
-    assert 'audio-section full-width' in html_content
-    assert 'aria-label="Mute audio"' in html_content
