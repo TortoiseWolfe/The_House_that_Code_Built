@@ -31,35 +31,31 @@ jobs:
       
       - name: Install dependencies
         run: |
-          cd House_Code
           python -m pip install --upgrade pip
           pip install flask python-dotenv
       
       - name: Build static site
         run: |
-          cd House_Code
           mkdir -p gh-pages/svg
           
           # Copy SVG files from _svg_assets if they exist
-          if [ -d "../_svg_assets" ]; then
-            cp ../_svg_assets/*.svg gh-pages/svg/ || true
+          if [ -d "_svg_assets" ]; then
+            echo "Found _svg_assets directory with files:"
+            ls -la _svg_assets/
+            cp _svg_assets/*.svg gh-pages/svg/ || true
+            echo "Copied SVG files from _svg_assets directory"
           fi
           
-          # Copy SVG files from static/svg if they exist
-          if [ -d "static/svg" ]; then
-            echo "Found static/svg directory with files:"
-            ls -la static/svg/
-            cp static/svg/*.svg gh-pages/svg/ || true
-            echo "Contents of gh-pages/svg after copying:"
-            ls -la gh-pages/svg/ || echo "Directory empty or not found"
-          else
-            echo "static/svg directory not found. Looking in parent directory."
-            if [ -d "../_svg_assets" ]; then
-              echo "Found _svg_assets directory in parent. Contents:"
-              ls -la ../_svg_assets/
-              cp ../_svg_assets/*.svg gh-pages/svg/ || true
-            fi
+          # Also try to copy from House_Code/static/svg if it exists
+          if [ -d "House_Code/static/svg" ]; then
+            echo "Found House_Code/static/svg directory with files:"
+            ls -la House_Code/static/svg/
+            cp House_Code/static/svg/*.svg gh-pages/svg/ || true
+            echo "Copied SVG files from House_Code/static/svg directory"
           fi
+          
+          echo "Contents of gh-pages/svg after copying:"
+          ls -la gh-pages/svg/ || echo "Directory empty or not found"
           
           # Create index.html for GitHub Pages
           cat > gh-pages/index.html << 'HTML'
@@ -201,13 +197,12 @@ HTML
       - name: Check artifact content
         run: |
           echo "Checking contents of gh-pages directory:"
-          cd House_Code
           find gh-pages -type f | sort
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './House_Code/gh-pages'
+          path: './gh-pages'
 
   deploy:
     environment:
