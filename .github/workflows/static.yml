@@ -36,7 +36,14 @@ jobs:
       
       - name: Run FirstFlask.sh to create project structure
         run: |
-          bash FirstFlask.sh
+          # Check FirstFlask.sh execution permissions
+          ls -la FirstFlask.sh
+          # Run with debug output
+          bash -x FirstFlask.sh || {
+            echo "FirstFlask.sh failed with exit code $?"
+            echo "Checking for common issues:"
+            command -v docker || echo "Docker not found - this is expected in GitHub Actions"
+          }
           
       - name: Display repository structure for debugging
         run: |

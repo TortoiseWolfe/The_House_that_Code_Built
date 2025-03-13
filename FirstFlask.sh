@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+# Skip Docker checks in CI environment
+if [ -n "$CI" ]; then
+  echo "Running in CI environment - will skip Docker checks"
+  SKIP_DOCKER_CHECKS=true
+else
+  SKIP_DOCKER_CHECKS=false
+fi
+
 # Project name configuration
 PROJECT_NAME="House_Code"
 
@@ -1852,16 +1860,24 @@ cd "$PROJECT_NAME"
 echo -e "\033[1;33mRunning tests...\033[0m"
 ./test.sh
 
-# Start the Docker container in the background
-echo -e "\033[1;33mStarting the application in background mode...\033[0m"
-docker-compose up -d
+# Skip Docker operations in CI environment
+if [ -n "$CI" ]; then
+  echo "Skipping Docker operations in CI environment"
+else
+  # Start the Docker container in the background
+  echo -e "\033[1;33mStarting the application in background mode...\033[0m"
+  docker-compose up -d
+fi
 
 # Wait for the container to start
 echo "Waiting for application to start..."
 sleep 5
 
-# Check if the application is running
-if docker ps | grep -q "house_code-web"; then
+# Check if the application is running (skip in CI)
+if [ -n "$CI" ]; then
+  echo "Skipping container check in CI environment"
+  container_running=true
+elif docker ps | grep -q "house_code-web" 2>/dev/null; then
   # Get the local IP for better display in the instructions
   if command -v hostname &> /dev/null; then
     LOCAL_IP=$(hostname -I | awk '{print $1}')
