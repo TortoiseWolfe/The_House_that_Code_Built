@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Interactive Elements with Evening Lighting Effects -->
+  <g id="interactive-elements">
+    <!-- Lit windows showing interior light -->
+    <rect x="250" y="230" width="50" height="50" fill="#FFF9C4" opacity="0.8">
+      <animate attributeName="opacity" values="0.7;0.9;0.7" dur="5s" repeatCount="indefinite" />
+    </rect>
+    <rect x="500" y="230" width="50" height="50" fill="#FFF9C4" opacity="0.8">
+      <animate attributeName="opacity" values="0.7;0.9;0.7" dur="4s" repeatCount="indefinite" />
+    </rect>
+    
+    <!-- Glowing doorbell with pulsing effect -->
+    <circle cx="365" cy="340" r="5" fill="#FF9800">
+      <animate attributeName="r" values="5;6;5" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="365" cy="340" r="8" fill="#FF9800" opacity="0.5">
+      <animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="365" cy="340" r="12" fill="#FF9800" opacity="0.2">
+      <animate attributeName="r" values="12;15;12" dur="2s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Motion sensor light above door -->
+    <circle cx="400" cy="290" r="10" fill="#FFFDE7" opacity="0.9" />
+    <circle cx="400" cy="290" r="20" fill="#FFFDE7" opacity="0.5" />
+    <circle cx="400" cy="290" r="30" fill="#FFFDE7" opacity="0.2" />
+    
+    <!-- Pathway lights -->
+    <circle cx="320" cy="435" r="5" fill="#FFF59D">
+      <animate attributeName="opacity" values="0.8;1.0;0.8" dur="3s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="320" cy="435" r="10" fill="#FFF59D" opacity="0.5" />
+    <circle cx="320" cy="435" r="15" fill="#FFF59D" opacity="0.2" />
+    
+    <circle cx="380" cy="435" r="5" fill="#FFF59D">
+      <animate attributeName="opacity" values="0.8;1.0;0.8" dur="3.3s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="380" cy="435" r="10" fill="#FFF59D" opacity="0.5" />
+    <circle cx="380" cy="435" r="15" fill="#FFF59D" opacity="0.2" />
+    
+    <circle cx="440" cy="435" r="5" fill="#FFF59D">
+      <animate attributeName="opacity" values="0.8;1.0;0.8" dur="3.6s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="440" cy="435" r="10" fill="#FFF59D" opacity="0.5" />
+    <circle cx="440" cy="435" r="15" fill="#FFF59D" opacity="0.2" />
+    
+    <circle cx="500" cy="435" r="5" fill="#FFF59D">
+      <animate attributeName="opacity" values="0.8;1.0;0.8" dur="3.9s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="500" cy="435" r="10" fill="#FFF59D" opacity="0.5" />
+    <circle cx="500" cy="435" r="15" fill="#FFF59D" opacity="0.2" />
+    
+    <!-- Smart home control panel by the door -->
+    <rect x="425" y="340" width="15" height="20" fill="#607D8B" />
+    <rect x="428" y="345" width="9" height="10" fill="#00BCD4">
+      <animate attributeName="fill" values="#00BCD4;#4DD0E1;#00BCD4" dur="4s" repeatCount="indefinite" />
+    </rect>
+    
+    <!-- Outdoor security camera -->
+    <circle cx="580" cy="210" r="5" fill="#455A64" />
+    <path d="M580,215 l0,10" stroke="#455A64" stroke-width="3" fill="none" />
+    <rect x="575" y="225" width="10" height="5" fill="#455A64" />
+    <circle cx="580" cy="212" r="2" fill="#F44336">
+      <animate attributeName="fill" values="#F44336;#EF5350;#F44336" dur="1.5s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Automated blinds in one window (partially open) -->
+    <g id="automated-blinds">
+      <rect x="500" y="230" width="50" height="10" fill="#BDBDBD" opacity="0.7" />
+      <rect x="500" y="240" width="50" height="5" fill="#BDBDBD" opacity="0.6" />
+      <rect x="500" y="245" width="50" height="5" fill="#BDBDBD" opacity="0.5" />
+    </g>
+    
+    <!-- Weather station on roof -->
+    <rect x="400" y="90" width="5" height="15" fill="#BDBDBD" />
+    <circle cx="402.5" y="85" r="5" fill="#90CAF9">
+      <animate attributeName="fill" values="#90CAF9;#64B5F6;#90CAF9" dur="3s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Smart mailbox with notification light -->
+    <rect x="180" y="380" width="10" height="40" fill="#5D4037" />
+    <rect x="170" y="350" width="30" height="30" fill="#424242" />
+    <circle cx="185" cy="365" r="3" fill="#4CAF50">
+      <animate attributeName="fill" values="#4CAF50;#66BB6A;#4CAF50" dur="2s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Digital house number (illuminated) -->
+    <text x="330" y="215" font-family="Arial" font-size="16" fill="#FFFDE7">123</text>
+  </g>
+</svg>

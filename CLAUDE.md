@@ -14,11 +14,19 @@
 - **Workflow Path**: `.github/workflows/github-pages.yml` - Main GitHub Actions workflow
 - **Branch**: Use `main` branch for deployments
 - **CI Detection**: FirstFlask.sh will detect CI environments and skip Docker operations
+- **Deployment Process**:
+  1. Push changes to GitHub repository's main branch
+  2. GitHub Actions will automatically run the workflow
+  3. The workflow builds a static version of the site
+  4. Static files are deployed to the gh-pages branch
+  5. Site is accessible at the GitHub Pages URL configured in .env
+- **Three-Column Layout**: The deployed site maintains the exact 23%-52%-19% column proportions
 - **Troubleshooting**:
   - Exit code 127 indicates "command not found" errors in GitHub Actions
-  - Check workflow permissions in repository settings
+  - Check workflow permissions in repository settings (Settings → Actions → General → Workflow permissions)
   - Ensure workflow files are in the correct location
   - The script automatically falls back to static site generation when Docker is unavailable
+  - If columns are misaligned, check HTML structure for proper nesting of div elements
 
 ## Code Style Guidelines
 - **SVG Assets**: Place SVG files in `_svg_assets/` directory with kebab-case filenames
@@ -45,6 +53,27 @@
 - **Button Sizing**: Ensure all buttons are large enough for easy interaction (minimum 44px touch target)
 - **Font Scaling**: All text should remain readable at 200% zoom level
 - **Tom Waits Section**: Must remain below the three-column layout
+
+## CRITICAL: Layout Implementation Testing
+- **Focus on Source Files**: Only modify FirstFlask.sh - NEVER waste time modifying disposable container output
+- **Correct Build Process**: Ensure all changes are made to the template files in FirstFlask.sh, not running containers
+- **Debug Three-Column Layout**: When three columns aren't appearing:
+  1. Examine CSS in FirstFlask.sh: Check display property (grid vs flex vs table)
+  2. Verify column classes/identifiers are consistent between CSS and HTML
+  3. Look for conflicting styles that might override column definitions
+  4. Ensure container width is set appropriately (either 100% or fixed width)
+  5. Check parent containers for any constraining styles
+  6. **CRITICAL**: Check HTML structure for unclosed or mismatched div tags
+  7. Check for accidental extra closing tags that break the column structure
+  8. Set explicit widths for columns in percentages that total 100% or less
+- **Verify Production Output**: Always test final result at http://localhost:5000 after full rebuild
+- **HTML/CSS Consistency**: Use one layout approach consistently (either grid OR flex OR table)
+- **Clean Rebuild**: Always use full rebuild process for layout changes (rm -rf House_Code && bash FirstFlask.sh)
+- **Docker Volume Configuration**: When templates aren't loading, try mounting the entire app directory with `./:/app`
+- **Flexbox Best Practices**:
+  1. Use both `width` and `flex` properties: `width: 25%; flex: 0 0 25%;`
+  2. Avoid overflowing with `box-sizing: border-box;` on columns
+  3. Set explicit margins that don't exceed remaining width (e.g., if columns total 100%, use no margins)
 
 ## Accessibility Guidelines
 - **ARIA Attributes**: All interactive elements must have proper ARIA roles and states
@@ -79,4 +108,4 @@
 - Tom Waits audio section should always remain below the main columns
 - FirstFlask.sh now includes CI environment detection for improved GitHub Actions compatibility
 
-# Last Updated: Wed Mar 12 08:45:06 PM EDT 2025
+# Last Updated: Wed Mar 13 04:15:00 PM EDT 2025

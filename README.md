@@ -119,13 +119,16 @@ The project creates these key files and directories:
 - Interactive SVG layer toggling
 - Preset chapter views for different web development concepts
 - Three-column responsive layout:
-  - Left column: Chapter preset buttons
-  - Center column: SVG visualization
-  - Right column: Layer toggle controls
+  - Left column: Chapter preset buttons (25%)
+  - Center column: SVG visualization (55%)
+  - Right column: Layer toggle controls (20%)
 - Adaptive design for desktop, tablet, and mobile
+- Dark/light mode with persistent user preference
+- Tom Waits soundtrack integration
 - Docker containerization for easy development
 - Automatic GitHub Pages deployment
 - Environment variable configuration
+- Accessible design with ARIA attributes and keyboard navigation
 
 ## SVG Layers Explained
 

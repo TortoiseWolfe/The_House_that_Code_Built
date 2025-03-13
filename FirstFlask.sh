@@ -123,6 +123,7 @@ def index():
         }
     ]
     
+    # Use our template with the configured three-column layout
     return render_template('index.html', layers=layers, chapters=chapters)
 
 @app.route('/svg/<path:filename>')
@@ -151,6 +152,7 @@ if __name__ == '__main__':
 EOF
 
 # Create the HTML template for the layer toggler with GitHub info
+echo "Creating index.html template with three-column layout..."
 cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
 <!DOCTYPE html>
 <html lang="en">
@@ -195,9 +197,10 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
     
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
       background-color: var(--bg-color);
       color: var(--text-color);
       transition: all 0.3s ease;
@@ -213,56 +216,60 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       margin-bottom: 30px;
     }
     
-    /* Three-column layout container */
+    /* Three-column layout container using fixed width columns */
     .three-column-layout {
       display: flex;
-      gap: 20px;
-      margin-bottom: 40px;
       width: 100%;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      margin-bottom: 40px;
+      min-height: 600px;
+      box-sizing: border-box;
     }
     
     /* Left column - Chapter presets */
     .left-column {
-      flex: 1;
+      width: 23%;
+      flex: 0 0 23%;
       background-color: var(--card-bg);
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 10px var(--card-shadow);
-      width: 25%;
-      min-width: 25%;
-      max-width: 25%;
+      margin-right: 1%;
+      box-sizing: border-box;
     }
     
     /* Center column - Visualization */
     .center-column {
-      flex: 3;
+      width: 52%;
+      flex: 0 0 52%;
       min-height: 600px;
       position: relative;
-      width: 55%;
-      min-width: 55%;
-      max-width: 55%;
       background-color: var(--card-bg);
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 10px var(--card-shadow);
+      margin-right: 1%;
+      box-sizing: border-box;
     }
     
     /* Right column - Layer toggles */
     .right-column {
-      flex: 0.7;
+      width: 19%;
+      flex: 0 0 19%;
       background-color: var(--card-bg);
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 10px var(--card-shadow);
-      width: 20%;
-      min-width: 20%;
-      max-width: 20%;
+      box-sizing: border-box;
     }
     
     .container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
     }
     
     .controls-panel {
@@ -566,18 +573,16 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       }
       
       .left-column, .right-column {
-        flex: 1 1 45%;
-        width: 45%;
-        min-width: 45%;
-        max-width: 45%;
+        width: 48%;
+        flex: 0 0 48%;
       }
       
       .center-column {
-        flex: 1 1 100%;
         width: 100%;
-        min-width: 100%;
-        max-width: 100%;
-        order: -1; /* Put the visualization at the top */
+        flex: 0 0 100%;
+        order: -1;
+        margin-bottom: 20px;
+        margin-right: 0;
       }
     }
     
@@ -586,11 +591,11 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
         flex-direction: column;
       }
       
-      .left-column, .right-column, .center-column {
-        flex: 1 1 100%;
+      .left-column, .center-column, .right-column {
         width: 100%;
-        min-width: 100%;
-        max-width: 100%;
+        flex: 0 0 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
       }
     }
     
@@ -621,8 +626,8 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
   <h1>The House that Code Built</h1>
   
   <main id="main-content" class="container">
-    <!-- Three-column layout -->
-    <div class="three-column-layout">
+    <!-- Three-column layout with exact width columns 25% 55% 20% -->
+    <div class="three-column-layout" style="display: flex; flex-direction: row; width: 100%;">
       <!-- Left column - Chapter presets -->
       <div class="left-column">
         <h2 id="chapter-presets-heading">Chapter Presets</h2>
@@ -1408,6 +1413,8 @@ services:
     ports:
       - "5000:5000"
     volumes:
+      - ./templates:/app/templates
+      - ./static:/app/static
       - ../_svg_assets:/app/_svg_assets
       - ../.env:/app/.env
     env_file:

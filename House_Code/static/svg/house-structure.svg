@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <g id="house-structure">
+    <!-- Foundation -->
+    <rect x="200" y="350" width="400" height="50" fill="#8D6E63"/>
+    
+    <!-- Main house body -->
+    <rect x="200" y="200" width="400" height="150" fill="#FFECB3"/>
+    
+    <!-- Roof -->
+    <polygon points="200,200 400,100 600,200" fill="#8D6E63"/>
+    
+    <!-- Chimney -->
+    <rect x="500" y="130" width="40" height="70" fill="#E57373"/>
+    
+    <!-- Windows -->
+    <rect x="245" y="225" width="60" height="60" fill="#B2EBF2"/>
+    <rect x="495" y="225" width="60" height="60" fill="#B2EBF2"/>
+    
+    <!-- Attic windows -->
+    <rect x="250" y="130" width="40" height="40" fill="#B2EBF2"/>
+    <rect x="510" y="130" width="40" height="40" fill="#B2EBF2"/>
+    
+    <!-- Front Door -->
+    <rect x="375" y="300" width="50" height="100" fill="#5D4037"/>
+    
+    <!-- Porch -->
+    <rect x="350" y="400" width="100" height="10" fill="#8D6E63"/>
+    <rect x="350" y="350" width="5" height="50" fill="#8D6E63"/> <!-- Left support -->
+    <rect x="445" y="350" width="5" height="50" fill="#8D6E63"/> <!-- Right support -->
+    
+    <!-- Steps -->
+    <rect x="375" y="410" width="50" height="5" fill="#6D4C41"/>
+    <rect x="375" y="415" width="50" height="5" fill="#8D6E63"/>
+    <rect x="375" y="420" width="50" height="5" fill="#6D4C41"/>
+  </g>
+</svg>
