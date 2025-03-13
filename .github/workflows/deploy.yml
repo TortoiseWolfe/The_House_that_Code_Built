@@ -1,4 +1,4 @@
-name: Deploy static content to Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -6,47 +6,86 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  contents: write
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        
       - name: Create basic site
         run: |
-          pwd
-          mkdir -p ./_site
-          echo "Hello World" > ./_site/index.html
-          ls -la ./
-          ls -la ./_site/
+          mkdir -p _site
+          cp -r _svg_assets _site/svg
           
-      - name: Debug artifact process
-        run: |
-          echo "Current working directory: $(pwd)"
-          echo "Site directory contents:"
-          find ./_site -type f | sort
-          echo "_site absolute path: $(realpath ./_site)"
+          # Create a simple index.html with three-column layout
+          cat > _site/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The House that Code Built</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+        }
+        .left-column {
+            width: 25%;
+            flex: 0 0 25%;
+            background: #f0f0f0;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .center-column {
+            width: 55%;
+            flex: 0 0 55%;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .right-column {
+            width: 20%;
+            flex: 0 0 20%;
+            background: #f0f0f0;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-column">
+            <h2>Presets</h2>
+            <p>Left column (25%)</p>
+        </div>
+        <div class="center-column">
+            <h2>Visualization</h2>
+            <img src="svg/house-structure.svg" alt="House Structure" width="100%">
+            <img src="svg/environment-layer.svg" alt="Environment Layer" width="100%">
+        </div>
+        <div class="right-column">
+            <h2>Layer Controls</h2>
+            <p>Right column (20%)</p>
+        </div>
+    </div>
+</body>
+</html>
+EOF
           
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: ./_site
+          # Debug output
+          find _site -type f | sort
           
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: _site
+          branch: gh-pages
+          clean: true
