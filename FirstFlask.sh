@@ -250,34 +250,32 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
     
     /* Left column - Chapter presets */
     .left-column {
-      width: 23%;
-      flex: 0 0 23%;
+      width: 25%;
+      flex: 0 0 25%;
       background-color: var(--card-bg);
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 10px var(--card-shadow);
-      margin-right: 1%;
       box-sizing: border-box;
     }
     
     /* Center column - Visualization */
     .center-column {
-      width: 52%;
-      flex: 0 0 52%;
+      width: 55%;
+      flex: 0 0 55%;
       min-height: 600px;
       position: relative;
       background-color: var(--card-bg);
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 10px var(--card-shadow);
-      margin-right: 1%;
       box-sizing: border-box;
     }
     
     /* Right column - Layer toggles */
     .right-column {
-      width: 19%;
-      flex: 0 0 19%;
+      width: 20%;
+      flex: 0 0 20%;
       background-color: var(--card-bg);
       border-radius: 8px;
       padding: 20px;
@@ -648,7 +646,7 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
   
   <main id="main-content" class="container">
     <!-- Three-column layout with exact width columns 25% 55% 20% -->
-    <div class="three-column-layout" style="display: flex; flex-direction: row; width: 100%;">
+    <div class="three-column-layout">
       <!-- Left column - Chapter presets -->
       <div class="left-column">
         <h2 id="chapter-presets-heading">Chapter Presets</h2>
@@ -1736,7 +1734,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -1744,9 +1742,9 @@ jobs:
           python-version: '3.11'
           
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
       
       - name: Install dependencies
         run: |
@@ -1808,9 +1806,9 @@ jobs:
         run: |
           mkdir -p gh-pages/svg
           
-          # Copy SVG files from _svg_assets if they exist
-          if [ -d "_svg_assets" ]; then
-            cp _svg_assets/*.svg gh-pages/svg/ || true
+          # Copy SVG files from parent _svg_assets if they exist
+          if [ -d "../_svg_assets" ]; then
+            cp ../_svg_assets/*.svg gh-pages/svg/ || true
           fi
           
           # Copy SVG files from static/svg if they exist
@@ -1956,7 +1954,7 @@ jobs:
 HTML
       
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: './gh-pages'
 
@@ -1969,7 +1967,7 @@ HTML
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v3
 EOF
 
 # Run tests and start the application automatically

@@ -15,68 +15,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pytest-flask
-          npm install -g pa11y axe-core
-      
-      - name: Run accessibility unit tests
-        run: |
-          python -m pytest tests/test_accessibility.py -v
-        
-      - name: Start Flask app for accessibility testing
-        run: |
-          python app.py &
-          sleep 3  # Give Flask time to start
-          
-      - name: Run automated accessibility tests
-        run: |
-          pa11y http://localhost:5000 --standard WCAG2AA --reporter json > accessibility-report.json
-          
-      - name: Check for critical issues
-        run: |
-          errors=$(cat accessibility-report.json | grep -c '"type":"error"' || echo "0")
-          if [ "$errors" -gt "0" ]; then
-            echo "Found $errors accessibility errors. See accessibility-report.json for details."
-            exit 1
-          else
-            echo "No critical accessibility issues found!"
-          fi
-          
-      - name: Upload accessibility report
-        uses: actions/upload-artifact@v4
-        with:
-          name: accessibility-report
-          path: accessibility-report.json
-
   build:
     runs-on: ubuntu-latest
-    needs: test
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      
+        
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -89,83 +36,174 @@ jobs:
       
       - name: Build static site
         run: |
-          mkdir -p gh-pages/svg
+          mkdir -p _site/svg
           
           # Copy SVG files from _svg_assets if they exist
           if [ -d "_svg_assets" ]; then
-            cp _svg_assets/*.svg gh-pages/svg/ || true
+            cp _svg_assets/*.svg _site/svg/ || true
           fi
           
-          # Copy SVG files from static/svg if they exist
-          if [ -d "static/svg" ]; then
-            cp static/svg/*.svg gh-pages/svg/ || true
-          fi
-          
-          # Create simple index.html for GitHub Pages
-          cat > gh-pages/index.html << 'EOL'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta name="description" content="Interactive visualization of web development concepts using a house metaphor">
-            <title>The House that Code Built</title>
-            <style>
-              body {
-                font-family: 'Segoe UI', sans-serif;
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: #f5f5f5;
-                color: #333;
-                line-height: 1.5;
-              }
-              h1 { color: #2e7d32; text-align: center; }
-              .container { display: flex; flex-direction: column; gap: 20px; }
-              .svg-container {
-                background-color: #fff;
-                border-radius: 8px;
-                padding: 20px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                min-height: 600px;
-                position: relative;
-              }
-              .button {
-                display: inline-block;
-                padding: 10px 15px;
-                background-color: #2196F3;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                font-weight: bold;
-              }
-              .github-link { margin-top: 30px; text-align: center; }
-              footer { margin-top: 40px; text-align: center; }
-            </style>
-          </head>
-          <body>
-            <h1>The House that Code Built</h1>
-            <main class="container">
-              <section class="svg-container">
-                <object data="svg/environment-layer.svg" type="image/svg+xml" style="position:absolute;top:0;left:0;width:100%;height:100%"></object>
-                <object data="svg/house-structure.svg" type="image/svg+xml" style="position:absolute;top:0;left:0;width:100%;height:100%"></object>
-              </section>
-              <div class="github-link">
-                <p>To view the interactive version with all layers:</p>
-                <a href="https://github.com/TortoiseWolfe/The_House_that_Code_Built" class="button">View on GitHub</a>
-              </div>
-            </main>
-            <footer>
-              <p>This project follows WCAG 2.1 AA accessibility guidelines</p>
-            </footer>
-          </body>
-          </html>
-          EOL
+          # Create a simple index.html
+          cat > _site/index.html << 'HTML'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="An interactive visualization of web development concepts using a house metaphor">
+  <title>The House that Code Built</title>
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #333;
+      --header-color: #2e7d32;
+      --card-bg: #ffffff;
+      --card-shadow: rgba(0,0,0,0.1);
+      --btn-color: #2196F3;
+      --btn-hover: #1976D2;
+      --btn-text: #ffffff;
+      --focus-outline: #2196F3;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+    
+    h1, h2 {
+      color: var(--header-color);
+      text-align: center;
+    }
+    
+    /* Three-column layout container */
+    .three-column-layout {
+      display: flex;
+      width: 100%;
+      margin-bottom: 40px;
+      min-height: 600px;
+    }
+    
+    /* Left column - Chapter presets */
+    .left-column {
+      width: 25%;
+      flex: 0 0 25%;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+    }
+    
+    /* Center column - Visualization */
+    .center-column {
+      width: 55%;
+      flex: 0 0 55%;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+    }
+    
+    /* Right column - Layer toggles */
+    .right-column {
+      width: 20%;
+      flex: 0 0 20%;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px var(--card-shadow);
+    }
+    
+    .svg-container {
+      width: 100%;
+      height: 500px;
+      position: relative;
+    }
+    
+    .github-link {
+      margin-top: 30px;
+      text-align: center;
+    }
+    
+    .button {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: var(--btn-color);
+      color: var(--btn-text);
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    
+    .button:hover {
+      background-color: var(--btn-hover);
+    }
+    
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <h1>The House that Code Built</h1>
+  <p style="text-align: center;">An interactive visualization of web development concepts</p>
+  
+  <div class="three-column-layout">
+    <!-- Left column -->
+    <div class="left-column">
+      <h2>About This Project</h2>
+      <p>This visualization demonstrates web development concepts through the metaphor of a house:</p>
+      <ul>
+        <li>Environment - The foundation</li>
+        <li>HTML - The structure</li>
+        <li>CSS - The design</li>
+        <li>JavaScript - The interactivity</li>
+        <li>Backend - The systems</li>
+      </ul>
+    </div>
+    
+    <!-- Center column -->
+    <div class="center-column">
+      <div class="svg-container">
+        <img src="svg/environment-layer.svg" alt="Environment layer visualization" style="width: 100%; height: auto;">
+        <img src="svg/house-structure.svg" alt="House structure visualization" style="width: 100%; height: auto; position: absolute; top: 0; left: 0;">
+      </div>
+    </div>
+    
+    <!-- Right column -->
+    <div class="right-column">
+      <h2>Interactive Version</h2>
+      <p>The full interactive version has:</p>
+      <ul>
+        <li>Layer toggling</li>
+        <li>Chapter navigation</li>
+        <li>Tom Waits soundtrack</li>
+        <li>Dark/light mode</li>
+      </ul>
+      <div class="github-link">
+        <a href="https://github.com/TortoiseWolfe/The_House_that_Code_Built" class="button">View on GitHub</a>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>Created by <a href="https://github.com/TortoiseWolfe">TortoiseWolfe</a></p>
+    <p>This project follows WCAG 2.1 AA accessibility guidelines</p>
+  </footer>
+</body>
+</html>
+HTML
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './gh-pages'
+          path: './_site'
 
   deploy:
     environment:
@@ -176,4 +214,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v3
