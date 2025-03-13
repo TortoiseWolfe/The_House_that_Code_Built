@@ -39,6 +39,35 @@ jobs:
           # Ensure jinja2 is installed for the static site generator
           pip install jinja2
           
+      - name: Create test SVG files if needed
+        run: |
+          echo "Creating SVG test directories if they don't exist"
+          mkdir -p _svg_assets
+          mkdir -p House_Code/static/svg
+          
+          # Create placeholder SVGs for testing if none exist
+          if [ ! -f "House_Code/static/svg/environment-layer.svg" ]; then
+            echo "Creating test SVG file: environment-layer.svg"
+            cat > House_Code/static/svg/environment-layer.svg << EOF
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+              <rect width="800" height="600" fill="#e6f7ff" />
+              <text x="400" y="300" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">Environment Layer</text>
+            </svg>
+            EOF
+          fi
+          
+          if [ ! -f "House_Code/static/svg/house-structure.svg" ]; then
+            echo "Creating test SVG file: house-structure.svg"
+            cat > House_Code/static/svg/house-structure.svg << EOF
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+              <rect width="800" height="600" fill="none" stroke="#333" stroke-width="2" />
+              <polygon points="400,100 200,300 600,300" fill="#f5deb3" stroke="#333" stroke-width="2" />
+              <rect x="250" y="300" width="300" height="200" fill="#f5deb3" stroke="#333" stroke-width="2" />
+              <text x="400" y="450" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">House Structure</text>
+            </svg>
+            EOF
+          fi
+          
       - name: Debug current directory structure
         run: |
           echo "Contents of working directory:"
@@ -78,6 +107,13 @@ jobs:
             if [ -d "gh-pages/svg" ]; then
               echo "SVG directory exists:"
               ls -la gh-pages/svg
+              
+              echo "HTML file content (first 40 lines to check for SVG references):"
+              head -n 40 gh-pages/index.html | grep -A 5 -B 5 "svgObject.data" || echo "No SVG references found in first 40 lines"
+              
+              # Check for any SVG references in the HTML
+              echo "All SVG references in HTML:"
+              grep -o "svgObject.data.*svg" gh-pages/index.html || echo "No SVG references found"
             else
               echo "ERROR: SVG directory not found!"
             fi

@@ -138,9 +138,20 @@ def generate_static_site():
     # Render template with data
     output = template.render(**template_data)
     
+    # Fix SVG paths to be relative instead of absolute for GitHub Pages
+    # Change `/svg/layer-name.svg` to `svg/layer-name.svg` (without leading slash)
+    output = output.replace('svgObject.data = `/svg/', 'svgObject.data = `svg/')
+    
+    # Add base tag for better path resolution on GitHub Pages
+    # Insert it right after the <head> tag
+    base_tag = f'<base href="{github_pages_url}/">'
+    output = output.replace('<head>', '<head>\n  ' + base_tag)
+    
     # Write rendered template to index.html
     with open(os.path.join(output_dir, 'index.html'), 'w') as f:
         f.write(output)
+        
+    print("Fixed SVG paths in rendered HTML to be relative for GitHub Pages compatibility")
     
     print(f"Static site generated in {output_dir}/")
     print(f"SVG files: {len(svg_files_copied)} copied, {len(required_svg_files) - len(svg_files_copied)} placeholders created")
