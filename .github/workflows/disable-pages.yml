@@ -1,0 +1,14 @@
+# This file is used to disable the competing workflow
+name: Disabled Old Workflow
+
+on:
+  push:
+    branches:
+      - none   # This ensures the workflow never runs
+
+jobs:
+  dummy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do nothing
+        run: echo "This workflow is disabled"
