@@ -44,7 +44,7 @@ jobs:
           fi
           
           # Create a simple index.html
-          cat > _site/index.html << 'HTML'
+          cat > _site/index.html << 'EOL'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -198,7 +198,7 @@ jobs:
   </footer>
 </body>
 </html>
-HTML
+EOL
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
