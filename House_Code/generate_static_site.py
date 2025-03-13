@@ -157,19 +157,24 @@ def generate_static_site():
         
     print("Fixed SVG paths in rendered HTML to be relative for GitHub Pages compatibility")
     
-    # Use existing image for social media preview
+    # Use existing image for social media preview with original filename
     print("Copying existing image for social media metadata...")
-    preview_image_path = os.path.join(static_dir, "house-preview.png")
     
     # Look for houseCodePrints_02.png in _svg_assets
     source_image_path = os.path.join(current_dir, "..", "_svg_assets", "houseCodePrints_02.png")
+    source_image_filename = os.path.basename(source_image_path)
+    preview_image_path = os.path.join(static_dir, source_image_filename)
+    
     if os.path.exists(source_image_path):
-        # If the image exists, copy it to our output directory
+        # If the image exists, copy it to our output directory with original filename
         shutil.copy2(source_image_path, preview_image_path)
         print(f"Copied existing image from {source_image_path} to {preview_image_path}")
     else:
-        # Fallback to creating a placeholder
-        create_preview_image(preview_image_path)
+        # Fallback to creating a placeholder with a generic name
+        fallback_path = os.path.join(static_dir, "house-preview.png")
+        create_preview_image(fallback_path)
+        preview_image_path = fallback_path
+        source_image_filename = "house-preview.png"
         print(f"Source image not found at {source_image_path}, created placeholder instead")
     
     # Fix og:image path in HTML
@@ -177,8 +182,17 @@ def generate_static_site():
     with open(output_html_path, 'r') as f:
         html_content = f.read()
     
-    # Update og:image and twitter:image to use relative paths
-    html_content = html_content.replace('content="{{ github_pages_url }}/static/', 'content="static/')
+    # Update og:image and twitter:image to use relative paths with the original filename
+    html_content = html_content.replace(
+        'content="{{ github_pages_url }}/static/house-preview.png"', 
+        f'content="static/{source_image_filename}"'
+    )
+    
+    # Also update Twitter card image
+    html_content = html_content.replace(
+        'content="{{ github_pages_url }}/static/house-preview.png"', 
+        f'content="static/{source_image_filename}"'
+    )
     
     with open(output_html_path, 'w') as f:
         f.write(html_content)

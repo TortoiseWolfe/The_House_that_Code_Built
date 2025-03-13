@@ -75,10 +75,10 @@ jobs:
           # Create the static directory
           mkdir -p House_Code/gh-pages/static
           
-          # Check if the image exists and copy it
+          # Check if the image exists and copy it with its original filename
           if [ -f "_svg_assets/houseCodePrints_02.png" ]; then
-            cp _svg_assets/houseCodePrints_02.png House_Code/gh-pages/static/house-preview.png
-            echo "Successfully copied houseCodePrints_02.png"
+            cp _svg_assets/houseCodePrints_02.png House_Code/gh-pages/static/houseCodePrints_02.png
+            echo "Successfully copied houseCodePrints_02.png with original filename"
           else
             echo "houseCodePrints_02.png not found, creating a fallback image..."
             # Create a simple colored PNG as fallback
