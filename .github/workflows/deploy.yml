@@ -36,39 +36,22 @@ jobs:
           python -m pip install --upgrade pip
           cd House_Code
           pip install -r requirements.txt
-          # Ensure jinja2 is installed for the static site generator
           pip install jinja2
-          
-      - name: Create test SVG files if needed
+      
+      - name: Create SVG directories
         run: |
-          echo "Creating SVG test directories if they don't exist"
           mkdir -p _svg_assets
           mkdir -p House_Code/static/svg
+      
+      - name: Create environment layer SVG
+        run: |
+          echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#e6f7ff" /><text x="400" y="300" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">Environment Layer</text></svg>' > House_Code/static/svg/environment-layer.svg
+      
+      - name: Create house structure SVG
+        run: |
+          echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="none" stroke="#333" stroke-width="2" /><polygon points="400,100 200,300 600,300" fill="#f5deb3" stroke="#333" stroke-width="2" /><rect x="250" y="300" width="300" height="200" fill="#f5deb3" stroke="#333" stroke-width="2" /><text x="400" y="450" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">House Structure</text></svg>' > House_Code/static/svg/house-structure.svg
           
-          # Create placeholder SVGs for testing if none exist
-          if [ ! -f "House_Code/static/svg/environment-layer.svg" ]; then
-            echo "Creating test SVG file: environment-layer.svg"
-            cat > House_Code/static/svg/environment-layer.svg << 'EOFSVG1'
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
-<rect width="800" height="600" fill="#e6f7ff" />
-<text x="400" y="300" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">Environment Layer</text>
-</svg>
-EOFSVG1
-          fi
-          
-          if [ ! -f "House_Code/static/svg/house-structure.svg" ]; then
-            echo "Creating test SVG file: house-structure.svg"
-            cat > House_Code/static/svg/house-structure.svg << 'EOFSVG2'
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
-<rect width="800" height="600" fill="none" stroke="#333" stroke-width="2" />
-<polygon points="400,100 200,300 600,300" fill="#f5deb3" stroke="#333" stroke-width="2" />
-<rect x="250" y="300" width="300" height="200" fill="#f5deb3" stroke="#333" stroke-width="2" />
-<text x="400" y="450" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">House Structure</text>
-</svg>
-EOFSVG2
-          fi
-          
-      - name: Debug current directory structure
+      - name: Debug directory structure
         run: |
           echo "Contents of working directory:"
           ls -la
@@ -78,49 +61,20 @@ EOFSVG2
           ls -la House_Code/templates/
           echo "Contents of static directory:"
           ls -la House_Code/static/
-          echo "Contents of _svg_assets directory:"
-          ls -la _svg_assets/
+          echo "Contents of SVG directory:"
+          ls -la House_Code/static/svg/
       
       - name: Generate static site
         run: |
-          echo "Current working directory: $(pwd)"
-          # Create debugging info
           cd House_Code
+          python generate_static_site.py
           
-          echo "Looking for templates directory:"
-          ls -la templates || echo "Templates directory not found!"
+          echo "Checking generated static site:"
+          ls -la gh-pages
+          ls -la gh-pages/svg
           
-          echo "Looking for static directory:"
-          ls -la static || echo "Static directory not found!"
-          
-          echo "Python and Jinja2 versions:"
-          python -c "import sys; print(f'Python version: {sys.version}')"
-          python -c "import jinja2; print(f'Jinja2 version: {jinja2.__version__}')" || echo "Jinja2 not installed properly!"
-          
-          echo "Running static site generator with verbose output:"
-          python -v generate_static_site.py
-          
-          echo "Static site generation complete, checking results:"
-          if [ -d "gh-pages" ]; then
-            echo "gh-pages directory exists:"
-            ls -la gh-pages
-            if [ -d "gh-pages/svg" ]; then
-              echo "SVG directory exists:"
-              ls -la gh-pages/svg
-              
-              echo "HTML file content (first 40 lines to check for SVG references):"
-              head -n 40 gh-pages/index.html | grep -A 5 -B 5 "svgObject.data" || echo "No SVG references found in first 40 lines"
-              
-              # Check for any SVG references in the HTML
-              echo "All SVG references in HTML:"
-              grep -o "svgObject.data.*svg" gh-pages/index.html || echo "No SVG references found"
-            else
-              echo "ERROR: SVG directory not found!"
-            fi
-          else
-            echo "ERROR: gh-pages directory not found!"
-            exit 1
-          fi
+          echo "Checking SVG references in HTML:"
+          grep -o "svgObject.data.*svg" gh-pages/index.html || echo "No SVG references found"
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
