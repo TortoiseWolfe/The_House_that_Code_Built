@@ -48,24 +48,24 @@ jobs:
           # Create placeholder SVGs for testing if none exist
           if [ ! -f "House_Code/static/svg/environment-layer.svg" ]; then
             echo "Creating test SVG file: environment-layer.svg"
-            cat > House_Code/static/svg/environment-layer.svg << EOF
+            cat > House_Code/static/svg/environment-layer.svg << 'EOFSVG1'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
-  <rect width="800" height="600" fill="#e6f7ff" />
-  <text x="400" y="300" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">Environment Layer</text>
+<rect width="800" height="600" fill="#e6f7ff" />
+<text x="400" y="300" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">Environment Layer</text>
 </svg>
-EOF
+EOFSVG1
           fi
           
           if [ ! -f "House_Code/static/svg/house-structure.svg" ]; then
             echo "Creating test SVG file: house-structure.svg"
-            cat > House_Code/static/svg/house-structure.svg << EOF
+            cat > House_Code/static/svg/house-structure.svg << 'EOFSVG2'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
-  <rect width="800" height="600" fill="none" stroke="#333" stroke-width="2" />
-  <polygon points="400,100 200,300 600,300" fill="#f5deb3" stroke="#333" stroke-width="2" />
-  <rect x="250" y="300" width="300" height="200" fill="#f5deb3" stroke="#333" stroke-width="2" />
-  <text x="400" y="450" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">House Structure</text>
+<rect width="800" height="600" fill="none" stroke="#333" stroke-width="2" />
+<polygon points="400,100 200,300 600,300" fill="#f5deb3" stroke="#333" stroke-width="2" />
+<rect x="250" y="300" width="300" height="200" fill="#f5deb3" stroke="#333" stroke-width="2" />
+<text x="400" y="450" font-family="Arial" font-size="48" text-anchor="middle" fill="#333">House Structure</text>
 </svg>
-EOF
+EOFSVG2
           fi
           
       - name: Debug current directory structure
