@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Flask App to GitHub Pages
 
 on:
   push:
@@ -32,167 +32,141 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flask python-dotenv
+          pip install flask python-dotenv jinja2 flask-cors
       
-      - name: Build static site
+      - name: Verify Flask app structure
+        run: |
+          # Check for required files
+          if [ ! -d "House_Code" ]; then
+            echo "ERROR: House_Code directory not found!"
+            exit 1
+          fi
+          
+          if [ ! -f "House_Code/templates/index.html" ]; then
+            echo "ERROR: Flask template missing at House_Code/templates/index.html"
+            exit 1
+          fi
+          
+          echo "✅ Required Flask app structure verified"
+      
+      - name: Build static site from Flask app
         run: |
           mkdir -p gh-pages/svg
           
-          # Copy SVG files from _svg_assets if they exist
+          # Copy SVG files from _svg_assets - REQUIRED
           if [ -d "_svg_assets" ]; then
             echo "Found _svg_assets directory with files:"
             ls -la _svg_assets/
-            cp _svg_assets/*.svg gh-pages/svg/ || true
+            cp _svg_assets/*.svg gh-pages/svg/
             echo "Copied SVG files from _svg_assets directory"
+          else
+            echo "ERROR: Required _svg_assets directory missing"
+            exit 1
           fi
           
-          # Also try to copy from House_Code/static/svg if it exists
-          if [ -d "House_Code/static/svg" ]; then
-            echo "Found House_Code/static/svg directory with files:"
-            ls -la House_Code/static/svg/
-            cp House_Code/static/svg/*.svg gh-pages/svg/ || true
-            echo "Copied SVG files from House_Code/static/svg directory"
+          # Process Flask application template using Python
+          cat > render_template.py << 'EOF'
+import os
+import json
+from jinja2 import Environment, FileSystemLoader
+
+# Layer information
+layers = [
+    {"id": "environment-layer", "name": "Environment", "default": True},
+    {"id": "house-structure", "name": "House Structure", "default": True},
+    {"id": "html-tags-layer", "name": "HTML Tags", "default": False},
+    {"id": "structure-layer", "name": "HTML Structure", "default": False},
+    {"id": "css-design-layer", "name": "CSS Design", "default": False},
+    {"id": "interactive-layer", "name": "JavaScript Interactivity", "default": False},
+    {"id": "systems-layer", "name": "Backend Systems", "default": False}
+]
+
+# Chapter presets
+chapters = [
+    {
+        "name": "Base House",
+        "preset": "base",
+        "description": "The complete house with all visual elements",
+        "layers": ["environment-layer", "house-structure"]
+    },
+    {
+        "name": "Chapter 1: HTML Tags",
+        "preset": "html-tags",
+        "description": "The blueprint layer showing HTML tags",
+        "layers": ["environment-layer", "house-structure", "html-tags-layer"]
+    },
+    {
+        "name": "Chapter 2: HTML Structure",
+        "preset": "html-structure",
+        "description": "The structural framing of the house",
+        "layers": ["environment-layer", "structure-layer"]
+    },
+    {
+        "name": "Chapter 3: CSS Design",
+        "preset": "css-design",
+        "description": "The design layer with visual styling",
+        "layers": ["environment-layer", "house-structure", "css-design-layer"]
+    },
+    {
+        "name": "Chapter 4: JavaScript",
+        "preset": "javascript",
+        "description": "The interactive elements that respond to events",
+        "layers": ["environment-layer", "house-structure", "interactive-layer"]
+    },
+    {
+        "name": "Chapter 5: Backend",
+        "preset": "backend",
+        "description": "The internal systems that power the house",
+        "layers": ["environment-layer", "house-structure", "systems-layer"]
+    }
+]
+
+# GitHub info from environment variables
+github_username = os.environ.get("GITHUB_USERNAME", "TortoiseWolfe")
+repo_name = os.environ.get("REPO_NAME", "The_House_that_Code_Built")
+github_pages_url = os.environ.get("GITHUB_PAGES_URL", f"https://{github_username}.github.io/{repo_name}")
+
+# Load the template
+loader = FileSystemLoader("House_Code/templates")
+env = Environment(loader=loader)
+template = env.get_template("index.html")
+
+# Render the template with our data
+html = template.render(
+    layers=layers,
+    chapters=chapters,
+    github_username=github_username,
+    repo_name=repo_name,
+    github_pages_url=github_pages_url
+)
+
+# Fix SVG paths for GitHub Pages (important!)
+html = html.replace("/svg/", "svg/")
+
+# Write the rendered template to the output file
+with open("gh-pages/index.html", "w") as f:
+    f.write(html)
+
+print("Successfully rendered Flask template to gh-pages/index.html")
+EOF
+          
+          # Execute the template rendering
+          python render_template.py
+          
+          # Verify the result was created
+          if [ ! -f "gh-pages/index.html" ]; then
+            echo "ERROR: Failed to generate index.html"
+            exit 1
           fi
           
-          echo "Contents of gh-pages/svg after copying:"
-          ls -la gh-pages/svg/ || echo "Directory empty or not found"
+          # Verify SVG files were copied
+          if [ ! "$(ls -A gh-pages/svg/)" ]; then
+            echo "ERROR: No SVG files were copied to gh-pages/svg/"
+            exit 1
+          fi
           
-          # Create index.html for GitHub Pages
-          cat > gh-pages/index.html << 'HTML'
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="An interactive visualization of web development concepts using a house metaphor">
-  <title>The House that Code Built</title>
-  <style>
-    :root {
-      --bg-color: #f5f5f5;
-      --text-color: #333;
-      --header-color: #2e7d32;
-      --card-bg: #ffffff;
-      --card-shadow: rgba(0,0,0,0.1);
-      --btn-color: #2196F3;
-      --btn-hover: #1976D2;
-      --btn-text: #ffffff;
-      --focus-outline: #2196F3;
-    }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.5;
-    }
-    
-    h1, h2 {
-      color: var(--header-color);
-      text-align: center;
-    }
-    
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: var(--btn-color);
-      color: var(--btn-text);
-      padding: 8px;
-      z-index: 1000;
-      transition: top 0.3s;
-    }
-    
-    .skip-link:focus {
-      top: 0;
-    }
-    
-    main {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .svg-container {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 10px var(--card-shadow);
-      min-height: 600px;
-      position: relative;
-      margin-top: 30px;
-    }
-    
-    .svg-layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-    
-    .github-link {
-      margin-top: 30px;
-      text-align: center;
-    }
-    
-    .button {
-      display: inline-block;
-      padding: 10px 15px;
-      background-color: var(--btn-color);
-      color: var(--btn-text);
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-    }
-    
-    .button:hover, .button:focus {
-      background-color: var(--btn-hover);
-    }
-    
-    .button:focus {
-      outline: 3px solid var(--focus-outline);
-      outline-offset: 2px;
-    }
-    
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 0.9em;
-      color: var(--text-color);
-    }
-  </style>
-</head>
-<body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-  
-  <header>
-    <h1>The House that Code Built</h1>
-    <p style="text-align: center;">An interactive visualization of web development concepts</p>
-  </header>
-  
-  <main id="main-content">
-    <section class="svg-container" aria-label="House visualization">
-      <object data="svg/environment-layer.svg" type="image/svg+xml" class="svg-layer" aria-label="Environment layer visualization"></object>
-      <object data="svg/house-structure.svg" type="image/svg+xml" class="svg-layer" aria-label="House structure visualization"></object>
-    </section>
-    
-    <div class="github-link">
-      <p>To view the interactive version with all layers:</p>
-      <a href="https://github.com/TortoiseWolfe/The_House_that_Code_Built" class="button" aria-label="View full interactive project on GitHub">View on GitHub</a>
-    </div>
-  </main>
-  
-  <footer role="contentinfo">
-    <p>This project follows WCAG 2.1 AA accessibility guidelines</p>
-  </footer>
-</body>
-</html>
-HTML
+          echo "Contents after building:"
+          find gh-pages -type f | sort
       
       - name: Check artifact content
         run: |
