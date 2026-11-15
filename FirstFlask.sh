@@ -190,12 +190,12 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       --card-bg: #ffffff;
       --card-shadow: rgba(0,0,0,0.1);
       --btn-inactive: #e0e0e0;
-      --btn-active: #4CAF50;
+      --btn-active: #2E7D32;
       --btn-hover: #d0d0d0;
       --divider: #e0e0e0;
       --desc-bg: #e8f5e9;
       --link-color: #0D47A1;
-      --toggle-bg: #4CAF50;
+      --toggle-bg: #2E7D32;
       --btn-text-light: #ffffff;
       --btn-text-dark: #333333;
       --focus-outline: #2196F3;
@@ -208,12 +208,12 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       --card-bg: #1e1e1e;
       --card-shadow: rgba(0,0,0,0.4);
       --btn-inactive: #383838;
-      --btn-active: #388E3C;
+      --btn-active: #2E7D32;
       --btn-hover: #505050;
       --divider: #383838;
       --desc-bg: #2c3e2e;
       --link-color: #90caf9;
-      --toggle-bg: #388E3C;
+      --toggle-bg: #2E7D32;
     }
     
     body {
@@ -433,7 +433,7 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
     
     .preset-btn {
       padding: 12px 18px;
-      background-color: #2196F3;
+      background-color: #1565C0;
       color: white;
       border: none;
       border-radius: 4px;
@@ -445,7 +445,7 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
     }
     
     .preset-btn:hover {
-      background-color: #1976D2;
+      background-color: #0D47A1;
     }
     
     .preset-btn:focus {
@@ -453,7 +453,7 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
     }
     
     .preset-btn.active {
-      background-color: #0D47A1;
+      background-color: #0A3880;
       box-shadow: 0 2px 5px var(--card-shadow);
     }
     
@@ -494,6 +494,7 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
     }
     
     .github-info a {
+      overflow-wrap: anywhere;
       color: var(--link-color);
       text-decoration: none;
       font-weight: bold;
@@ -553,6 +554,38 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       border-radius: 4px;
     }
     
+    .video-facade {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #1a1a1a url("https://i.ytimg.com/vi/04qPdGNA_KM/hqdefault.jpg") center / cover no-repeat;
+      color: #ffffff;
+      font-size: 18px;
+    }
+
+    .video-facade:focus {
+      outline: 3px solid var(--focus-outline);
+      outline-offset: 2px;
+    }
+
+    .video-facade-label {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 12px 15px;
+      background: #1a1a1a;
+      color: #ffffff;
+      font-weight: bold;
+      text-align: left;
+    }
+
     .audio-controls {
       margin-top: 15px;
     }
@@ -576,8 +609,12 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
       font-size: 14px;
     }
     
+    .button[hidden] {
+      display: none;
+    }
+
     .button:hover {
-      background-color: var(--btn-hover);
+      background-color: #1B5E20;
     }
     
     .button:focus {
@@ -705,20 +742,15 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
     <section class="audio-section">
       <h2>Soundtrack: "What's He Building in There?" by Tom Waits</h2>
       <div class="video-container">
-        <iframe width="560" height="315" 
-                src="https://www.youtube.com/embed/04qPdGNA_KM?si=9SDo0qmNaDM3Nsko&autoplay=1&loop=1&playlist=04qPdGNA_KM" 
-                title="Tom Waits - What's He Building in There?" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen>
-        </iframe>
+        <button type="button" id="play-video" class="video-facade" data-video-id="04qPdGNA_KM">
+          <span class="video-facade-label"><span aria-hidden="true">▶</span> Play the song: What's He Building in There? by Tom Waits</span>
+        </button>
       </div>
       <div class="audio-controls">
         <p>This song by Tom Waits perfectly captures the mysterious nature of building projects.</p>
         <p class="accessibility-note">
-          <strong>Accessibility Note:</strong> Audio plays automatically. 
-          <button id="toggle-audio" class="button" aria-label="Mute audio">Mute Audio</button>
+          <strong>Accessibility Note:</strong> Audio never starts by itself. It plays only after you press the play button above.
+          <button id="toggle-audio" class="button" aria-label="Mute audio" hidden>Mute Audio</button>
         </p>
       </div>
     </section>
@@ -1013,36 +1045,24 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
         }
       }
       
-      // Handle YouTube embed controls
+      // Handle YouTube embed controls.
+      // Nothing is loaded and no sound plays until the visitor presses the play button (WCAG 1.4.2).
       function setupAudioControls() {
         const toggleButton = document.getElementById('toggle-audio');
-        if (!toggleButton) return;
-        
-        let videoFrame = document.querySelector('.video-container iframe');
+        const facade = document.getElementById('play-video');
+        if (!toggleButton || !facade) return;
+
+        const videoId = facade.getAttribute('data-video-id');
+        const videoContainer = document.querySelector('.video-container');
         let isMuted = false;
-        
-        // YouTube iframe API needs to be loaded
-        let tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        let firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        
         let player;
-        
-        // When YouTube API is ready
-        window.onYouTubeIframeAPIReady = function() {
-          // Get the video ID from the src attribute
-          const videoSrc = videoFrame.src;
-          const videoId = videoSrc.split('embed/')[1].split('?')[0];
-          
-          // Replace the iframe with a div that the API can use
-          const videoContainer = document.querySelector('.video-container');
+
+        function createPlayer() {
           const playerDiv = document.createElement('div');
           playerDiv.id = 'youtube-player';
           videoContainer.innerHTML = '';
           videoContainer.appendChild(playerDiv);
-          
-          // Create the YouTube player
+
           player = new YT.Player('youtube-player', {
             height: '315',
             width: '560',
@@ -1056,10 +1076,12 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
               'onReady': onPlayerReady
             }
           });
-        };
-        
-        function onPlayerReady(event) {
-          // When player is ready, enable the toggle button
+        }
+
+        function onPlayerReady() {
+          player.getIframe().setAttribute('title', "Tom Waits - What's He Building in There?");
+          toggleButton.hidden = false;
+          player.playVideo();
           toggleButton.addEventListener('click', function() {
             if (isMuted) {
               player.unMute();
@@ -1073,6 +1095,18 @@ cat > "$PROJECT_NAME/templates/index.html" << 'EOF'
             isMuted = !isMuted;
           });
         }
+
+        facade.addEventListener('click', function() {
+          facade.disabled = true;
+          if (window.YT && window.YT.Player) {
+            createPlayer();
+            return;
+          }
+          window.onYouTubeIframeAPIReady = createPlayer;
+          const tag = document.createElement('script');
+          tag.src = "https://www.youtube.com/iframe_api";
+          document.head.appendChild(tag);
+        });
       }
     });
   </script>
@@ -1155,7 +1189,9 @@ def test_tom_waits_section(client):
     # Check for Tom Waits section
     assert 'Tom Waits - What\'s He Building in There?' in html_content
     assert '<section class="audio-section">' in html_content
-    assert 'youtube.com/embed/04qPdGNA_KM' in html_content
+    assert 'data-video-id="04qPdGNA_KM"' in html_content
+    # Audio must never start by itself (WCAG 1.4.2): no autoplay iframe in the page source
+    assert '<iframe' not in html_content
     
     # Check for accessibility controls
     assert 'id="toggle-audio"' in html_content

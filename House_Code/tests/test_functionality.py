@@ -58,7 +58,9 @@ def test_tom_waits_section(client):
     # Check for Tom Waits section
     assert 'Tom Waits - What\'s He Building in There?' in html_content
     assert '<section class="audio-section">' in html_content
-    assert 'youtube.com/embed/04qPdGNA_KM' in html_content
+    assert 'data-video-id="04qPdGNA_KM"' in html_content
+    # Audio must never start by itself (WCAG 1.4.2): no autoplay iframe in the page source
+    assert '<iframe' not in html_content
     
     # Check for accessibility controls
     assert 'id="toggle-audio"' in html_content
