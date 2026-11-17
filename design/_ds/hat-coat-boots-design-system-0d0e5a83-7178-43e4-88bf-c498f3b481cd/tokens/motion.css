@@ -1,0 +1,35 @@
+/* ============================================================
+   Motion — Hat, Coat & Boots
+   ------------------------------------------------------------
+   Gentle and friendly. Layers cross-fade like turning a
+   transparency. Interactive things give a soft springy press.
+   Nothing loops forever; nothing whips across the screen.
+   ============================================================ */
+
+:root {
+  /* Durations */
+  --dur-fast:   140ms;   /* @kind other */
+  --dur-base:   240ms;   /* @kind other */
+  --dur-slow:   420ms;   /* @kind other */
+  --dur-page:   600ms;   /* @kind other */
+
+  /* Easing */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);   /* @kind other */
+  --ease-inout:  cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* @kind other */
+
+  /* Semantic transitions */
+  --t-press: transform var(--dur-fast) var(--ease-spring),
+             box-shadow var(--dur-fast) var(--ease-out); /* @kind other */
+  --t-layer: opacity var(--dur-slow) var(--ease-inout),
+             transform var(--dur-slow) var(--ease-out); /* @kind other */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms; /* @kind other */
+    --dur-base: 0ms; /* @kind other */
+    --dur-slow: 0ms; /* @kind other */
+    --dur-page: 0ms; /* @kind other */
+  }
+}

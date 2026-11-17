@@ -1,0 +1,16 @@
+/* ============================================================
+   Fonts — Hat, Coat & Boots
+   ------------------------------------------------------------
+   No font binaries shipped with the source repos, so the
+   webfonts below are sourced from Google Fonts as the closest
+   match to a warm, friendly storybook voice. If you have brand
+   font files, drop them in assets/fonts/ and replace these
+   @import lines with @font-face rules.
+
+   ROLES
+   - Fredoka        → display / chapter titles (chunky, rounded)
+   - Nunito         → narrative body & UI (warm humanist sans)
+   - Patrick Hand   → handwritten overlay labels & margin notes
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Patrick+Hand&display=swap");

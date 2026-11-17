@@ -1,0 +1,98 @@
+/* ============================================================
+   Colors — Hat, Coat & Boots
+   ------------------------------------------------------------
+   A warm, hand-built palette for a children's book about
+   natural building. Three brand hues map to the metaphor:
+     HAT   = roof   (straw / sun / gold)
+     COAT  = walls  (clay / timber / terracotta)
+     BOOTS = footing (river stone / slate)
+   Plus a living palette (leaf, sky, sun) for the world the
+   house sits in, and a cradle-to-cradle pair (bio / tech)
+   borrowed from the McDonough framework the books teach.
+   ============================================================ */
+
+:root {
+  /* ---- Paper & ink (the printed page) ---- */
+  --paper-50:  #FBF6EC;   /* page cream */
+  --paper-100: #F5ECD8;
+  --paper-200: #ECDCBC;
+  --paper-300: #E0CBA0;
+  --cloud:     #FFFDF8;   /* warm white card */
+
+  --ink-900: #2E2418;     /* primary text — warm near-black */
+  --ink-700: #4A3B28;
+  --ink-500: #6F5B41;
+  --ink-300: #9A876B;     /* muted / captions */
+
+  /* ---- HAT — roof: straw, thatch, sunlight ---- */
+  --hat-100: #FBE6BE;
+  --hat-300: #F2C772;
+  --hat-500: #E8A33D;     /* brand gold */
+  --hat-700: #C9791B;
+  --hat-900: #9C5A10;
+
+  /* ---- COAT — walls: clay, cob, timber ---- */
+  --coat-100: #F4D2C2;
+  --coat-300: #E09A77;
+  --coat-500: #CB6843;    /* brand terracotta */
+  --coat-700: #A24A2B;
+  --coat-900: #7A361E;
+
+  /* ---- BOOTS — foundation: river stone, slate ---- */
+  --boots-100: #D5DEDF;
+  --boots-300: #9AAEB1;
+  --boots-500: #5C7480;   /* brand stone-blue */
+  --boots-700: #42565F;
+  --boots-900: #2C3A41;
+
+  /* ---- Living world ---- */
+  --leaf-100: #DCEBC8;
+  --leaf-300: #A6CD82;
+  --leaf-500: #6CA64E;    /* friendly leaf green */
+  --leaf-700: #4C8137;
+
+  --sky-100: #E4F1F7;
+  --sky-300: #BBDDEC;
+  --sky-500: #7FB4D4;     /* soft sky */
+  --sky-700: #4E87A8;
+
+  --sun:     #F4C84B;     /* bright sun yellow */
+  --berry:   #C4495F;     /* rare pop / errors / hearts */
+
+  /* ---- Cradle-to-cradle nutrients (book theme) ---- */
+  --bio:  #6CA64E;        /* biological nutrient = leaf */
+  --tech: #4E87A8;        /* technical nutrient = steel-sky */
+
+  /* ============================================================
+     SEMANTIC ALIASES — design against these, not raw hues
+     ============================================================ */
+
+  /* Surfaces */
+  --surface-page:    var(--paper-50);
+  --surface-card:    var(--cloud);
+  --surface-sunk:    var(--paper-100);
+  --surface-overlay: rgba(46, 36, 24, 0.55);  /* scrim behind modals */
+
+  /* Text */
+  --text-body:    var(--ink-900);
+  --text-soft:    var(--ink-700);
+  --text-muted:   var(--ink-300);
+  --text-onbrand: var(--cloud);
+
+  /* Brand roles */
+  --brand:        var(--coat-500);   /* default brand action = clay */
+  --brand-strong: var(--coat-700);
+  --accent:       var(--hat-500);    /* highlights & joy = gold */
+  --accent-strong:var(--hat-700);
+
+  /* Lines & edges (hand-drawn ink outline is the signature) */
+  --line-ink:    var(--ink-900);
+  --line-soft:   rgba(46, 36, 24, 0.16);
+  --line-hair:   rgba(46, 36, 24, 0.10);
+
+  /* Feedback */
+  --ok:    var(--leaf-500);
+  --warn:  var(--hat-700);
+  --danger:var(--berry);
+  --info:  var(--sky-700);
+}
