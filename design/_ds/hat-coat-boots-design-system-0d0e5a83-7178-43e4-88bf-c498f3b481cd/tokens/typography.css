@@ -1,0 +1,42 @@
+/* ============================================================
+   Typography — Hat, Coat & Boots
+   Display = Fredoka · Body = Nunito · Hand = Patrick Hand
+   ============================================================ */
+
+:root {
+  /* Families */
+  --font-display: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --font-body:    "Nunito", system-ui, -apple-system, sans-serif;
+  --font-hand:    "Patrick Hand", "Comic Sans MS", cursive;
+
+  /* Weights */
+  --w-regular:  400; /* @kind font */
+  --w-medium:   500; /* @kind font */
+  --w-semibold: 600; /* @kind font */
+  --w-bold:     700; /* @kind font */
+  --w-heavy:    800; /* @kind font */
+
+  /* Type scale — gentle, storybook-roomy (1.25 ratio) */
+  --text-2xs: 0.75rem;   /* 12px — fine print */
+  --text-xs:  0.8125rem; /* 13px — labels */
+  --text-sm:  0.9375rem; /* 15px — captions, UI */
+  --text-md:  1.0625rem; /* 17px — body default */
+  --text-lg:  1.25rem;   /* 20px — lead paragraph */
+  --text-xl:  1.625rem;  /* 26px — sub-headers */
+  --text-2xl: 2.125rem;  /* 34px — chapter title */
+  --text-3xl: 2.875rem;  /* 46px — page title */
+  --text-4xl: 4rem;      /* 64px — cover / hero */
+  --text-5xl: 5.5rem;    /* 88px — big number / cover */
+
+  /* Line heights */
+  --leading-tight:  1.08;
+  --leading-snug:   1.25;
+  --leading-normal: 1.55;  /* narrative reading */
+  --leading-relax:  1.7;
+
+  /* Letter spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-label: 0.08em;  /* small caps labels */
+  --tracking-wide:  0.16em;
+}

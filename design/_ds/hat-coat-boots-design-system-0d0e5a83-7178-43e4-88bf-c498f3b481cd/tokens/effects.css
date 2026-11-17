@@ -1,0 +1,52 @@
+/* ============================================================
+   Effects — radii, borders, shadows — Hat, Coat & Boots
+   ------------------------------------------------------------
+   The signature look is the "sticker": a chunky hand-drawn ink
+   outline + a hard offset shadow, like a paper cut-out glued to
+   the page. Soft paper-lift shadows are used for resting cards.
+   ============================================================ */
+
+:root {
+  /* ---- Corner radii (generous, friendly) ---- */
+  --radius-xs:  6px;
+  --radius-sm:  10px;
+  --radius-md:  16px;   /* default card / button */
+  --radius-lg:  24px;
+  --radius-xl:  34px;
+  --radius-2xl: 48px;
+  --radius-pill: 999px;
+
+  /* ---- Border widths (ink outline) ---- */
+  --border-hair: 1.5px;
+  --border-ink:  2.5px;   /* the storybook outline */
+  --border-bold: 3.5px;
+
+  --line-color: var(--line-ink);
+  --border-card: var(--border-ink) solid var(--line-ink);
+
+  /* ---- Shadows ---- */
+  /* Soft: paper lifting off the page */
+  --shadow-sm:   0 1px 2px rgba(46,36,24,0.10);
+  --shadow-card: 0 2px 0 rgba(46,36,24,0.08), 0 12px 26px -14px rgba(46,36,24,0.45);
+  --shadow-pop:  0 4px 0 rgba(46,36,24,0.10), 0 22px 40px -18px rgba(46,36,24,0.55);
+
+  /* Sticker: hard offset in ink — the playful press affordance.
+     Use with the matching --border-ink outline. */
+  --sticker-rest:  3px 3px 0 var(--line-ink);
+  --sticker-press: 1px 1px 0 var(--line-ink);
+
+  /* Colored sticker shadows (match component hue) */
+  --sticker-hat:   3px 3px 0 var(--hat-900);
+  --sticker-coat:  3px 3px 0 var(--coat-900);
+  --sticker-boots: 3px 3px 0 var(--boots-900);
+
+  /* Focus ring — sky, offset so it reads on busy art */
+  --focus-ring: 0 0 0 3px var(--cloud), 0 0 0 6px var(--sky-500);
+
+  /* ---- Overlay system (the textbook transparency) ---- */
+  --overlay-blur: 2px;
+  --overlay-scrim: rgba(251, 246, 236, 0.72);  /* paper haze over art */
+
+  /* ---- Tape & paper textures (decorative) ---- */
+  --tape: rgba(244, 200, 75, 0.55);  /* sticky-note tape over corners */
+}
